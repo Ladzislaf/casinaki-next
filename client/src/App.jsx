@@ -1,6 +1,10 @@
+import HiLowGame from "./components/HiLowGame"
+
 function App() {
 	return (
-		<div className="App"></div>
+		<div className="App">
+			<HiLowGame/>
+		</div>
 	)
 }
 
