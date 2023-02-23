@@ -8,7 +8,7 @@ import { DEPOSIT_ROUTE, GAMES_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTER_ROUTE } f
 const NavBar = observer(() => {
 	const { user } = useContext(Context)
 	return (
-		<nav>
+		<nav className={styles.nav}>
 			<h2><NavLink to={MAIN_ROUTE}>CASINAKI</NavLink></h2>
 			{user._isAuth ?
 				<ul>

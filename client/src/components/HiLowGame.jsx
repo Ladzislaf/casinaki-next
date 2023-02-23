@@ -21,7 +21,7 @@ const getRand = () => {
 }
 
 const HiLowGame = () => {
-	const [state, setState] = useState({ card: cards[getRand()], balance: 2, bet: 0.1, status: 'click to play', totalCoefficient: 1 })
+	const [state, setState] = useState({ card: cards[getRand()], balance: 2, bet: 0, status: 'click to play', totalCoefficient: 1 })
 	const [coefficients, setCoefficients] = useState({ higher: 1, lower: 1, common: 1 })
 	const [gameState, setGameState] = useState('betting')
 
@@ -59,10 +59,6 @@ const HiLowGame = () => {
 
 	const changeBet = (mode, value) => {
 		if (+state.bet.toFixed(2) - value < 0 && mode === 'down') return
-		if ((state.balance < (+state.bet.toFixed(2) + value)) && mode === 'up') {
-			alert('YOU DON\'T HAVE ENOUGH MONEY, GO TO WORK, LOOSER!')
-			return
-		}
 		switch (mode) {
 			case 'up': setState({ ...state, bet: +state.bet.toFixed(2) + value })
 				break
@@ -87,8 +83,22 @@ const HiLowGame = () => {
 		}
 	}
 
+	const startGameHandler = () => {
+		if (state.balance < state.bet) {
+			alert('YOU DON\'T HAVE ENOUGH MONEY, GO TO WORK, LOOSER!')
+			return
+		}
+		setGameState('playing')
+		setState({ ...state, balance: state.balance - state.bet, status: `-${state.bet.toFixed(2)}$ to play` }) 
+	}
+
 	const cashOutHandler = () => {
-		setState({...state, status: `winner! +${(state.bet * state.totalCoefficient).toFixed(2)}`, balance: state.balance + state.bet * state.totalCoefficient, totalCoefficient: 1})
+		setState({
+			...state,
+			status: `winner! +${(state.bet * state.totalCoefficient).toFixed(2)}`,
+			balance: state.balance + state.bet * state.totalCoefficient,
+			totalCoefficient: 1
+		})
 		setGameState('betting')
 	}
 
@@ -119,10 +129,7 @@ const HiLowGame = () => {
 				: <>
 					<button className={styles.btn} onClick={() => changeBet('up', 0.1)}>+</button>
 					<button className={styles.btn} onClick={() => changeBet('down', 0.1)}>-</button> <br />
-					<button className={styles.btn} onClick={() => { 
-						setGameState('playing')
-						setState({ ...state, balance: state.balance - state.bet, status: `-${state.bet.toFixed(2)}$ to play` }) 
-					}}>play</button>
+					<button className={styles.btn} onClick={() => { startGameHandler() }}>play</button>
 					<div className={styles.hi_low_card} style={{ background: state.card.color }}>{state.card.key}</div>
 					<button className={styles.btn} onClick={() => setState({ ...state, card: cards[getRand()] })}>change</button>
 				</>
