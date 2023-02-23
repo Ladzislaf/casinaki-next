@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import styles from '../style/HiLowGame.module.css'
 
 const suits = ['♠', '♥', '♦', '♣']
 const cardValues = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
@@ -92,38 +93,38 @@ const HiLowGame = () => {
 	}
 
 	return (
-		<div className='hi-low-game'>
+		<div className={styles.hi_low_game}>
 			<h3>hi-low-game component</h3>
 			<h2 style={{ color: '#e24e29' }}>balance: {state.balance.toFixed(2)}$</h2>
 			<p>bet: {state.bet.toFixed(2)}$</p>
 			<div>{state.status}</div>
 			{gameState === 'playing' ?
 				<>
-					<button className='btn' onClick={() => playHandler(1)}>
+					<button className={styles.btn} onClick={() => playHandler(1)}>
 						{checkButtons('higher')} <br />
 						{coefficients.higher.toFixed(2)}x <br />
 					</button>
-					<button className='btn' onClick={() => playHandler(0)}>
+					<button className={styles.btn} onClick={() => playHandler(0)}>
 						{checkButtons('lower')} <br />
 						{coefficients.lower.toFixed(2)}x <br />
 					</button> <br />
 					<div>total: </div>
-					<div className='hi-low-card' style={{ background: state.card.color }}>{state.card.key}</div>
-					<button className='btn' onClick={() => cashOutHandler()} disabled={state.totalCoefficient === 1}>
+					<div className={styles.hi_low_card} style={{ background: state.card.color }}>{state.card.key}</div>
+					<button className={styles.btn} onClick={() => cashOutHandler()} disabled={state.totalCoefficient === 1}>
 						cash out <br />
 						{(state.bet * state.totalCoefficient).toFixed(2)}$ <br />
 						{state.totalCoefficient.toFixed(2)}x
 					</button>
 				</>
 				: <>
-					<button className='btn' onClick={() => changeBet('up', 0.1)}>+</button>
-					<button className='btn' onClick={() => changeBet('down', 0.1)}>-</button> <br />
-					<button className='btn' onClick={() => { 
+					<button className={styles.btn} onClick={() => changeBet('up', 0.1)}>+</button>
+					<button className={styles.btn} onClick={() => changeBet('down', 0.1)}>-</button> <br />
+					<button className={styles.btn} onClick={() => { 
 						setGameState('playing')
 						setState({ ...state, balance: state.balance - state.bet, status: `-${state.bet.toFixed(2)}$ to play` }) 
 					}}>play</button>
-					<div className='hi-low-card' style={{ background: state.card.color }}>{state.card.key}</div>
-					<button className='btn' onClick={() => setState({ ...state, card: cards[getRand()] })}>change</button>
+					<div className={styles.hi_low_card} style={{ background: state.card.color }}>{state.card.key}</div>
+					<button className={styles.btn} onClick={() => setState({ ...state, card: cards[getRand()] })}>change</button>
 				</>
 			}
 		</div>

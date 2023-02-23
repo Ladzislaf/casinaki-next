@@ -1,10 +1,14 @@
-import HiLowGame from "./components/HiLowGame"
+import React from 'react'
+import { BrowserRouter } from 'react-router-dom'
+import AppRouter from './components/AppRouter'
+import NavBar from './components/NavBar'
 
 function App() {
 	return (
-		<div className="App">
-			<HiLowGame/>
-		</div>
+		<BrowserRouter>
+			<NavBar/>
+			<AppRouter/>
+		</BrowserRouter>
 	)
 }
 

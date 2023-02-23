@@ -1,9 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import { observer } from 'mobx-react-lite'
+import { Context } from '..'
+import { authRoutes, publicRoutes } from '../routes'
 
-const AppRouter = () => {
+const AppRouter = observer(() => {
+	const { user } = useContext(Context)
 	return (
-		<div>AppRouter</div>
+		<Routes>
+			{user.isAuth && authRoutes.map(({ path, Component }) => {
+				return <Route key={path} path={path} element={<Component />} exact />
+			})}
+			{publicRoutes.map(({ path, Component }) => {
+				return <Route key={path} path={path} element={<Component />} exact />
+			})}
+			{/* <Navigate to={MAIN_ROUTE}/> */}
+		</Routes>
 	)
-}
+})
 
 export default AppRouter

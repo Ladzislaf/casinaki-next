@@ -1,0 +1,52 @@
+nav {
+	display: flex;
+	justify-content: space-between;
+	background: #007472;
+	padding: 10px;
+	color: white;
+}
+
+nav ul {
+	display: flex;
+	list-style: none;
+}
+
+nav li {
+	height: 100%;
+	justify-content: center;
+}
+
+a {
+	text-decoration: none;
+	color: white;
+}
+
+a:hover {
+	color: rgba(255, 255, 255, 0.61);
+}
+
+nav a.routes {
+	text-decoration: none;
+	color: white;
+	padding: 20px;
+}
+
+nav a.routes:hover {
+	text-decoration: underline;
+}
+
+/* 
+  Extra small devices (phones, 600px and down) 
+*/
+@media only screen and (max-width: 600px) {
+	nav {
+		flex-direction: column;
+	}
+	nav ul {
+		flex-direction: column;
+		padding-top: 0.5rem;
+	}
+	nav li {
+		padding: 0.5rem 0;
+	}
+}
