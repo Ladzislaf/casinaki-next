@@ -100,3 +100,26 @@ table {
 	color: #343434;
 	font-size: 35px;
 }
+
+@media only screen and (max-device-width: 600px) {
+	.container {
+		font-size: 80px;
+	}
+
+	.cell {
+		width: 200px;
+		height: 200px;
+	}
+
+	.buttons {
+		width: 800px;
+		padding-top: 20px;
+	}
+
+	.button {
+		font-size: 70px;
+		width: 400px;
+		height: auto;
+		margin: 10px;
+	}
+}
