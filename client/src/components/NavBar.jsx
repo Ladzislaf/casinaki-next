@@ -10,17 +10,19 @@ const NavBar = observer(() => {
 	return (
 		<nav className={styles.nav}>
 			<h2><NavLink to={MAIN_ROUTE}>CASINAKI</NavLink></h2>
-			{user._isAuth ?
-				<ul>
-					<li><NavLink className={styles.routes} to={GAMES_ROUTE}>games</NavLink></li>
-					<li><NavLink className={styles.routes} to={DEPOSIT_ROUTE}>deposit</NavLink></li>
-				</ul>
-				:
-				<ul>
-					<li><NavLink className={styles.routes} to={LOGIN_ROUTE} onClick={() => user.setIsAuth(true)}>login</NavLink></li>
-					<li><NavLink className={styles.routes} to={REGISTER_ROUTE}>register</NavLink></li>
-				</ul>
-			}
+			<div className={styles.links_container}>
+				{user._isAuth ?
+					<>
+						<NavLink className={styles.routes} to={GAMES_ROUTE}>games</NavLink>
+						<NavLink className={styles.routes} to={DEPOSIT_ROUTE}>deposit</NavLink>
+					</>
+					:
+					<>
+						<NavLink className={styles.routes} to={LOGIN_ROUTE} onClick={() => user.setIsAuth(true)}>login</NavLink>
+						<NavLink className={styles.routes} to={REGISTER_ROUTE}>register</NavLink>
+					</>
+				}
+			</div>
 		</nav>
 	)
 })

@@ -1,39 +1,39 @@
 table {
-	margin: 0 auto;
+	margin: 30px auto;
 	background-color: #575656;
 	padding: 5px;
 	border-radius: 5px;
 }
 
 .container {
-	background: #97e69d;
-	margin: 0;
+	margin: 10px;
 	padding: 10px;
+	text-align: center;
+	align-items: center;
 }
 
 .buttons {
-	margin: 0 auto;
+	margin: auto;
 	display: flex;
-	width: 500px;
-	padding-top: 20px;
+	justify-content:space-between;
+	width: 70%;
+}
+
+.buttons > .button {
+	width: 180px;
 }
 
 .button {
 	background-color: #8f7a66;
+	font-size: 30px;
 	color: #f9f6f2;
-	height: 30px;
-	width: 100px;
+	/* margin: 10px; */
+	padding: 10px 20px;
 	border-radius: 5px;
-	margin: 0 auto;
-	margin-bottom: 25px;
 	text-align: center;
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
 	cursor: pointer;
 	transition: background-color 0.5s, color 0.5s;
-}
+	}
 
 .button:hover {
 	background-color: #eee4da;
@@ -98,28 +98,29 @@ table {
 
 .number {
 	color: #343434;
-	font-size: 35px;
+	font-size: 60px;
 }
 
 @media only screen and (max-device-width: 600px) {
-	.container {
-		font-size: 80px;
+	.number {
+		font-size: 100px;
 	}
 
 	.cell {
-		width: 200px;
-		height: 200px;
-	}
-
-	.buttons {
-		width: 800px;
-		padding-top: 20px;
+		width: 180px;
+		height: 180px;
 	}
 
 	.button {
-		font-size: 70px;
-		width: 400px;
-		height: auto;
-		margin: 10px;
+		font-size: 80px;
+	}
+	
+	.buttons {
+		width: 90%;
+	}
+
+	.buttons > .button {
+		font-size: 60px;
+		margin: auto;
 	}
 }

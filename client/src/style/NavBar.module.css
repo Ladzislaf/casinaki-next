@@ -1,37 +1,29 @@
 .nav {
 	display: flex;
 	justify-content: space-between;
-	background: #007472;
-	padding: 10px;
-	color: white;
+	background: #222225;
+	padding: 5px 50px;
 }
 
-.nav ul {
+.links_container {
 	display: flex;
-	list-style: none;
-}
-
-.nav li {
-	height: 100%;
-	justify-content: center;
 }
 
 .nav a {
+	color: #DBDBE7;
 	text-decoration: none;
-	color: white;
+	margin: auto;
 }
 
 .nav a:hover {
 	color: rgba(255, 255, 255, 0.61);
 }
 
-.nav a.routes {
-	text-decoration: none;
-	color: white;
-	padding: 20px;
+a.routes {
+	padding: 5px 40px;
 }
 
-.nav a.routes:hover {
+a.routes:hover {
 	text-decoration: underline;
 }
 
@@ -39,5 +31,9 @@
 	.nav {
 		flex-direction: column;
 		font-size: 60px;
+	}
+
+	.links_container {
+		display:block;
 	}
 }

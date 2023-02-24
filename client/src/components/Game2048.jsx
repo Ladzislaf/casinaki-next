@@ -300,7 +300,7 @@ class Game2048 extends React.Component {
 	render() {
 		return (
 			<div className={styles.container}>
-				<div className={styles.button} onClick={() => { this.initBoard() }}>New Game</div>
+				<button className={styles.button} onClick={() => { this.initBoard() }}>New Game</button>
 
 				<table>
 					<tbody>
@@ -309,10 +309,10 @@ class Game2048 extends React.Component {
 				</table>
 				
 				<div className={styles.buttons}>
-					<div className={styles.button} onClick={() => { this.move('up') }}>Up</div>
-					<div className={styles.button} onClick={() => { this.move('right') }}>Right</div>
-					<div className={styles.button} onClick={() => { this.move('down') }}>Down</div>
-					<div className={styles.button} onClick={() => { this.move('left') }}>Left</div>
+					<button className={styles.button} onClick={() => { this.move('up') }}>Up</button>
+					<button className={styles.button} onClick={() => { this.move('right') }}>Right</button>
+					<button className={styles.button} onClick={() => { this.move('down') }}>Down</button>
+					<button className={styles.button} onClick={() => { this.move('left') }}>Left</button>
 				</div>
 
 				<p>{this.state.message}</p>
