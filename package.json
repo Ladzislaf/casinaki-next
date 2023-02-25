@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "express-validator": "^6.15.0",
-    "jsonwebtoken": "^9.0.0"
-  }
-}

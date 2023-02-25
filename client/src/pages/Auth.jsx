@@ -1,8 +1,18 @@
-import React from 'react'
+import React/* , { useContext } */ from 'react'
+// import { Context } from '..'
 
 const Auth = () => {
+	// const { user } = useContext(Context)
 	return (
-		<div>Auth</div>
+		<div>
+			{/* { user.isAuth ? 
+				<div>Auth</div> 
+				: 
+				<div>not Auth</div> 
+			} */}
+
+			
+		</div>
 	)
 }
 
