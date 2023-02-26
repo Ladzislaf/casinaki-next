@@ -9,14 +9,6 @@ export const authRoutes = [
 		path: MAIN_ROUTE,
 		Component: Main
 	},
-	// {
-	// 	path: LOGIN_ROUTE,
-	// 	Component: Auth
-	// },
-	// {
-	// 	path: REGISTER_ROUTE,
-	// 	Component: Auth
-	// },
 	{
 		path: GAMES_ROUTE,
 		Component: Games

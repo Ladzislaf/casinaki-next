@@ -1,0 +1,41 @@
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	border: 2px solid yellow;
+}
+
+.container h2 {
+	text-align: center;
+}
+
+.container > form {
+	display: flex;
+	flex-direction: column;
+}
+
+.container > form > button {
+	width: 100px;
+	margin: auto;
+	font-size: 20px;
+	padding: 10px;
+}
+
+.container input {
+	padding: 15px;
+	margin: 5px;
+	width: 300px;
+	font-size: 25px;
+}
+
+.container a {
+	color: #bb0f0f;
+	text-decoration: none;
+	margin: auto;
+}
+
+.container a:hover {
+	color: rgba(255, 255, 255, 0.616);
+}
