@@ -27,6 +27,7 @@ const NavBar = observer(() => {
 					<>
 						<NavLink className={styles.routes} to={LOGIN_ROUTE}>sign in</NavLink>
 						<NavLink className={styles.routes} to={REGISTER_ROUTE} style={{ border: '1px solid white' }}>sign up</NavLink>
+						<NavLink className={styles.routes} onClick={() => user.setIsAuth(true)}>demo sign in</NavLink>
 					</>
 				}
 			</div>
