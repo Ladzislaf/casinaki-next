@@ -9,15 +9,6 @@
 	margin: 5px auto;
 }
 
-.card {
-	border: 2px black solid;
-	border-radius: 5px;
-	color: #ffffff;
-	width: 150px;
-	height: 220px;
-	font-size: 60px;
-}
-
 .btn {
 	font-family: 'mono45-headline', Arial, sans-serif;
 	font-size: 20px;
@@ -44,22 +35,4 @@
 
 .btn:disabled {
 	cursor: not-allowed;
-}
-
-@media only screen and (max-device-width: 600px) {
-	.container {
-		font-size: 60px;
-	}
-
-	.card {
-		font-size: 200px;
-		width: 400px;
-		height: 600px;
-	}
-	
-	.btn {
-		font-size: 80px;
-		width: 400px;
-		height: auto;
-	}	
 }

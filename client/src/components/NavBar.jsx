@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { Context } from '..'
 import styles from '../style/NavBar.module.css'
-import { DEPOSIT_ROUTE, GAMES_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTER_ROUTE } from '../utils/constants'
+import { DEPOSIT_ROUTE, HI_LOW_ROUTE, DICE_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTER_ROUTE } from '../utils/constants'
 
 const NavBar = observer(() => {
 	const { user } = useContext(Context)
@@ -19,7 +19,9 @@ const NavBar = observer(() => {
 			<div className={styles.links_container}>
 				{user._isAuth ?
 					<>
-						<NavLink className={styles.routes} to={GAMES_ROUTE}>games</NavLink>
+						<div>balance: {user._balance.toFixed(2)} fun</div>
+						<NavLink className={styles.routes} to={HI_LOW_ROUTE}>hi-low</NavLink>
+						<NavLink className={styles.routes} to={DICE_ROUTE}>dice</NavLink>
 						<NavLink className={styles.routes} to={DEPOSIT_ROUTE}>deposit</NavLink>
 						<NavLink className={styles.routes} to={LOGIN_ROUTE} onClick={() => logOut()}>logout</NavLink>
 					</>

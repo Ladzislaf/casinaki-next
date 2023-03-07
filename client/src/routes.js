@@ -1,8 +1,9 @@
 import Auth from './pages/Auth'
 import Main from './pages/Main'
-import Games from './pages/Games'
 import Deposit from './pages/Deposit'
-import { LOGIN_ROUTE, REGISTER_ROUTE, MAIN_ROUTE, GAMES_ROUTE, DEPOSIT_ROUTE } from './utils/constants'
+import { LOGIN_ROUTE, REGISTER_ROUTE, MAIN_ROUTE, HI_LOW_ROUTE, DICE_ROUTE, DEPOSIT_ROUTE } from './utils/constants'
+import HiLowGame from './components/HiLowGame'
+import DiceGame from './components/DiceGame'
 
 export const authRoutes = [
 	{
@@ -10,8 +11,12 @@ export const authRoutes = [
 		Component: Main
 	},
 	{
-		path: GAMES_ROUTE,
-		Component: Games
+		path: HI_LOW_ROUTE,
+		Component: HiLowGame
+	},
+	{
+		path: DICE_ROUTE,
+		Component: DiceGame
 	},
 	{
 		path: DEPOSIT_ROUTE,

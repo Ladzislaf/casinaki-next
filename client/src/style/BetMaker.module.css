@@ -1,26 +1,15 @@
 .container {
-	display: flex;
-	flex-direction: column;
-	text-align: center;
-	padding: 20px;
-}
-
-.container > * {
-	margin: 5px auto;
-}
-
-.card {
-	border: 2px black solid;
-	border-radius: 5px;
-	color: #ffffff;
-	width: 150px;
-	height: 220px;
-	font-size: 60px;
+	border: 1px solid yellow;
+	border-radius: 10px;
+	background: #000000b1;
+	margin: 10px 50px;
+	padding: 10px;
 }
 
 .btn {
 	font-family: 'mono45-headline', Arial, sans-serif;
 	font-size: 20px;
+	margin: 3px;
 	padding: 10px 5px;
 	background: #47924d;
 	color: wheat;
@@ -46,20 +35,6 @@
 	cursor: not-allowed;
 }
 
-@media only screen and (max-device-width: 600px) {
-	.container {
-		font-size: 60px;
-	}
-
-	.card {
-		font-size: 200px;
-		width: 400px;
-		height: 600px;
-	}
-	
-	.btn {
-		font-size: 80px;
-		width: 400px;
-		height: auto;
-	}	
+.little {
+	width: 50px;
 }
