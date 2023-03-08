@@ -1,8 +1,12 @@
 import React from 'react'
+import DiceGame from '../components/DiceGame'
 
 const Main = () => {
 	return (
-		<div>Main</div>
+		<>
+			<div>Main</div>
+			<DiceGame/>
+		</>
 	)
 }
 

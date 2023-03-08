@@ -87,7 +87,7 @@ const HiLowGame = () => {
 	}
 
 	const cashOutHandler = () => {
-		setState({ ...state, status: ` +${(bet * state.totalCoefficient).toFixed(2)}`, totalCoefficient: 1 })
+		setState({ ...state, status: ` +${(bet * state.totalCoefficient).toFixed(2)}$`, totalCoefficient: 1 })
 		setGameState('betting')
 		user.setBalance(user._balance + bet * state.totalCoefficient)
 	}
