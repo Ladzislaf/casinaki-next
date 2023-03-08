@@ -9,7 +9,6 @@ const getRand = () => {
 	return (Math.floor(Math.random() * (max - min + 1)) + min)
 }
 
-
 const DiceGame = () => {
 	const { user } = useContext(Context)
 	const [bet, setBet] = useState(MIN_BET)
@@ -17,21 +16,25 @@ const DiceGame = () => {
 	const [buttons, setButtons] = useState({ over: true, under: false })
 
 	const rollDice = () => {
+		if (user._balance < bet) {
+			alert('YOU DON\'T HAVE ENOUGH MONEY, GO TO WORK, LOOSER!')
+			return
+		}
 		let value = getRand()
 		if (buttons.over === true) {
 			if (value > state.betValue) {
-				setState({ ...state, dice: value, gameResult: `+${bet * 2 - bet}$` })
+				setState({ ...state, dice: value, gameResult: `+${(bet * 2 - bet).toFixed(2)}$` })
 				user.setBalance(user._balance - bet + bet * 2)
 			} else {
-				setState({ ...state, dice: value, gameResult: `-${bet}$` })
+				setState({ ...state, dice: value, gameResult: `-${bet.toFixed(2)}$` })
 				user.setBalance(user._balance - bet)
 			}
 		} else {
 			if (value < state.betValue) {
-				setState({ ...state, dice: value, gameResult: `+${bet * 2 - bet}$` })
+				setState({ ...state, dice: value, gameResult: `+${(bet * 2 - bet).toFixed(2)}$` })
 				user.setBalance(user._balance - bet + bet * 2)
 			} else {
-				setState({ ...state, dice: value, gameResult: `-${bet}$` })
+				setState({ ...state, dice: value, gameResult: `-${bet.toFixed(2)}$` })
 				user.setBalance(user._balance - bet)
 			}
 		}

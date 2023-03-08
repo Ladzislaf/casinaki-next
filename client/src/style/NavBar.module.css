@@ -27,6 +27,13 @@ a.routes:hover {
 	text-decoration: underline;
 }
 
+.balance {
+	display: flex;
+	color: #e24e29;
+	/* justify-content: center; */
+	align-items: center;
+}
+
 @media only screen and (max-device-width: 600px) {
 	.nav {
 		flex-direction: column;

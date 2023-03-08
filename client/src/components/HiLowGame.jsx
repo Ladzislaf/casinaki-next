@@ -25,7 +25,7 @@ const getRand = () => {
 
 const HiLowGame = () => {
 	const { user } = useContext(Context)
-	const [state, setState] = useState({ card: cards[getRand()], status: '', totalCoefficient: 1 })
+	const [state, setState] = useState({ card: cards[getRand()], status: '', totalCoefficient: 1, currentBet: MIN_BET })
 	const [bet, setBet] = useState(MIN_BET)
 	const [coefficients, setCoefficients] = useState({ higher: 1, lower: 1, common: 1 })
 	const [gameState, setGameState] = useState('betting')
@@ -52,12 +52,12 @@ const HiLowGame = () => {
 		if (newCard.value > state.card.value && mode) {
 			setState({ ...state, card: newCard, totalCoefficient: state.totalCoefficient * coefficients.higher })
 		} else if (newCard.value < state.card.value && mode) {
-			setState({ ...state, card: newCard, status: ` -${bet.toFixed(2)}`, totalCoefficient: 1 })
+			setState({ ...state, card: newCard, status: ` -${state.currentBet}`, totalCoefficient: 1 })
 			setGameState('betting')
 		} else if (newCard.value < state.card.value && !mode) {
 			setState({ ...state, card: newCard, totalCoefficient: state.totalCoefficient * coefficients.lower })
 		} else if (newCard.value > state.card.value && !mode) {
-			setState({ ...state, card: newCard, status: ` -${bet.toFixed(2)}`, totalCoefficient: 1 })
+			setState({ ...state, card: newCard, status: ` -${state.currentBet}`, totalCoefficient: 1 })
 			setGameState('betting')
 		}
 	}
@@ -82,14 +82,14 @@ const HiLowGame = () => {
 			return
 		}
 		setGameState('playing')
-		setState({ ...state, status: `-${bet.toFixed(2)}$` })
+		setState({ ...state, status: `-${bet.toFixed(2)}$`, currentBet: bet.toFixed(2) })
 		user.setBalance(user._balance - bet)
 	}
 
 	const cashOutHandler = () => {
-		setState({ ...state, status: ` +${(bet * state.totalCoefficient).toFixed(2)}$`, totalCoefficient: 1 })
+		setState({ ...state, status: ` +${(state.currentBet * state.totalCoefficient).toFixed(2)}$`, totalCoefficient: 1 })
 		setGameState('betting')
-		user.setBalance(user._balance + bet * state.totalCoefficient)
+		user.setBalance(user._balance + state.currentBet * state.totalCoefficient)
 	}
 
 	return (
@@ -112,7 +112,7 @@ const HiLowGame = () => {
 					<div className={styles.card} style={{ background: state.card.color }}>{state.card.key}</div>
 					<button className={styles.btn} onClick={() => cashOutHandler()} disabled={state.totalCoefficient === 1}>
 						cash out <br />
-						{(bet * state.totalCoefficient).toFixed(2)}$ <br />
+						{(state.currentBet * state.totalCoefficient).toFixed(2)}$ <br />
 						{state.totalCoefficient.toFixed(2)}x
 					</button>
 				</>

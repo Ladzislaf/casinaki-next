@@ -19,7 +19,7 @@ const NavBar = observer(() => {
 			<div className={styles.links_container}>
 				{user._isAuth ?
 					<>
-						<div>balance: {user._balance.toFixed(2)} fun</div>
+						<div className={styles.balance}>balance: {user._balance.toFixed(2)} fun</div>
 						<NavLink className={styles.routes} to={HI_LOW_ROUTE}>hi-low</NavLink>
 						<NavLink className={styles.routes} to={DICE_ROUTE}>dice</NavLink>
 						<NavLink className={styles.routes} to={DEPOSIT_ROUTE}>deposit</NavLink>
