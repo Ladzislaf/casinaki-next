@@ -1,9 +1,10 @@
 import Auth from './pages/Auth'
-import Main from './pages/Main'
+import Main from './pages/Main/Main'
 import Deposit from './pages/Deposit'
-import { LOGIN_ROUTE, REGISTER_ROUTE, MAIN_ROUTE, HI_LOW_ROUTE, DICE_ROUTE, DEPOSIT_ROUTE } from './utils/constants'
-import HiLowGame from './components/HiLowGame'
-import DiceGame from './components/DiceGame'
+import { LOGIN_ROUTE, REGISTER_ROUTE, MAIN_ROUTE, HI_LOW_ROUTE, DICE_ROUTE, MINER_ROUTE, DEPOSIT_ROUTE } from './utils/constants'
+import HiLowGame from './components/HiLowGame/HiLowGame'
+import DiceGame from './components/DiceGame/DiceGame'
+import MinerGame from './components/MinerGame/MinerGame'
 
 export const authRoutes = [
 	{
@@ -17,6 +18,10 @@ export const authRoutes = [
 	{
 		path: DICE_ROUTE,
 		Component: DiceGame
+	},
+	{
+		path: MINER_ROUTE,
+		Component: MinerGame
 	},
 	{
 		path: DEPOSIT_ROUTE,

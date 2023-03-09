@@ -1,0 +1,19 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	background: #2A2A30;
+	width: 80px;
+}
+
+.container > a > * {
+	margin: 8px auto;
+	width: 64px;
+	height: 64px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.container > a:hover {
+	background: #e24e29;
+}

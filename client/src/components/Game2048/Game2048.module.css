@@ -15,25 +15,28 @@ table {
 .buttons {
 	margin: auto;
 	display: flex;
-	justify-content:space-between;
+	flex-direction: column;
+	/* justify-content:space-between; */
 	width: 70%;
 }
-
-.buttons > .button {
-	width: 180px;
-}
+/* 
+.buttons > * {
+	width: 100px;
+	margin: auto;
+} */
 
 .button {
 	background-color: #8f7a66;
 	font-size: 30px;
 	color: #f9f6f2;
-	/* margin: 10px; */
+	margin: auto;
 	padding: 10px 20px;
 	border-radius: 5px;
 	text-align: center;
 	cursor: pointer;
 	transition: background-color 0.5s, color 0.5s;
-	}
+	width: 180px;
+}
 
 .button:hover {
 	background-color: #eee4da;

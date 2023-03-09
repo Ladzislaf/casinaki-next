@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Context } from '..'
-import styles from '../style/HiLowGame.module.css'
-import { MIN_BET } from '../utils/constants'
-import BetMaker from './BetMaker'
+import { Context } from '../..'
+import styles from './HiLowGame.module.css'
+import { MIN_BET } from '../../utils/constants'
+import BetMaker from '../BetMaker/BetMaker'
 
 const suits = ['♠', '♥', '♦', '♣']
 const cardValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']

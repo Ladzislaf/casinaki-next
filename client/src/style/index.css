@@ -22,3 +22,12 @@ body {
 	font-size: 20px;
 	letter-spacing: 1.5px;
 }
+
+.main-container {
+	display: flex;
+	height: calc(100vh - 50px);
+}
+
+.content {
+	flex: 1 0 auto;
+}

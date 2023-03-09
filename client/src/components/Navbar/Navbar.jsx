@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
-import { Context } from '..'
-import styles from '../style/NavBar.module.css'
-import { DEPOSIT_ROUTE, HI_LOW_ROUTE, DICE_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTER_ROUTE } from '../utils/constants'
+import { Context } from '../..'
+import styles from './NavBar.module.css'
+import { DEPOSIT_ROUTE, HI_LOW_ROUTE, DICE_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTER_ROUTE } from '../../utils/constants'
 
-const NavBar = observer(() => {
+const Navbar = observer(() => {
 	const { user } = useContext(Context)
 
 	const logOut = () => {
@@ -37,4 +37,4 @@ const NavBar = observer(() => {
 	)
 })
 
-export default NavBar
+export default Navbar

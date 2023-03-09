@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../style/Game2048.module.css'
+import styles from './Game2048.module.css'
 
 // This component was imported
 class Game2048 extends React.Component {
@@ -310,9 +310,11 @@ class Game2048 extends React.Component {
 				
 				<div className={styles.buttons}>
 					<button className={styles.button} onClick={() => { this.move('up') }}>Up</button>
-					<button className={styles.button} onClick={() => { this.move('right') }}>Right</button>
-					<button className={styles.button} onClick={() => { this.move('down') }}>Down</button>
-					<button className={styles.button} onClick={() => { this.move('left') }}>Left</button>
+					<div>
+						<button className={styles.button} onClick={() => { this.move('left') }}>Left</button>
+						<button className={styles.button} onClick={() => { this.move('down') }}>Down</button>
+						<button className={styles.button} onClick={() => { this.move('right') }}>Right</button>
+					</div>
 				</div>
 
 				<p>{this.state.message}</p>

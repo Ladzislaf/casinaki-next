@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
-import { Context } from '..'
-import styles from '../style/BetMaker.module.css'
-import { MAX_BET, MIN_BET } from '../utils/constants'
+import { Context } from '../..'
+import styles from './BetMaker.module.css'
+import { MAX_BET, MIN_BET } from '../../utils/constants'
 
 const BetMaker = ({ bet, setBet }) => {
 	const { user } = useContext(Context)
