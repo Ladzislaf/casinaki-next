@@ -15,5 +15,9 @@
 }
 
 .container > a:hover {
-	background: #e24e29;
+	background: #F87D09;
+}
+
+.clicked {
+	background: #b55b07;
 }

@@ -95,7 +95,7 @@ const HiLowGame = () => {
 	return (
 		<div className={styles.container}>
 			<h3>hi-low-game component</h3>
-			<h2 style={{ color: '#e24e29' }}>balance: {user._balance.toFixed(2)}$ {state.status}</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user._balance.toFixed(2)}$ {state.status}</h2>
 			<BetMaker bet={bet} setBet={setBet} />
 			{gameState === 'playing' ?
 				<>

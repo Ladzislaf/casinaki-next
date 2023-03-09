@@ -3,6 +3,9 @@
 	flex-direction: column;
 	text-align: center;
 	padding: 20px;
+	background: #222225;
+	border-radius: 10px;
+	margin: 20px;
 }
 
 .container > * {

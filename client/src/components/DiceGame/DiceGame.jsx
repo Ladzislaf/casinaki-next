@@ -59,7 +59,7 @@ const DiceGame = () => {
 	return (
 		<div className={styles.container}>
 			<h3>dice-game component</h3>
-			<h2 style={{ color: '#e24e29' }}>balance: {user._balance.toFixed(2)}$ {state.gameResult}</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user._balance.toFixed(2)}$ {state.gameResult}</h2>
 
 			<BetMaker bet={bet} setBet={setBet} />
 			<h1>dice: {state.dice}</h1>

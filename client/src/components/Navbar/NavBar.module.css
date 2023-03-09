@@ -1,8 +1,9 @@
 .nav {
 	display: flex;
-	justify-content: space-between;
 	background: #222225;
 	padding: 5px 50px;
+	flex-direction: row;
+	justify-content: space-between;
 }
 
 .links_container {
@@ -29,9 +30,13 @@ a.routes:hover {
 
 .balance {
 	display: flex;
-	color: #e24e29;
-	/* justify-content: center; */
+	color: #F87D09;
 	align-items: center;
+}
+
+.img {
+	width: 120px;
+	vertical-align: top;
 }
 
 @media only screen and (max-device-width: 600px) {

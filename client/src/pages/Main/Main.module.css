@@ -1,5 +1,19 @@
 .container {
 	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: 20px;
+	padding: 10px;
+	background: #222225;
+	border-radius: 10px;
+}
 
+.container > * {
+	margin: 5px;
+}
+
+.img {
+	width: 300px;
 }
 
