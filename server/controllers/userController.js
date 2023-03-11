@@ -10,7 +10,7 @@ const generateToken = (id, email, username, role, balance) => {
 		{ expiresIn: '24h' }
 	)
 }
-
+ 
 class UserController {
 	async registration(req, res, next) {
 		const { email, username, password, role } = req.body
