@@ -85,6 +85,7 @@ const HiLowGame = () => {
 		setGameState('playing')
 		setState({ ...state, status: `-${bet.toFixed(2)}$`, currentBet: bet.toFixed(2) })
 		user.setBalance(user._user.balance - bet)
+		updateBalance(user._user.balance)
 	}
 
 	const cashOutHandler = () => {
