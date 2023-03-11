@@ -77,25 +77,25 @@ const HiLowGame = () => {
 	}
 
 	const startGameHandler = () => {
-		if (user._balance < bet) {
+		if (user._user.balance < bet) {
 			alert('YOU DON\'T HAVE ENOUGH MONEY, GO TO WORK, LOOSER!')
 			return
 		}
 		setGameState('playing')
 		setState({ ...state, status: `-${bet.toFixed(2)}$`, currentBet: bet.toFixed(2) })
-		user.setBalance(user._balance - bet)
+		user.setBalance(user._user.balance - bet)
 	}
 
 	const cashOutHandler = () => {
 		setState({ ...state, status: ` +${(state.currentBet * state.totalCoefficient).toFixed(2)}$`, totalCoefficient: 1 })
 		setGameState('betting')
-		user.setBalance(user._balance + state.currentBet * state.totalCoefficient)
+		user.setBalance(user._user.balance + state.currentBet * state.totalCoefficient)
 	}
 
 	return (
 		<div className={styles.container}>
 			<h3>hi-low-game component</h3>
-			<h2 style={{ color: '#F87D09' }}>balance: {user._balance.toFixed(2)}$ {state.status}</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user._user.balance.toFixed(2)}$ {state.status}</h2>
 			<BetMaker bet={bet} setBet={setBet} />
 			{gameState === 'playing' ?
 				<>

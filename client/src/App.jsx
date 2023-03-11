@@ -27,9 +27,13 @@ const App = observer(() => {
 
 	return (
 		<BrowserRouter>
-			<Navbar />
+			<div style={{ height: '60px' }}>
+				<Navbar />
+			</div>
 			<div className='main-container'>
-				<Sidebar />
+				<div style={{ width: '80px' }}>
+					<Sidebar />
+				</div>
 				<div className='content'>
 					<AppRouter />
 				</div>

@@ -12,6 +12,7 @@ const Auth = observer(() => {
 	const navigate = useNavigate()
 	const isLogin = location.pathname === LOGIN_ROUTE
 	const [email, setEmail] = useState('')
+	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 
 	const submitHandler = async (e) => {
@@ -21,7 +22,7 @@ const Auth = observer(() => {
 			if (isLogin) {
 				data = await login(email, password)
 			} else {
-				data = await registration(email, password)
+				data = await registration(email, username, password)
 			}
 			user.setUser(data)
 			user.setIsAuth(true)
@@ -35,10 +36,10 @@ const Auth = observer(() => {
 		<div className={styles.container} style={{ height: window.innerHeight - 54 }}>
 			{isLogin ? <h2>authorization</h2> : <h2>registration</h2>}
 			<form>
-				<input placeholder='Input email' value={email} onChange={e => setEmail(e.target.value)} />
+				<input type='email' placeholder='Input email' value={email} onChange={e => setEmail(e.target.value)} required />
 				{isLogin ?
 					<>
-						<input type='password' placeholder='Input password' value={user.password} onChange={e => setPassword(e.target.value)} />
+						<input type='password' placeholder='Input password' value={password} onChange={e => setPassword(e.target.value)} required />
 						<button onClick={e => submitHandler(e)}>login</button>
 						<div style={{ textAlign: 'center' }}>
 							Don't have an account? <NavLink to={REGISTER_ROUTE}>register</NavLink>
@@ -46,8 +47,9 @@ const Auth = observer(() => {
 					</>
 					:
 					<>
-						<input type='password' placeholder='Input password' value={user.password} onChange={e => setPassword(e.target.value)} />
-						<input type='password' placeholder='Confirm password' />
+						<input type='text' placeholder='Input username' value={username} onChange={e => setUsername(e.target.value)} required />
+						<input type='password' placeholder='Input password' value={password} onChange={e => setPassword(e.target.value)} required />
+						<input type='password' placeholder='Confirm password' required />
 						<button onClick={e => submitHandler(e)}>register</button>
 						<div style={{ textAlign: 'center' }}>
 							Have an account? <NavLink to={LOGIN_ROUTE}>login</NavLink>

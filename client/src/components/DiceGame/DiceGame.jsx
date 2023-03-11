@@ -18,7 +18,7 @@ const DiceGame = () => {
 	const [buttons, setButtons] = useState({ over: true, under: false })
 
 	const rollDice = () => {
-		if (user._balance < bet) {
+		if (user._user.balance < bet) {
 			alert('YOU DON\'T HAVE ENOUGH MONEY, GO TO WORK, LOOSER!')
 			return
 		}
@@ -27,19 +27,19 @@ const DiceGame = () => {
 			let coefficient = overCoefficients[state.betValue - 2]
 			if (value > state.betValue) {
 				setState({ ...state, dice: value, gameResult: `+${(bet * coefficient - bet).toFixed(2)}$` })
-				user.setBalance(+(user._balance - bet + bet * coefficient).toFixed(2))
+				user.setBalance(+(user._user.balance - bet + bet * coefficient).toFixed(2))
 			} else {
 				setState({ ...state, dice: value, gameResult: `-${bet.toFixed(2)}$` })
-				user.setBalance(user._balance - bet)
+				user.setBalance(user._user.balance - bet)
 			}
 		} else {
 			let coefficient = underCoefficients[state.betValue - 2]
 			if (value < state.betValue) {
 				setState({ ...state, dice: value, gameResult: `+${(bet * coefficient - bet).toFixed(2)}$` })
-				user.setBalance(+(user._balance - bet + bet * coefficient).toFixed(2))
+				user.setBalance(+(user._user.balance - bet + bet * coefficient).toFixed(2))
 			} else {
 				setState({ ...state, dice: value, gameResult: `-${bet.toFixed(2)}$` })
-				user.setBalance(user._balance - bet)
+				user.setBalance(user._user.balance - bet)
 			}
 		}
 	}
@@ -59,7 +59,7 @@ const DiceGame = () => {
 	return (
 		<div className={styles.container}>
 			<h3>dice-game component</h3>
-			<h2 style={{ color: '#F87D09' }}>balance: {user._balance.toFixed(2)}$ {state.gameResult}</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user._user.balance.toFixed(2)}$ {state.gameResult}</h2>
 
 			<BetMaker bet={bet} setBet={setBet} />
 			<h1>dice: {state.dice}</h1>

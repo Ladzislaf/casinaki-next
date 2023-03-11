@@ -4,6 +4,9 @@
 	padding: 5px 50px;
 	flex-direction: row;
 	justify-content: space-between;
+	position: fixed;
+	right: 0;
+	left: 0;
 }
 
 .links_container {
@@ -28,7 +31,8 @@ a.routes:hover {
 	text-decoration: underline;
 }
 
-.balance {
+.info {
+	padding: 5px 40px;
 	display: flex;
 	color: #F87D09;
 	align-items: center;

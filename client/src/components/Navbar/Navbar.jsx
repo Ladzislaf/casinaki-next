@@ -13,6 +13,7 @@ const Navbar = observer(() => {
 		user.setUser({})
 		user.setIsAuth(false)
 		clearSidebar()
+		localStorage.removeItem('token')
 	}
 
 	const clearSidebar = () => {
@@ -23,21 +24,22 @@ const Navbar = observer(() => {
 		<nav className={styles.nav}>
 			<div>
 				<NavLink to={MAIN_ROUTE} onClick={clearSidebar} >
-					<img className={styles.img} src={logo} alt='logo'/>
+					<img className={styles.img} src={logo} alt='logo' />
 				</NavLink>
 			</div>
 			<div className={styles.links_container}>
 				{user._isAuth ?
 					<>
-						<div className={styles.balance}>balance: {user._balance.toFixed(2)} fun</div>
+						<div className={styles.info}>user: {user._user.username}</div>
+						<div className={styles.info}>balance: {user._user.balance.toFixed(2)} $</div>
 						<NavLink className={styles.routes} to={DEPOSIT_ROUTE} onClick={clearSidebar}>deposit</NavLink>
-						<NavLink className={styles.routes} to={LOGIN_ROUTE} onClick={() => logOut()}>logout</NavLink>
+						<NavLink className={styles.routes} to={MAIN_ROUTE} onClick={logOut}>logout</NavLink>
 					</>
 					:
 					<>
 						<NavLink className={styles.routes} to={LOGIN_ROUTE} onClick={clearSidebar}>sign in</NavLink>
 						<NavLink className={styles.routes} to={REGISTER_ROUTE} style={{ border: '1px solid white' }} onClick={clearSidebar}>sign up</NavLink>
-						<NavLink className={styles.routes} onClick={() => { user.setIsAuth(true); clearSidebar() }}>demo sign in</NavLink>
+						{/* <NavLink className={styles.routes} onClick={() => { user.setIsAuth(true); clearSidebar() }}>demo sign in</NavLink> */}
 					</>
 				}
 			</div>

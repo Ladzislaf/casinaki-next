@@ -3,6 +3,8 @@
 	flex-direction: column;
 	background: #2A2A30;
 	width: 80px;
+	height: 100%;
+	position: fixed;
 }
 
 .container > a > * {

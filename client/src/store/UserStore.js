@@ -3,8 +3,7 @@ import { makeAutoObservable } from 'mobx'
 export default class UserStore {
 	constructor() {
 		this._isAuth = false
-		this._user = {}
-		this._balance = 2
+		this._user = { balance: 2 }
 		makeAutoObservable(this)
 	}
 
