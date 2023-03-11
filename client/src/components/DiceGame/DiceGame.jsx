@@ -3,6 +3,7 @@ import { Context } from '../..'
 import styles from './DiceGame.module.css'
 import { MIN_BET } from '../../utils/constants'
 import BetMaker from '../BetMaker/BetMaker'
+import { updateBalance } from '../../http/userAPI'
 
 const min = 2, max = 12
 const getRand = () => {
@@ -28,18 +29,22 @@ const DiceGame = () => {
 			if (value > state.betValue) {
 				setState({ ...state, dice: value, gameResult: `+${(bet * coefficient - bet).toFixed(2)}$` })
 				user.setBalance(+(user._user.balance - bet + bet * coefficient).toFixed(2))
+				updateBalance(user._user.balance)
 			} else {
 				setState({ ...state, dice: value, gameResult: `-${bet.toFixed(2)}$` })
 				user.setBalance(user._user.balance - bet)
+				updateBalance(user._user.balance)
 			}
 		} else {
 			let coefficient = underCoefficients[state.betValue - 2]
 			if (value < state.betValue) {
 				setState({ ...state, dice: value, gameResult: `+${(bet * coefficient - bet).toFixed(2)}$` })
 				user.setBalance(+(user._user.balance - bet + bet * coefficient).toFixed(2))
+				updateBalance(user._user.balance)
 			} else {
 				setState({ ...state, dice: value, gameResult: `-${bet.toFixed(2)}$` })
 				user.setBalance(user._user.balance - bet)
+				updateBalance(user._user.balance)
 			}
 		}
 	}
