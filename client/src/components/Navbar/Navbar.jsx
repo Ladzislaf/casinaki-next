@@ -32,6 +32,9 @@ const Navbar = observer(() => {
 					<>
 						<div className={styles.info}>user: {user._user.username}</div>
 						<div className={styles.info}>balance: {user._user.balance.toFixed(2)} $</div>
+						{user._user.role === 'ADMIN' && 
+							<NavLink className={styles.routes} to={MAIN_ROUTE} onClick={clearSidebar}>admin panel</NavLink>
+						}
 						<NavLink className={styles.routes} to={DEPOSIT_ROUTE} onClick={clearSidebar}>deposit</NavLink>
 						<NavLink className={styles.routes} to={MAIN_ROUTE} onClick={logOut}>logout</NavLink>
 					</>

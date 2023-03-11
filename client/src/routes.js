@@ -1,4 +1,4 @@
-import Auth from './pages/Auth'
+import Auth from './pages/Auth/Auth'
 import Main from './pages/Main/Main'
 import Deposit from './pages/Deposit'
 import { LOGIN_ROUTE, REGISTER_ROUTE, MAIN_ROUTE, HI_LOW_ROUTE, DICE_ROUTE, MINER_ROUTE, DEPOSIT_ROUTE } from './utils/constants'
