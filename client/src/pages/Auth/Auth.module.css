@@ -5,6 +5,11 @@
 	flex-direction: column;
 }
 
+input {
+	font-family: Arial;
+	font-weight: 600;
+}
+
 .container h2 {
 	text-align: center;
 }
