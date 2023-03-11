@@ -1,10 +1,11 @@
 import React from 'react'
-import Game2048 from '../components/Game2048/Game2048'
+// import Game2048 from '../components/Game2048/Game2048'
 
 const Deposit = () => {
 	return (
 		<div>
-			<Game2048/>
+			soon...
+			{/* <Game2048/> */}
 		</div>
 	)
 }

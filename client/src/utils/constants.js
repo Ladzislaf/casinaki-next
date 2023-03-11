@@ -1,4 +1,4 @@
-export const MAIN_ROUTE = '/casinaki-project/main'
+export const MAIN_ROUTE = '/casinaki-project/'
 export const LOGIN_ROUTE = '/casinaki-project/login'
 export const REGISTER_ROUTE = '/casinaki-project/register'
 export const DEPOSIT_ROUTE = '/casinaki-project/deposit'
