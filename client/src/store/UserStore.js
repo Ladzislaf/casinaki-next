@@ -16,7 +16,7 @@ export default class UserStore {
 	}
 
 	setBalance(balance) {
-		this._balance = balance
+		this._user.balance = balance
 	}
 
 	get isAuth() {
@@ -25,9 +25,5 @@ export default class UserStore {
 
 	get user() {
 		return this._user
-	}
-
-	get balance() {
-		return this._balance
 	}
 }

@@ -18,3 +18,10 @@ export const check = async () => {
 	localStorage.setItem('token', data.token)
 	return jwt_decode(data.token)
 }
+
+export const updateBalance = async (balance) => {
+	const { data } = await $authHost.post('api/user/set', { balance })
+	localStorage.setItem('token', data.token)
+	return jwt_decode(data.token)
+}
+
