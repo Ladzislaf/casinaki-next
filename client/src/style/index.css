@@ -83,6 +83,6 @@ body::-webkit-scrollbar {
 
 	.main-container {
 		flex-direction: column-reverse;
-		height: calc(100vh - 150px);
+		height: calc(100vh - 300px);
 	}
 }
