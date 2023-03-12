@@ -23,7 +23,7 @@ const Navbar = observer(() => {
 	return (
 		<nav className={styles.nav}>
 			<div>
-				<NavLink to={MAIN_ROUTE} onClick={clearSidebar} >
+				<NavLink className={styles.routes} to={MAIN_ROUTE} onClick={clearSidebar} >
 					<img className={styles.img} src={logo} alt='logo' />
 				</NavLink>
 			</div>

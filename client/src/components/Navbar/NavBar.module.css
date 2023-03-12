@@ -4,6 +4,7 @@
 	padding: 5px 50px;
 	flex-direction: row;
 	justify-content: space-between;
+	align-items: center;
 	position: fixed;
 	right: 0;
 	left: 0;
@@ -13,6 +14,10 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.links_container > * {
+	margin: 0 10px;
 }
 
 .nav a {
@@ -25,16 +30,11 @@
 	color: rgba(255, 255, 255, 0.61);
 }
 
-a.routes {
-	padding: 10px;
-}
-
 a.routes:hover {
 	text-decoration: underline;
 }
 
 .info {
-	padding: 10px;
 	display: flex;
 	color: #f87d09;
 	align-items: center;
@@ -42,20 +42,18 @@ a.routes:hover {
 	text-align: center;
 }
 
+.nav > div {
+	height: 60px;
+}
+
 .img {
-	width: 120px;
-	vertical-align: top;
+	height: 100%;
 }
 
 @media only screen and (max-device-width: 600px) {
 	.nav {
-		font-size: 40px;
-		height: 130px;
-		padding: 10px;
-	}
-
-	.img {
-		visibility: hidden;
-		position: absolute;
+		font-size: 30px;
+		height: 140px;
+		padding: 5px;
 	}
 }

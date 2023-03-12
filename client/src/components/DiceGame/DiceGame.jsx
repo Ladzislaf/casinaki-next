@@ -31,12 +31,12 @@ const DiceGame = () => {
 				setState({ ...state, dice: value, gameResult: `+${(bet * coefficient - bet).toFixed(2)}$` })
 				user.setBalance(+(user.user.balance - bet + bet * coefficient).toFixed(2))
 				updateBalance(user.user.balance)
-				addHistory(`${bet}$`, `${coefficient}x`, `+ ${(bet * coefficient).toFixed(2)}$`, user.user.id, 2)
+				addHistory(`${bet.toFixed(2)}$`, `${coefficient.toFixed(2)}x`, `+ ${(bet * coefficient).toFixed(2)}$`, user.user.id, 2)
 			} else {
 				setState({ ...state, dice: value, gameResult: `-${bet.toFixed(2)}$` })
 				user.setBalance(user.user.balance - bet)
 				updateBalance(user.user.balance)
-				addHistory(`${bet}$`, `${coefficient}x`, `- ${bet.toFixed(2)}$`, user.user.id, 2)
+				addHistory(`${bet.toFixed(2)}$`, `${coefficient.toFixed(2)}x`, `- ${bet.toFixed(2)}$`, user.user.id, 2)
 			}
 		} else {
 			let coefficient = underCoefficients[state.betValue - 2]
@@ -44,12 +44,12 @@ const DiceGame = () => {
 				setState({ ...state, dice: value, gameResult: `+${(bet * coefficient - bet).toFixed(2)}$` })
 				user.setBalance(+(user.user.balance - bet + bet * coefficient).toFixed(2))
 				updateBalance(user.user.balance)
-				addHistory(`${bet}$`, `${coefficient}x`, `+ ${(bet * coefficient).toFixed(2)}$`, user.user.id, 2)
+				addHistory(`${bet.toFixed(2)}$`, `${coefficient.toFixed(2)}x`, `+ ${(bet * coefficient).toFixed(2)}$`, user.user.id, 2)
 			} else {
 				setState({ ...state, dice: value, gameResult: `-${bet.toFixed(2)}$` })
 				user.setBalance(user.user.balance - bet)
 				updateBalance(user.user.balance)
-				addHistory(`${bet}$`, `${coefficient}x`, `- ${bet.toFixed(2)}$`, user.user.id, 2)
+				addHistory(`${bet.toFixed(2)}$`, `${coefficient.toFixed(2)}x`, `- ${bet.toFixed(2)}$`, user.user.id, 2)
 			}
 		}
 	}

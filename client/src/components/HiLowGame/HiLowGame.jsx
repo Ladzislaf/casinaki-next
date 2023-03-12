@@ -59,7 +59,7 @@ const HiLowGame = () => {
 				(state.card.value !== 1 && newCard.value >= state.card.value)) {
 				setState({ ...state, card: newCard, totalCoefficient: state.totalCoefficient * coefficients.higher })
 			} else {
-				addHistory(`${bet}$`, `${state.totalCoefficient.toFixed(2)}x`, `- ${state.currentBet.toFixed(2)}$`, user.user.id, 1)
+				addHistory(`${bet.toFixed(2)}$`, `${state.totalCoefficient.toFixed(2)}x`, `- ${state.currentBet.toFixed(2)}$`, user.user.id, 1)
 				setState({ ...state, card: newCard, totalCoefficient: 1 })
 				setGameState('betting')
 			}
@@ -68,7 +68,7 @@ const HiLowGame = () => {
 				(state.card.value !== 13 && newCard.value <= state.card.value)) {
 				setState({ ...state, card: newCard, totalCoefficient: state.totalCoefficient * coefficients.lower })
 			} else {
-				addHistory(`${bet}$`, `${state.totalCoefficient.toFixed(2)}x`, `- ${state.currentBet.toFixed(2)}$`, user.user.id, 1)
+				addHistory(`${bet.toFixed(2)}$`, `${state.totalCoefficient.toFixed(2)}x`, `- ${state.currentBet.toFixed(2)}$`, user.user.id, 1)
 				setState({ ...state, card: newCard, totalCoefficient: 1 })
 				setGameState('betting')
 			}
@@ -105,7 +105,7 @@ const HiLowGame = () => {
 		setGameState('betting')
 		user.setBalance(user.user.balance + state.currentBet * state.totalCoefficient)
 		updateBalance(user.user.balance)
-		addHistory(`${bet}$`, `${state.totalCoefficient.toFixed(2)}x`, `+ ${(state.currentBet * state.totalCoefficient).toFixed(2)}$`, user.user.id, 1)
+		addHistory(`${bet.toFixed(2)}$`, `${state.totalCoefficient.toFixed(2)}x`, `+ ${(state.currentBet * state.totalCoefficient).toFixed(2)}$`, user.user.id, 1)
 	}
 
 	return (
