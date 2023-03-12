@@ -49,17 +49,26 @@ const HiLowGame = () => {
 
 	// mode = 1 -> higher | mode = 0 -> lower
 	const playHandler = (mode) => {
-		const newCard = cards[getRand()]
-		if (newCard.value > state.card.value && mode) {
-			setState({ ...state, card: newCard, totalCoefficient: state.totalCoefficient * coefficients.higher })
-		} else if (newCard.value < state.card.value && mode) {
-			setState({ ...state, card: newCard, status: ` -${state.currentBet}`, totalCoefficient: 1 })
-			setGameState('betting')
-		} else if (newCard.value < state.card.value && !mode) {
-			setState({ ...state, card: newCard, totalCoefficient: state.totalCoefficient * coefficients.lower })
-		} else if (newCard.value > state.card.value && !mode) {
-			setState({ ...state, card: newCard, status: ` -${state.currentBet}`, totalCoefficient: 1 })
-			setGameState('betting')
+		let newCard = cards[getRand()]
+		while (newCard === state.card)
+			newCard = cards[getRand()]
+
+		if (mode) {
+			if ((state.card.value === 1 && newCard.value > state.card.value) || 
+				(state.card.value !== 1 && newCard.value >= state.card.value)) {
+				setState({ ...state, card: newCard, totalCoefficient: state.totalCoefficient * coefficients.higher })
+			} else {
+				setState({ ...state, card: newCard, totalCoefficient: 1 })
+				setGameState('betting')
+			}
+		} else {
+			if ((state.card.value === 13 && newCard.value < state.card.value) || 
+				(state.card.value !== 13 && newCard.value <= state.card.value)) {
+				setState({ ...state, card: newCard, totalCoefficient: state.totalCoefficient * coefficients.lower })
+			} else {
+				setState({ ...state, card: newCard, totalCoefficient: 1 })
+				setGameState('betting')
+			}
 		}
 	}
 
@@ -97,7 +106,7 @@ const HiLowGame = () => {
 
 	return (
 		<div className={styles.container}>
-			<h3>hi-low-game component</h3>
+			<h2>higher-lower game</h2>
 			<h2 style={{ color: '#F87D09' }}>balance: {user._user.balance.toFixed(2)}$ {state.status}</h2>
 			<BetMaker bet={bet} setBet={setBet} />
 			{gameState === 'playing' ?

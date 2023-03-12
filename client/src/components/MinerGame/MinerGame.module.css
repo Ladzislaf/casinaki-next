@@ -1,7 +1,16 @@
 .container {
 	display: flex;
-	
+	flex-direction: column;
 	background: #222225;
 	border-radius: 10px;
 	margin: 20px;
+	padding: 20px;
+	align-items: center;
+}
+
+@media only screen and (max-device-width: 600px) {
+	.container {
+		font-size: 40px;
+	}
+	
 }

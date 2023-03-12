@@ -4,7 +4,11 @@
 	background: #000000b1;
 	margin: 10px auto;
 	padding: 10px;
-	width: 680px;
+	width: auto;
+}
+
+.container > * {
+	text-align: center;
 }
 
 .btn {
@@ -38,4 +42,22 @@
 
 .little {
 	width: 50px;
+}
+
+@media only screen and (max-device-width: 600px) {
+	.container {
+		font-size: 60px;
+		padding: 20px;
+	}
+
+	.btn {
+		font-size: 50px;
+		width: 160px;
+		margin: 5px;
+		/* height: auto; */
+	}	
+	
+	.little {
+		width: 120px;
+	}
 }

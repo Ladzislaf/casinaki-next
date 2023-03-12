@@ -1,6 +1,6 @@
 import Auth from './pages/Auth/Auth'
 import Main from './pages/Main/Main'
-import Deposit from './pages/Deposit'
+import Deposit from './pages/Deposit/Deposit'
 import { LOGIN_ROUTE, REGISTER_ROUTE, MAIN_ROUTE, HI_LOW_ROUTE, DICE_ROUTE, MINER_ROUTE, DEPOSIT_ROUTE } from './utils/constants'
 import HiLowGame from './components/HiLowGame/HiLowGame'
 import DiceGame from './components/DiceGame/DiceGame'

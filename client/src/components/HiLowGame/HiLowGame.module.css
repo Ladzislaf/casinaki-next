@@ -1,24 +1,11 @@
-.container {
-	display: flex;
-	flex-direction: column;
-	text-align: center;
-	padding: 20px;
-	background: #222225;
-	border-radius: 10px;
-	margin: 20px;
-}
-
-.container > * {
-	margin: 5px auto;
-}
-
 .card {
 	border: 2px black solid;
 	border-radius: 5px;
 	color: #ffffff;
 	width: 150px;
-	height: 220px;
+	min-height: 220px;
 	font-size: 60px;
+	text-align: center;
 }
 
 .btn {
@@ -51,18 +38,19 @@
 
 @media only screen and (max-device-width: 600px) {
 	.container {
-		font-size: 60px;
+		font-size: 40px;
 	}
 
 	.card {
-		font-size: 200px;
+		font-size: 150px;
 		width: 400px;
-		height: 600px;
+		min-height: 600px;
 	}
 	
 	.btn {
-		font-size: 80px;
-		width: 400px;
+		font-size: 40px;
+		width: 300px;
 		height: auto;
-	}	
+		margin: 10px;
+	}		
 }

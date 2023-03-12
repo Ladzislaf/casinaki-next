@@ -2,18 +2,19 @@
 	display: flex;
 	flex-direction: column;
 	background: #2A2A30;
-	width: 80px;
+	width: 100%;
 	height: 100%;
-	position: fixed;
 }
 
-.container > a > * {
-	margin: 8px auto;
-	width: 64px;
-	height: 64px;
+.container > * {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.container > a > * {
+	width: 100%;
+	height: 60%;
 }
 
 .container > a:hover {
@@ -22,4 +23,14 @@
 
 .clicked {
 	background: #b55b07;
+}
+
+@media only screen and (max-device-width: 600px) {
+	.container {
+		flex-direction: row;
+	}
+
+	.container > * {
+		width: 33.33%;
+	}
 }

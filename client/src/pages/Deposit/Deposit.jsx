@@ -1,11 +1,10 @@
 import React from 'react'
-// import Game2048 from '../components/Game2048/Game2048'
+import styles from './Deposit.module.css'
 
 const Deposit = () => {
 	return (
-		<div>
+		<div className={styles.container}>
 			soon...
-			{/* <Game2048/> */}
 		</div>
 	)
 }

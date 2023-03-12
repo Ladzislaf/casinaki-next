@@ -31,9 +31,9 @@ const Navbar = observer(() => {
 				{user._isAuth ?
 					<>
 						<div className={styles.info}>user: {user._user.username}</div>
-						<div className={styles.info}>balance: {user._user.balance.toFixed(2)} $</div>
+						<div className={styles.info}>balance: {user._user.balance.toFixed(2)}$</div>
 						{user._user.role === 'ADMIN' && 
-							<NavLink className={styles.routes} to={MAIN_ROUTE} onClick={clearSidebar}>admin panel</NavLink>
+							<NavLink className={styles.routes} to={MAIN_ROUTE} onClick={clearSidebar}>admin_panel</NavLink>
 						}
 						<NavLink className={styles.routes} to={DEPOSIT_ROUTE} onClick={clearSidebar}>deposit</NavLink>
 						<NavLink className={styles.routes} to={MAIN_ROUTE} onClick={logOut}>logout</NavLink>
@@ -42,7 +42,6 @@ const Navbar = observer(() => {
 					<>
 						<NavLink className={styles.routes} to={LOGIN_ROUTE} onClick={clearSidebar}>sign in</NavLink>
 						<NavLink className={styles.routes} to={REGISTER_ROUTE} style={{ border: '1px solid white' }} onClick={clearSidebar}>sign up</NavLink>
-						{/* <NavLink className={styles.routes} onClick={() => { user.setIsAuth(true); clearSidebar() }}>demo sign in</NavLink> */}
 					</>
 				}
 			</div>

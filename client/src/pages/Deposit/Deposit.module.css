@@ -2,13 +2,8 @@
 	justify-content: center;
 }
 
-.img {
-	width: 300px;
-}
-
 @media only screen and (max-device-width: 600px) {
 	.container {
-		font-size: 50px;
+		font-size: 100px;
 	}
 }
-

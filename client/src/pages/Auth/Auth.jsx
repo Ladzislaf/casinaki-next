@@ -56,7 +56,7 @@ const Auth = observer(() => {
 	}
 
 	return (
-		<div className={styles.container} style={{ height: window.innerHeight - 54 }}>
+		<div className={styles.container}>
 			{isLogin ? <h2>authorization</h2> : <h2>registration</h2>}
 			<form>
 				<input type='email' placeholder='INPUT EMAIL' value={email} onChange={e => setEmail(e.target.value)} required />

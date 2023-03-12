@@ -11,12 +11,14 @@
 
 .links_container {
 	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .nav a {
-	color: #DBDBE7;
+	color: #dbdbe7;
 	text-decoration: none;
-	margin: auto;
+	text-align: center;
 }
 
 .nav a:hover {
@@ -24,7 +26,7 @@
 }
 
 a.routes {
-	padding: 5px 10px;
+	padding: 10px;
 }
 
 a.routes:hover {
@@ -32,10 +34,12 @@ a.routes:hover {
 }
 
 .info {
-	padding: 5px 40px;
+	padding: 10px;
 	display: flex;
-	color: #F87D09;
+	color: #f87d09;
 	align-items: center;
+	justify-content: center;
+	text-align: center;
 }
 
 .img {
@@ -45,11 +49,13 @@ a.routes:hover {
 
 @media only screen and (max-device-width: 600px) {
 	.nav {
-		flex-direction: column;
-		font-size: 60px;
+		font-size: 40px;
+		height: 130px;
+		padding: 10px;
 	}
 
-	.links_container {
-		display:block;
+	.img {
+		visibility: hidden;
+		position: absolute;
 	}
 }
