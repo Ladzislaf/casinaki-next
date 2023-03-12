@@ -4,6 +4,7 @@ import styles from './HiLowGame.module.css'
 import { MIN_BET } from '../../utils/constants'
 import BetMaker from '../BetMaker/BetMaker'
 import { updateBalance } from '../../http/userAPI'
+import { addHistory } from '../../http/appApi'
 
 const suits = ['♠', '♥', '♦', '♣']
 const cardValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
@@ -58,6 +59,7 @@ const HiLowGame = () => {
 				(state.card.value !== 1 && newCard.value >= state.card.value)) {
 				setState({ ...state, card: newCard, totalCoefficient: state.totalCoefficient * coefficients.higher })
 			} else {
+				addHistory(`${bet}$`, `${state.totalCoefficient.toFixed(2)}x`, `- ${state.currentBet.toFixed(2)}$`, user.user.id, 1)
 				setState({ ...state, card: newCard, totalCoefficient: 1 })
 				setGameState('betting')
 			}
@@ -66,6 +68,7 @@ const HiLowGame = () => {
 				(state.card.value !== 13 && newCard.value <= state.card.value)) {
 				setState({ ...state, card: newCard, totalCoefficient: state.totalCoefficient * coefficients.lower })
 			} else {
+				addHistory(`${bet}$`, `${state.totalCoefficient.toFixed(2)}x`, `- ${state.currentBet.toFixed(2)}$`, user.user.id, 1)
 				setState({ ...state, card: newCard, totalCoefficient: 1 })
 				setGameState('betting')
 			}
@@ -87,27 +90,28 @@ const HiLowGame = () => {
 	}
 
 	const startGameHandler = () => {
-		if (user._user.balance < bet) {
+		if (user.user.balance < bet) {
 			alert('YOU DON\'T HAVE ENOUGH MONEY, GO TO WORK, LOOSER!')
 			return
 		}
 		setGameState('playing')
-		setState({ ...state, status: `-${bet.toFixed(2)}$`, currentBet: bet.toFixed(2) })
-		user.setBalance(user._user.balance - bet)
-		updateBalance(user._user.balance)
+		setState({ ...state, status: `-${bet.toFixed(2)}$`, currentBet: +bet.toFixed(2) })
+		user.setBalance(user.user.balance - bet)
+		updateBalance(user.user.balance)
 	}
 
 	const cashOutHandler = () => {
 		setState({ ...state, status: ` +${(state.currentBet * state.totalCoefficient).toFixed(2)}$`, totalCoefficient: 1 })
 		setGameState('betting')
-		user.setBalance(user._user.balance + state.currentBet * state.totalCoefficient)
-		updateBalance(user._user.balance)
+		user.setBalance(user.user.balance + state.currentBet * state.totalCoefficient)
+		updateBalance(user.user.balance)
+		addHistory(`${bet}$`, `${state.totalCoefficient.toFixed(2)}x`, `+ ${(state.currentBet * state.totalCoefficient).toFixed(2)}$`, user.user.id, 1)
 	}
 
 	return (
 		<div className={styles.container}>
 			<h2>higher-lower game</h2>
-			<h2 style={{ color: '#F87D09' }}>balance: {user._user.balance.toFixed(2)}$ {state.status}</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user.user.balance.toFixed(2)}$ {state.status}</h2>
 			<BetMaker bet={bet} setBet={setBet} />
 			{gameState === 'playing' ?
 				<>

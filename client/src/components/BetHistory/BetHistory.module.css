@@ -1,0 +1,28 @@
+.container {
+	width: 100%;
+	text-align: center;
+}
+
+.tbl {
+	width: calc(100% - 40px);
+	margin: 20px;
+	border-collapse: separate;
+	border-radius: 10px;
+	background: #5d5d5d;
+}
+
+.tbl > thead > tr > td{
+	background: #b55b07;
+	border-radius: 10px;
+	text-align: center;
+}
+
+.tbl * {
+	padding: 5px;
+}
+
+@media only screen and (max-device-width: 600px) {
+	.container {
+		font-size: 30px;
+	}
+}

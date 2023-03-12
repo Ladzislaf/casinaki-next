@@ -4,6 +4,7 @@ import styles from './DiceGame.module.css'
 import { MIN_BET } from '../../utils/constants'
 import BetMaker from '../BetMaker/BetMaker'
 import { updateBalance } from '../../http/userAPI'
+import { addHistory } from '../../http/appApi'
 
 const min = 2, max = 12
 const getRand = () => {
@@ -19,7 +20,7 @@ const DiceGame = () => {
 	const [buttons, setButtons] = useState({ over: true, under: false })
 
 	const rollDice = () => {
-		if (user._user.balance < bet) {
+		if (user.user.balance < bet) {
 			alert('YOU DON\'T HAVE ENOUGH MONEY, GO TO WORK, LOOSER!')
 			return
 		}
@@ -28,23 +29,27 @@ const DiceGame = () => {
 			let coefficient = overCoefficients[state.betValue - 2]
 			if (value > state.betValue) {
 				setState({ ...state, dice: value, gameResult: `+${(bet * coefficient - bet).toFixed(2)}$` })
-				user.setBalance(+(user._user.balance - bet + bet * coefficient).toFixed(2))
-				updateBalance(user._user.balance)
+				user.setBalance(+(user.user.balance - bet + bet * coefficient).toFixed(2))
+				updateBalance(user.user.balance)
+				addHistory(`${bet}$`, `${coefficient}x`, `+ ${(bet * coefficient).toFixed(2)}$`, user.user.id, 2)
 			} else {
 				setState({ ...state, dice: value, gameResult: `-${bet.toFixed(2)}$` })
-				user.setBalance(user._user.balance - bet)
-				updateBalance(user._user.balance)
+				user.setBalance(user.user.balance - bet)
+				updateBalance(user.user.balance)
+				addHistory(`${bet}$`, `${coefficient}x`, `- ${bet.toFixed(2)}$`, user.user.id, 2)
 			}
 		} else {
 			let coefficient = underCoefficients[state.betValue - 2]
 			if (value < state.betValue) {
 				setState({ ...state, dice: value, gameResult: `+${(bet * coefficient - bet).toFixed(2)}$` })
-				user.setBalance(+(user._user.balance - bet + bet * coefficient).toFixed(2))
-				updateBalance(user._user.balance)
+				user.setBalance(+(user.user.balance - bet + bet * coefficient).toFixed(2))
+				updateBalance(user.user.balance)
+				addHistory(`${bet}$`, `${coefficient}x`, `+ ${(bet * coefficient).toFixed(2)}$`, user.user.id, 2)
 			} else {
 				setState({ ...state, dice: value, gameResult: `-${bet.toFixed(2)}$` })
-				user.setBalance(user._user.balance - bet)
-				updateBalance(user._user.balance)
+				user.setBalance(user.user.balance - bet)
+				updateBalance(user.user.balance)
+				addHistory(`${bet}$`, `${coefficient}x`, `- ${bet.toFixed(2)}$`, user.user.id, 2)
 			}
 		}
 	}
@@ -64,7 +69,7 @@ const DiceGame = () => {
 	return (
 		<div className={styles.container}>
 			<h2>dice game</h2>
-			<h2 style={{ color: '#F87D09' }}>balance: {user._user.balance.toFixed(2)}$ {state.gameResult}</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user.user.balance.toFixed(2)}$ {state.gameResult}</h2>
 
 			<BetMaker bet={bet} setBet={setBet} />
 			<h1>dice: {state.dice}</h1>

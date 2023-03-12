@@ -1,7 +1,7 @@
 import React, { createContext } from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import PageStore from './store/PageStore'
+import AppStore from './store/AppStore'
 import UserStore from './store/UserStore'
 import './style/index.css'
 
@@ -12,7 +12,7 @@ root.render(
 	<React.StrictMode>
 		<Context.Provider value={{
 			user: new UserStore(),
-			page: new PageStore()
+			app: new AppStore()
 		}}>
 			<App />
 		</Context.Provider>

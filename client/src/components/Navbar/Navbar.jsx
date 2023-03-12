@@ -7,7 +7,7 @@ import { DEPOSIT_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, REGISTER_ROUTE } from '../../ut
 import logo from '../../static/logo.png'
 
 const Navbar = observer(() => {
-	const { user, page } = useContext(Context)
+	const { user, app } = useContext(Context)
 
 	const logOut = () => {
 		user.setUser({})
@@ -17,7 +17,7 @@ const Navbar = observer(() => {
 	}
 
 	const clearSidebar = () => {
-		page.setSidebar({ hilow: false, dice: false, miner: false })
+		app.setSidebar({ hilow: false, dice: false, miner: false })
 	}
 
 	return (
@@ -28,11 +28,11 @@ const Navbar = observer(() => {
 				</NavLink>
 			</div>
 			<div className={styles.links_container}>
-				{user._isAuth ?
+				{user.isAuth ?
 					<>
-						<div className={styles.info}>user: {user._user.username}</div>
-						<div className={styles.info}>balance: {user._user.balance.toFixed(2)}$</div>
-						{user._user.role === 'ADMIN' && 
+						<div className={styles.info}>user: {user.user.username}</div>
+						<div className={styles.info}>balance: {user.user.balance.toFixed(2)}$</div>
+						{user.user.role === 'ADMIN' && 
 							<NavLink className={styles.routes} to={MAIN_ROUTE} onClick={clearSidebar}>admin_panel</NavLink>
 						}
 						<NavLink className={styles.routes} to={DEPOSIT_ROUTE} onClick={clearSidebar}>deposit</NavLink>

@@ -11,7 +11,7 @@ const MinerGame = () => {
 		<div className={styles.container}>
 
 			<h2>miner game</h2>
-			<h2 style={{ color: '#F87D09' }}>balance: {user._user.balance.toFixed(2)}$</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user.user.balance.toFixed(2)}$</h2>
 			<BetMaker bet={bet} setBet={setBet} />
 		</div>
 	)

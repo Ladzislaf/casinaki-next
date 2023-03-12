@@ -9,5 +9,5 @@ Deployment with render.com server:
 ---
 * NodeJS
 * Express
-* Postgres
+* MySql (~~Postgres~~)
 * Sequelize

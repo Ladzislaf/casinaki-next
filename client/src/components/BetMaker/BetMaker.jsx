@@ -26,7 +26,7 @@ const BetMaker = ({ bet, setBet }) => {
 			<button className={styles.btn} onClick={() => setBet(MIN_BET)}>min</button>
 			<button className={styles.btn} onClick={() => changeBet(bet * 2)}>x2</button>
 			<button className={styles.btn} onClick={() => changeBet(bet / 2)}>1/2</button>
-			<button className={styles.btn} onClick={() => user._user.balance < MIN_BET ? setBet(MIN_BET) : setBet(user._user.balance)}>all-in</button>
+			<button className={styles.btn} onClick={() => user.user.balance < MIN_BET ? setBet(MIN_BET) : setBet(user.user.balance)}>all-in</button>
 		</div>
 	)
 }
