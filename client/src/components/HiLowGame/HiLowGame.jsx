@@ -3,8 +3,8 @@ import { Context } from '../..'
 import styles from './HiLowGame.module.css'
 import { MIN_BET } from '../../utils/constants'
 import BetMaker from '../BetMaker/BetMaker'
-import { updateBalance } from '../../http/userAPI'
-import { addHistory } from '../../http/appApi'
+import { getRand } from '../../utils/functions'
+import { playHiLow } from '../../http/playApi'
 
 const suits = ['♠', '♥', '♦', '♣']
 const cardValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
@@ -20,92 +20,76 @@ for (let i = 0; i < cardValues.length; i++) {
 	}
 }
 
-const min = 0, max = cards.length - 1
-const getRand = () => {
-	return (Math.floor(Math.random() * (max - min + 1)) + min)
-}
-
 const HiLowGame = () => {
 	const { user } = useContext(Context)
-	const [state, setState] = useState({ card: cards[getRand()], status: '', totalCoefficient: 1, currentBet: MIN_BET })
 	const [bet, setBet] = useState(MIN_BET)
-	const [coefficients, setCoefficients] = useState({ higher: 1, lower: 1, common: 1 })
+	const [state, setState] = useState({ card: 49, status: '', totalCoefficient: 1 })
+	const [coefficients, setCoefficients] = useState({ higher: 1, lower: 1 })
 	const [gameState, setGameState] = useState('betting')
 
-	// calculating coefficients
 	useEffect(() => {
-		let higherCoefficient, lowerCoefficient
-		if (state.card.value === 13) {
-			higherCoefficient = 0.97 / (1 / 13)
-			lowerCoefficient = 0.97 / (12 / 13)
-		} else if (state.card.value === 1) {
-			higherCoefficient = 0.97 / (12 / 13)
-			lowerCoefficient = 0.97 / (1 / 13)
-		} else {
-			higherCoefficient = 0.97 / ((14 - state.card.value) / 13)
-			lowerCoefficient = 0.97 / (state.card.value / 13)
-		}
-		setCoefficients({ higher: higherCoefficient, lower: lowerCoefficient })
+		console.log(state.card)
 	}, [state.card])
 
-	// mode = 1 -> higher | mode = 0 -> lower
-	const playHandler = (mode) => {
-		let newCard = cards[getRand()]
-		while (newCard === state.card)
-			newCard = cards[getRand()]
+	const startGameHandler = () => {
+		
+		playHiLow({ bet: bet, card: state.card })
+			.then(data => {
+				user.setBalance(data.newBalance)
+				if (data.status) {
+					setState({ ...state, status: data.status })
+					setGameState('playing')
+					setCoefficients({ higher: data.coefficients.hCoefficient, lower: data.coefficients.lCoefficient })
+				}
+			})
+			.catch(err => {
+				console.log(err.response.data)
+				alert(err.response.data.message)
+			})
+	}
 
-		if (mode) {
-			if ((state.card.value === 1 && newCard.value > state.card.value) || 
-				(state.card.value !== 1 && newCard.value >= state.card.value)) {
-				setState({ ...state, card: newCard, totalCoefficient: state.totalCoefficient * coefficients.higher })
-			} else {
-				addHistory(`${bet.toFixed(2)}$`, `${state.totalCoefficient.toFixed(2)}x`, `- ${state.currentBet.toFixed(2)}$`, user.user.id, 1)
-				setState({ ...state, card: newCard, totalCoefficient: 1 })
+	const playHandler = (mode) => {
+		playHiLow({ mode })
+			.then(data => {
+				if (data.coefficients) {
+					setState({ ...state, card: data.newCard, totalCoefficient: data.coefficients.tCoefficient })
+					setCoefficients({ higher: data.coefficients.hCoefficient, lower: data.coefficients.lCoefficient })
+				} else {
+					setState({ ...state, card: data.newCard, totalCoefficient: 1 })
+					setGameState('betting')
+				}
+			})
+			.catch(err => {
+				console.log(err.response.data)
+				alert(err.response.data.message)
+			})
+	}
+
+	const cashOutHandler = () => {
+		playHiLow({})
+			.then(data => {
+				user.setBalance(data.newBalance)
+				setState({ ...state, status: data.status, totalCoefficient: 1 })
 				setGameState('betting')
-			}
-		} else {
-			if ((state.card.value === 13 && newCard.value < state.card.value) || 
-				(state.card.value !== 13 && newCard.value <= state.card.value)) {
-				setState({ ...state, card: newCard, totalCoefficient: state.totalCoefficient * coefficients.lower })
-			} else {
-				addHistory(`${bet.toFixed(2)}$`, `${state.totalCoefficient.toFixed(2)}x`, `- ${state.currentBet.toFixed(2)}$`, user.user.id, 1)
-				setState({ ...state, card: newCard, totalCoefficient: 1 })
-				setGameState('betting')
-			}
-		}
+			})
+			.catch(err => {
+				console.log(err.response.data)
+				alert(err.response.data.message)
+			})
 	}
 
 	const checkButtons = (mode) => {
 		switch (mode) {
 			case 'higher':
-				if (state.card.value === 13) return 'same'
-				else if (state.card.value === 1) return 'higher'
+				if (cards[state.card].value === 13) return 'same'
+				else if (cards[state.card].value === 1) return 'higher'
 				else return 'higher or same'
 			case 'lower':
-				if (state.card.value === 1) return 'same'
-				else if (state.card.value === 13) return 'lower'
+				if (cards[state.card].value === 1) return 'same'
+				else if (cards[state.card].value === 13) return 'lower'
 				else return 'lower or same'
 			default: console.log('Error: no such mode in checkName function')
 		}
-	}
-
-	const startGameHandler = () => {
-		if (user.user.balance < bet) {
-			alert('YOU DON\'T HAVE ENOUGH MONEY, GO TO WORK, LOOSER!')
-			return
-		}
-		setGameState('playing')
-		setState({ ...state, status: `-${bet.toFixed(2)}$`, currentBet: +bet.toFixed(2) })
-		user.setBalance(user.user.balance - bet)
-		updateBalance(user.user.balance)
-	}
-
-	const cashOutHandler = () => {
-		setState({ ...state, status: ` +${(state.currentBet * state.totalCoefficient).toFixed(2)}$`, totalCoefficient: 1 })
-		setGameState('betting')
-		user.setBalance(user.user.balance + state.currentBet * state.totalCoefficient)
-		updateBalance(user.user.balance)
-		addHistory(`${bet.toFixed(2)}$`, `${state.totalCoefficient.toFixed(2)}x`, `+ ${(state.currentBet * state.totalCoefficient).toFixed(2)}$`, user.user.id, 1)
 	}
 
 	return (
@@ -116,26 +100,26 @@ const HiLowGame = () => {
 			{gameState === 'playing' ?
 				<>
 					<div>
-						<button className={styles.btn} onClick={() => playHandler(1)}>
+						<button className={styles.btn} onClick={() => playHandler('high')}>
 							{checkButtons('higher')} <br />
 							{coefficients.higher.toFixed(2)}x <br />
 						</button>
-						<button className={styles.btn} onClick={() => playHandler(0)}>
+						<button className={styles.btn} onClick={() => playHandler('low')}>
 							{checkButtons('lower')} <br />
 							{coefficients.lower.toFixed(2)}x <br />
 						</button>
 					</div>
-					<div className={styles.card} style={{ background: state.card.color }}>{state.card.key}</div>
+					<div className={styles.card} style={{ background: cards[state.card].color }}>{cards[state.card].key}</div>
 					<button className={styles.btn} onClick={() => cashOutHandler()} disabled={state.totalCoefficient === 1}>
 						cash out <br />
-						{(state.currentBet * state.totalCoefficient).toFixed(2)}$ <br />
+						{(bet * state.totalCoefficient).toFixed(2)}$ <br />
 						{state.totalCoefficient.toFixed(2)}x
 					</button>
 				</>
 				: <>
 					<button className={styles.btn} onClick={() => { startGameHandler() }}>play</button>
-					<div className={styles.card} style={{ background: state.card.color }}>{state.card.key}</div>
-					<button className={styles.btn} onClick={() => setState({ ...state, card: cards[getRand()] })}>change</button>
+					<div className={styles.card} style={{ background: cards[state.card].color }}>{cards[state.card].key}</div>
+					<button className={styles.btn} onClick={() => setState({ ...state, card: getRand(0, cards.length - 1) })}>change</button>
 				</>
 			}
 		</div>

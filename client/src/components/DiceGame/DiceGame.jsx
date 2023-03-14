@@ -1,68 +1,39 @@
 import React, { useContext, useState } from 'react'
 import { Context } from '../..'
 import styles from './DiceGame.module.css'
-import { MIN_BET } from '../../utils/constants'
+import { MIN_BET, overDiceCoefficients, underDiceCoefficients } from '../../utils/constants'
 import BetMaker from '../BetMaker/BetMaker'
-import { updateBalance } from '../../http/userAPI'
-import { addHistory } from '../../http/appApi'
+import { playDice } from '../../http/playApi'
+import { observer } from 'mobx-react-lite'
 
-const min = 2, max = 12
-const getRand = () => {
-	return (Math.floor(Math.random() * (max - min + 1)) + min)
-}
-const overCoefficients = [1.01, 1.07, 1.18, 1.36, 1.68, 2.35, 3.53, 5.88, 11.8, 35.3, 0]
-const underCoefficients = [0, 35.3, 11.8, 5.88, 3.53, 2.35, 1.68, 1.36, 1.18, 1.07, 1.01]
-
-const DiceGame = () => {
+const DiceGame = observer(() => {
 	const { user } = useContext(Context)
 	const [bet, setBet] = useState(MIN_BET)
-	const [state, setState] = useState({ dice: 2, betValue: 7, gameResult: '' })
+	const [state, setState] = useState({ dice: 2, diceValue: 7, gameResult: '' })
 	const [buttons, setButtons] = useState({ over: true, under: false })
 
 	const rollDice = () => {
-		if (user.user.balance < bet) {
-			alert('YOU DON\'T HAVE ENOUGH MONEY, GO TO WORK, LOOSER!')
-			return
-		}
-		let value = getRand()
-		if (buttons.over === true) {
-			let coefficient = overCoefficients[state.betValue - 2]
-			if (value > state.betValue) {
-				setState({ ...state, dice: value, gameResult: `+${(bet * coefficient - bet).toFixed(2)}$` })
-				user.setBalance(+(user.user.balance - bet + bet * coefficient).toFixed(2))
-				updateBalance(user.user.balance)
-				addHistory(`${bet.toFixed(2)}$`, `${coefficient.toFixed(2)}x`, `+ ${(bet * coefficient).toFixed(2)}$`, user.user.id, 2)
-			} else {
-				setState({ ...state, dice: value, gameResult: `-${bet.toFixed(2)}$` })
-				user.setBalance(user.user.balance - bet)
-				updateBalance(user.user.balance)
-				addHistory(`${bet.toFixed(2)}$`, `${coefficient.toFixed(2)}x`, `- ${bet.toFixed(2)}$`, user.user.id, 2)
-			}
-		} else {
-			let coefficient = underCoefficients[state.betValue - 2]
-			if (value < state.betValue) {
-				setState({ ...state, dice: value, gameResult: `+${(bet * coefficient - bet).toFixed(2)}$` })
-				user.setBalance(+(user.user.balance - bet + bet * coefficient).toFixed(2))
-				updateBalance(user.user.balance)
-				addHistory(`${bet.toFixed(2)}$`, `${coefficient.toFixed(2)}x`, `+ ${(bet * coefficient).toFixed(2)}$`, user.user.id, 2)
-			} else {
-				setState({ ...state, dice: value, gameResult: `-${bet.toFixed(2)}$` })
-				user.setBalance(user.user.balance - bet)
-				updateBalance(user.user.balance)
-				addHistory(`${bet.toFixed(2)}$`, `${coefficient.toFixed(2)}x`, `- ${bet.toFixed(2)}$`, user.user.id, 2)
-			}
-		}
+		playDice(bet, state.diceValue, buttons.over ? 'over' : 'under')
+			.then(data => {
+				console.log(data)
+				user.setBalance(data.newBalance)
+				setState({ ...state, dice: data.diceResult, gameResult: data.gameResult })
+			})
+			.catch(err => {
+				console.log(err.response.data)
+				alert(err.response.data.message)
+			})
 	}
 
 	const changeDiceValue = (mode) => {
 		if (mode === 'inc') {
-			if (state.betValue === 11)
+			if (state.diceValue === 11)
 				return
-			setState({ ...state, betValue: ++state.betValue })
+			setState({ ...state, diceValue: ++state.diceValue })
 		} else if (mode === 'dec') {
-			if (state.betValue === 3)
+			if (state.diceValue === 3)
 				return
-			setState({ ...state, betValue: --state.betValue })
+			setState({ ...state, diceValue: --state.diceValue })
 		}
 	}
 
@@ -79,15 +50,15 @@ const DiceGame = () => {
 					<button className={`${styles.btn} ${buttons.over && styles.clicked}`} onClick={() => setButtons({ over: true, under: false })}>over</button> <br />
 					<button className={`${styles.btn} ${buttons.under && styles.clicked}`} onClick={() => setButtons({ over: false, under: true })}>under</button>
 				</div>
-				<span>{state.betValue}</span>
+				<span>{state.diceValue}</span>
 				<div>
 					<button className={styles.btn} onClick={() => changeDiceValue('inc')}>▲</button> <br />
 					<button className={styles.btn} onClick={() => changeDiceValue('dec')}>▼</button>
 				</div>
 			</div>
-			<div>{buttons.over ? overCoefficients[state.betValue - 2] : underCoefficients[state.betValue - 2]} x</div>
+			<div>{buttons.over ? overDiceCoefficients[state.diceValue - 2] : underDiceCoefficients[state.diceValue - 2]} x</div>
 		</div>
 	)
-}
+})
 
 export default DiceGame

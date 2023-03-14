@@ -8,3 +8,6 @@ export const MINER_ROUTE = '/casinaki-project/miner'
 
 export const MIN_BET = 0.1
 export const MAX_BET = 999999.99
+
+export const overDiceCoefficients = [1.07, 1.19, 1.33, 1.52, 1.79, 2.13, 2.67, 3.56, 5.36, 10.67, 0]
+export const underDiceCoefficients = [0, 10.67, 5.36, 3.56, 2.67, 2.13, 1.79, 1.52, 1.33, 1.19, 1.07]
