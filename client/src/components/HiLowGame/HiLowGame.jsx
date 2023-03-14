@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { Context } from '../..'
 import styles from './HiLowGame.module.css'
 import { MIN_BET } from '../../utils/constants'
@@ -26,10 +26,6 @@ const HiLowGame = () => {
 	const [state, setState] = useState({ card: 49, status: '', totalCoefficient: 1 })
 	const [coefficients, setCoefficients] = useState({ higher: 1, lower: 1 })
 	const [gameState, setGameState] = useState('betting')
-
-	useEffect(() => {
-		console.log(state.card)
-	}, [state.card])
 
 	const startGameHandler = () => {
 		

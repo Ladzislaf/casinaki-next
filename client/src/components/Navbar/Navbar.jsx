@@ -41,7 +41,7 @@ const Navbar = observer(() => {
 					:
 					<>
 						<NavLink className={styles.routes} to={LOGIN_ROUTE} onClick={clearSidebar}>sign in</NavLink>
-						<NavLink className={styles.routes} to={REGISTER_ROUTE} style={{ border: '1px solid white' }} onClick={clearSidebar}>sign up</NavLink>
+						<NavLink className={styles.routes} to={REGISTER_ROUTE} style={{ color: '#f87d09' }} onClick={clearSidebar}>sign up</NavLink>
 					</>
 				}
 			</div>

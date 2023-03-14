@@ -4,9 +4,8 @@ import styles from './DiceGame.module.css'
 import { MIN_BET, overDiceCoefficients, underDiceCoefficients } from '../../utils/constants'
 import BetMaker from '../BetMaker/BetMaker'
 import { playDice } from '../../http/playApi'
-import { observer } from 'mobx-react-lite'
 
-const DiceGame = observer(() => {
+const DiceGame = () => {
 	const { user } = useContext(Context)
 	const [bet, setBet] = useState(MIN_BET)
 	const [state, setState] = useState({ dice: 2, diceValue: 7, gameResult: '' })
@@ -15,7 +14,6 @@ const DiceGame = observer(() => {
 	const rollDice = () => {
 		playDice(bet, state.diceValue, buttons.over ? 'over' : 'under')
 			.then(data => {
-				console.log(data)
 				user.setBalance(data.newBalance)
 				setState({ ...state, dice: data.diceResult, gameResult: data.gameResult })
 			})
@@ -59,6 +57,6 @@ const DiceGame = observer(() => {
 			<div>{buttons.over ? overDiceCoefficients[state.diceValue - 2] : underDiceCoefficients[state.diceValue - 2]} x</div>
 		</div>
 	)
-})
+}
 
 export default DiceGame

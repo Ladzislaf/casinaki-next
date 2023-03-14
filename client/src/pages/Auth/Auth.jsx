@@ -36,7 +36,7 @@ const Auth = observer(() => {
 	}
 
 	const validateInputs = () => {
-		if (!/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email)) {
+		if (!/^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[A-Za-z.]+$/.test(email)) {
 			alert('Incorrect email format')
 			return false
 		}
