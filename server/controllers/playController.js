@@ -3,11 +3,17 @@ const ApiError = require('../error/ApiError')
 const { Profile, History } = require('../models/models')
 const { generateToken, getRand, getCardValue, getCoefficients } = require('../utils/functions')
 const { MIN_CARD, MAX_CARD, MIN_DICE, MAX_DICE, overDiceCoefficients, underDiceCoefficients } = require('../utils/constants')
+const { validateHilow, validateDice } = require('../validator')
 
-// validation: currentDice: 3..11; mode: 'over' of 'under'
+// validation: currentDice: 3..11; mode: 'over' or 'under'
 class playController {
 	// needs to be refactored; hard to understand
 	async playHiLow(req, res, next) {
+		const { error } = validateHilow(req.body)
+		if (error) {
+			console.log(error)
+			return next(ApiError.badRequest('Invalid request'))
+		}
 		const { info } = req.body
 		const user = req.user
 		const profile = await Profile.findOne({ where: { userId: user.id } })
@@ -55,7 +61,7 @@ class playController {
 					fs.writeFileSync(require.resolve('../static/state.js'), JSON.stringify(games))
 					return res.json({ token, coefficients: { hCoefficient, lCoefficient, tCoefficient: activeGame.coefficient }, card: newCard })
 				} else {
-					await History.create({ bet: activeGame.bet, coefficient: activeGame.coefficient, winnings: `-${activeGame.bet}$`, userId: user.id, gameId: 1 })
+					await History.create({ bet: `${activeGame.bet} $`, coefficient: `${activeGame.coefficient.toFixed(2)} x`, winnings: `- ${activeGame.bet} $`, userId: user.id, gameId: 1 })
 					fs.writeFileSync(require.resolve('../static/state.js'), JSON.stringify(games.filter(el => el.player !== user.id)))
 					return res.json({ token, card: newCard })
 				}
@@ -67,24 +73,29 @@ class playController {
 					fs.writeFileSync(require.resolve('../static/state.js'), JSON.stringify(games))
 					return res.json({ token, coefficients: { hCoefficient, lCoefficient, tCoefficient: activeGame.coefficient }, card: newCard })
 				} else {
-					await History.create({ bet: activeGame.bet, coefficient: activeGame.coefficient, winnings: `-${activeGame.bet}$`, userId: user.id, gameId: 1 })
+					await History.create({ bet: `${activeGame.bet} $`, coefficient: `${activeGame.coefficient.toFixed(2)} x`, winnings: `- ${activeGame.bet} $`, userId: user.id, gameId: 1 })
 					fs.writeFileSync(require.resolve('../static/state.js'), JSON.stringify(games.filter(el => el.player !== user.id)))
 					return res.json({ token, card: newCard })
 				}
 			}
 		} else {
 			// cash out
-			status = `+${(activeGame.bet * activeGame.coefficient - activeGame.bet).toFixed(2)}`
+			status = `+ ${(activeGame.bet * activeGame.coefficient - activeGame.bet).toFixed(2)} $`
 			fs.writeFileSync(require.resolve('../static/state.js'), JSON.stringify(games.filter(el => el.player !== user.id)))
 			const newBalance = +((user.balance + activeGame.bet * activeGame.coefficient).toFixed(2))
 			const token = generateToken(user.id, user.email, user.username, user.role, newBalance)
-			await History.create({ bet: activeGame.bet, coefficient: activeGame.coefficient.toFixed(2), winnings: status, userId: user.id, gameId: 1 })
+			await History.create({ bet: `${activeGame.bet} $`, coefficient: `${activeGame.coefficient.toFixed(2)} x`, winnings: status, userId: user.id, gameId: 1 })
 			await profile.update({ balance: newBalance })
 			return res.json({ token, status})
 		}
 	}
 
 	async playDice(req, res, next) {
+		const { error } = validateDice(req.body)
+		if (error) {
+			console.log(error)
+			return next(ApiError.badRequest('Invalid request'))
+		}
 		const { bet, currentDice, gameMode } = req.body
 		const user = req.user
 		const profile = await Profile.findOne({ where: { userId: user.id } })
@@ -95,24 +106,24 @@ class playController {
 		if (gameMode.toLowerCase() === 'over') {
 			coefficient = overDiceCoefficients[currentDice - 2]
 			if (newDice > currentDice) {
-				gameResult = `+${(bet * coefficient - bet).toFixed(2)}$`
+				gameResult = `+ ${(bet * coefficient - bet).toFixed(2)} $`
 				newBalance = +((user.balance - bet + bet * coefficient).toFixed(2))
 			} else {
-				gameResult = `-${bet}$`
+				gameResult = `- ${bet} $`
 				newBalance = +((user.balance - bet).toFixed(2))
 			}
 		} else if (gameMode.toLowerCase() === 'under') {
 			coefficient = underDiceCoefficients[currentDice - 2]
 			if (newDice < currentDice) {
-				gameResult = `+${(bet * coefficient - bet).toFixed(2)}$`
+				gameResult = `+ ${(bet * coefficient - bet).toFixed(2)} $`
 				newBalance = +((user.balance - bet + bet * coefficient).toFixed(2))
 			} else {
-				gameResult = `-${bet}$`
+				gameResult = `- ${bet} $`
 				newBalance = +((user.balance - bet).toFixed(2))
 			}
 		}
 
-		await History.create({ bet, coefficient, winnings: gameResult, userId: user.id, gameId: 2 })
+		await History.create({ bet: `${bet} $`, coefficient: `${coefficient} x`, winnings: gameResult, userId: user.id, gameId: 2 })
 		await profile.update({ balance: newBalance })
 		const token = generateToken(user.id, user.email, user.username, user.role, newBalance)
 		return res.json({ token, diceResult: newDice, gameResult: gameResult })

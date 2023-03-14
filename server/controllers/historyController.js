@@ -9,12 +9,6 @@ class historyController {
 		})
 		return res.json({ history: allBets })
 	}
-
-	async appendHistory(req, res, next) {
-		const { bet, coefficient, winnings, userId, gameId } = req.body
-		await History.create({ bet, coefficient, winnings, userId, gameId })
-		return res.json({ message: 'history updated' })
-	}
 }
 
 module.exports = new historyController()
