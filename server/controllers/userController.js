@@ -31,7 +31,7 @@ class UserController {
 		const { error } = validateSignIn(req.body)
 		if (error) {
 			console.log(error)
-			return next(ApiError.badRequest('Invalid request'))
+			return next(ApiError.badRequest('Invalid request: ' + error.details[0].message))
 		}
 		const { email, password } = req.body
 		const user = await User.findOne({ where: { email } })

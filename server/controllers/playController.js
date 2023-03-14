@@ -12,7 +12,7 @@ class playController {
 		const { error } = validateHilow(req.body)
 		if (error) {
 			console.log(error)
-			return next(ApiError.badRequest('Invalid request'))
+			return next(ApiError.badRequest('Invalid request: ' + error.details[0].message))
 		}
 		const { info } = req.body
 		const user = req.user
@@ -94,7 +94,7 @@ class playController {
 		const { error } = validateDice(req.body)
 		if (error) {
 			console.log(error)
-			return next(ApiError.badRequest('Invalid request'))
+			return next(ApiError.badRequest('Invalid request: ' + error.details[0].message))
 		}
 		const { bet, currentDice, gameMode } = req.body
 		const user = req.user
