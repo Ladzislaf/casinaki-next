@@ -48,7 +48,8 @@ class UserController {
 	}
 
 	async check(req, res, next) {
-		const token = generateToken(req.user.id, req.user.email, req.user.username, req.user.role, req.user.balance)
+		const profile = await Profile.findOne({ where: { userId: req.user.id } })
+		const token = generateToken(req.user.id, req.user.email, req.user.username, req.user.role, profile.balance)
 		return res.json({ token })
 	}
 }

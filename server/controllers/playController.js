@@ -35,7 +35,7 @@ class playController {
 			fs.writeFileSync(require.resolve('../static/state.js'), JSON.stringify(games))
 			status = `-${info.bet}$`
 			
-			const newBalance = +((user.balance - activeGame.bet).toFixed(2))
+			const newBalance = +((profile.balance - activeGame.bet).toFixed(2))
 			await profile.update({ balance: newBalance })
 			const token = generateToken(user.id, user.email, user.username, user.role, newBalance)
 
@@ -44,7 +44,7 @@ class playController {
 			return res.json({ token, status: status, coefficients: { hCoefficient, lCoefficient } })
 		} else if (info.mode) {
 			// playing
-			const token = generateToken(user.id, user.email, user.username, user.role, user.balance)
+			const token = generateToken(user.id, user.email, user.username, user.role, profile.balance)
 
 			const currentCardValue = getCardValue(activeGame.card)
 			let newCard = getRand(MIN_CARD, MAX_CARD)
@@ -82,7 +82,7 @@ class playController {
 			// cash out
 			status = `+ ${(activeGame.bet * activeGame.coefficient - activeGame.bet).toFixed(2)} $`
 			fs.writeFileSync(require.resolve('../static/state.js'), JSON.stringify(games.filter(el => el.player !== user.id)))
-			const newBalance = +((user.balance + activeGame.bet * activeGame.coefficient).toFixed(2))
+			const newBalance = +((profile.balance + activeGame.bet * activeGame.coefficient).toFixed(2))
 			const token = generateToken(user.id, user.email, user.username, user.role, newBalance)
 			await History.create({ bet: `${activeGame.bet} $`, coefficient: `${activeGame.coefficient.toFixed(2)} x`, winnings: status, userId: user.id, gameId: 1 })
 			await profile.update({ balance: newBalance })
@@ -107,19 +107,19 @@ class playController {
 			coefficient = overDiceCoefficients[currentDice - 2]
 			if (newDice > currentDice) {
 				gameResult = `+ ${(bet * coefficient - bet).toFixed(2)} $`
-				newBalance = +((user.balance - bet + bet * coefficient).toFixed(2))
+				newBalance = +((profile.balance - bet + bet * coefficient).toFixed(2))
 			} else {
 				gameResult = `- ${bet} $`
-				newBalance = +((user.balance - bet).toFixed(2))
+				newBalance = +((profile.balance - bet).toFixed(2))
 			}
 		} else if (gameMode.toLowerCase() === 'under') {
 			coefficient = underDiceCoefficients[currentDice - 2]
 			if (newDice < currentDice) {
 				gameResult = `+ ${(bet * coefficient - bet).toFixed(2)} $`
-				newBalance = +((user.balance - bet + bet * coefficient).toFixed(2))
+				newBalance = +((profile.balance - bet + bet * coefficient).toFixed(2))
 			} else {
 				gameResult = `- ${bet} $`
-				newBalance = +((user.balance - bet).toFixed(2))
+				newBalance = +((profile.balance - bet).toFixed(2))
 			}
 		}
 

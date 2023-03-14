@@ -28,7 +28,7 @@ const HiLowGame = () => {
 	const [gameState, setGameState] = useState('betting')
 
 	const startGameHandler = () => {
-		
+
 		playHiLow({ bet: bet, card: state.card })
 			.then(data => {
 				user.setBalance(data.newBalance)
