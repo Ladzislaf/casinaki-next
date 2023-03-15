@@ -4,14 +4,17 @@ import styles from './DiceGame.module.css'
 import { MIN_BET, overDiceCoefficients, underDiceCoefficients } from '../../utils/constants'
 import BetMaker from '../BetMaker/BetMaker'
 import { playDice } from '../../http/playApi'
+import { observer } from 'mobx-react-lite'
 
-const DiceGame = () => {
+const DiceGame = observer(() => {
 	const { user } = useContext(Context)
 	const [bet, setBet] = useState(MIN_BET)
 	const [state, setState] = useState({ dice: 2, diceValue: 7, gameResult: '' })
 	const [buttons, setButtons] = useState({ over: true, under: false })
+	const [diceDisable, setDiceDisable] = useState(false)
 
 	const rollDice = () => {
+		setDiceDisable(true)
 		playDice(bet, state.diceValue, buttons.over ? 'over' : 'under')
 			.then(data => {
 				user.setBalance(data.newBalance)
@@ -21,6 +24,9 @@ const DiceGame = () => {
 				console.log(err.response.data)
 				alert(err.response.data.message)
 			})
+			.finally(() => [
+				setDiceDisable(false)
+			])
 	}
 
 	const changeDiceValue = (mode) => {
@@ -38,11 +44,11 @@ const DiceGame = () => {
 	return (
 		<div className={styles.container}>
 			<h2>dice game</h2>
-			<h2 style={{ color: '#F87D09' }}>balance: {user.user.balance.toFixed(2)}$ {state.gameResult}</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user.user.balance}$ {state.gameResult}</h2>
 
 			<BetMaker bet={bet} setBet={setBet} />
 			<h1>dice: {state.dice}</h1>
-			<button className={styles.btn} onClick={() => rollDice()}>roll</button>
+			<button className={styles.btn} onClick={() => rollDice()} disabled={diceDisable}>roll</button>
 			<div className={styles.dicePicker}>
 				<div>
 					<button className={`${styles.btn} ${buttons.over && styles.clicked}`} onClick={() => setButtons({ over: true, under: false })}>over</button> <br />
@@ -57,6 +63,6 @@ const DiceGame = () => {
 			<div>{buttons.over ? overDiceCoefficients[state.diceValue - 2] : underDiceCoefficients[state.diceValue - 2]} x</div>
 		</div>
 	)
-}
+})
 
 export default DiceGame

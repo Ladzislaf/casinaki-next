@@ -1,3 +1,4 @@
+const { forbidden } = require('joi')
 const Joi = require('joi')
 
 const validator = (schema) => (payload) => schema.validate(payload)
@@ -28,9 +29,20 @@ const hilowSchema = Joi.object({
 	}
 })
 
+const minerSchema = Joi.object({
+	info: {
+		bet: Joi.number().min(0.1).max(999999),
+		bombsCount: Joi.number().min(1).max(24)
+			.when('bet', { is: Joi.exist(), then: Joi.required() }),
+		cellNumber: Joi.number().min(1).max(25)
+			.when('bet', { is: Joi.exist(), then: Joi.forbidden() })
+	}
+})
+
 module.exports = {
 	validateSignUp: validator(sighUpSchema),
 	validateSignIn: validator(sighInSchema),
 	validateDice: validator(diceSchema),
-	validateHilow: validator(hilowSchema)
+	validateHilow: validator(hilowSchema),
+	validateMiner: validator(minerSchema),
 }

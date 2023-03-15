@@ -25,11 +25,27 @@ const getCoefficients = (cardValue) => {
 		higherCoefficient = 1.05
 		lowerCoefficient = 12.61
 	} else {
-		higherCoefficient = 0.97 / ((14 - cardValue) / 13)
-		lowerCoefficient = 0.97 / (cardValue / 13)
+		higherCoefficient = calculateCoefficient(14 - cardValue, 13)
+		lowerCoefficient = calculateCoefficient(cardValue, 13)
 	}
 
-	return({ hCoefficient: higherCoefficient, lCoefficient: lowerCoefficient })
+	return ({ hCoefficient: higherCoefficient, lCoefficient: lowerCoefficient })
 }
 
-module.exports = { generateToken, getRand, getCardValue, getCoefficients }
+const getBombs = (bombsCount) => {
+	let bombsArr = []
+	while (bombsCount !== 0) {
+		let bomb = getRand(1, 25)
+		if (!bombsArr.includes(bomb)) {
+			bombsArr.push(bomb)
+			bombsCount--
+		}
+	}
+	return bombsArr
+}
+
+const calculateCoefficient = (a, b) => {
+	return 0.97 / (a / b)
+}
+
+module.exports = { generateToken, getRand, getCardValue, getCoefficients, getBombs, calculateCoefficient }

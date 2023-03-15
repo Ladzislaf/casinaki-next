@@ -31,7 +31,7 @@ const Navbar = observer(() => {
 				{user.isAuth ?
 					<>
 						<div className={styles.info}>user: {user.user.username}</div>
-						<div className={styles.info}>balance: {user.user.balance.toFixed(2)}$</div>
+						<div className={styles.info}>balance: {user.user.balance}$</div>
 						{user.user.role === 'ADMIN' && 
 							<NavLink className={styles.routes} to={MAIN_ROUTE} onClick={clearSidebar}>admin_panel</NavLink>
 						}

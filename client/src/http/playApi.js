@@ -19,5 +19,5 @@ export const playMiner = async (info) => {
 	const { data } = await $authHost.post('api/play/miner', { info })
 	localStorage.setItem('token', data.token)
 	const { balance: newBalance } = jwt_decode(data.token)
-	return { newBalance, status: data.status, newCard: data.card, coefficients: data.coefficients }
+	return { newBalance, gameResult: data.gameResult }
 }

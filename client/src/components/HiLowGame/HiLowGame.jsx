@@ -5,6 +5,7 @@ import { MIN_BET } from '../../utils/constants'
 import BetMaker from '../BetMaker/BetMaker'
 import { getRand } from '../../utils/functions'
 import { playHiLow } from '../../http/playApi'
+import { observer } from 'mobx-react-lite'
 
 const suits = ['♠', '♥', '♦', '♣']
 const cardValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
@@ -20,12 +21,13 @@ for (let i = 0; i < cardValues.length; i++) {
 	}
 }
 
-const HiLowGame = () => {
+const HiLowGame = observer(() => {
 	const { user } = useContext(Context)
 	const [bet, setBet] = useState(MIN_BET)
 	const [state, setState] = useState({ card: 49, status: '', totalCoefficient: 1, currentBet: bet })
 	const [coefficients, setCoefficients] = useState({ higher: 1, lower: 1 })
 	const [gameState, setGameState] = useState('betting')
+	const [playDisable, setPlayDisable] = useState(false)
 
 	const startGameHandler = () => {
 		playHiLow({ bet: bet, card: state.card })
@@ -44,6 +46,7 @@ const HiLowGame = () => {
 	}
 
 	const playHandler = (mode) => {
+		setPlayDisable(true)
 		playHiLow({ mode })
 			.then(data => {
 				if (data.coefficients) {
@@ -57,6 +60,9 @@ const HiLowGame = () => {
 			.catch(err => {
 				console.log(err.response.data)
 				alert(err.response.data.message)
+			})
+			.finally(() => {
+				setPlayDisable(false)
 			})
 	}
 
@@ -90,18 +96,18 @@ const HiLowGame = () => {
 	return (
 		<div className={styles.container}>
 			<h2>higher-lower game</h2>
-			<h2 style={{ color: '#F87D09' }}>balance: {user.user.balance.toFixed(2)}$ {state.status}</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user.user.balance}$ {state.status}</h2>
 			<BetMaker bet={bet} setBet={setBet} />
 			{gameState === 'playing' ?
 				<>
 					<div>
-						<button className={styles.btn} onClick={() => playHandler('high')}>
-							{checkButtons('higher')} <br />
-							{coefficients.higher.toFixed(2)}x <br />
-						</button>
-						<button className={styles.btn} onClick={() => playHandler('low')}>
+						<button className={styles.btn} onClick={() => playHandler('low')} disabled={playDisable}>
 							{checkButtons('lower')} <br />
 							{coefficients.lower.toFixed(2)}x <br />
+						</button>
+						<button className={styles.btn} onClick={() => playHandler('high')} disabled={playDisable}>
+							{checkButtons('higher')} <br />
+							{coefficients.higher.toFixed(2)}x <br />
 						</button>
 					</div>
 					<div className={styles.card} style={{ background: cards[state.card].color }}>{cards[state.card].key}</div>
@@ -119,6 +125,6 @@ const HiLowGame = () => {
 			}
 		</div>
 	)
-}
+})
 
 export default HiLowGame
