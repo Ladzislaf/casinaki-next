@@ -23,17 +23,16 @@ for (let i = 0; i < cardValues.length; i++) {
 const HiLowGame = () => {
 	const { user } = useContext(Context)
 	const [bet, setBet] = useState(MIN_BET)
-	const [state, setState] = useState({ card: 49, status: '', totalCoefficient: 1 })
+	const [state, setState] = useState({ card: 49, status: '', totalCoefficient: 1, currentBet: bet })
 	const [coefficients, setCoefficients] = useState({ higher: 1, lower: 1 })
 	const [gameState, setGameState] = useState('betting')
 
 	const startGameHandler = () => {
-
 		playHiLow({ bet: bet, card: state.card })
 			.then(data => {
 				user.setBalance(data.newBalance)
 				if (data.status) {
-					setState({ ...state, status: data.status })
+					setState({ ...state, status: data.status, currentBet: bet })
 					setGameState('playing')
 					setCoefficients({ higher: data.coefficients.hCoefficient, lower: data.coefficients.lCoefficient })
 				}
@@ -108,7 +107,7 @@ const HiLowGame = () => {
 					<div className={styles.card} style={{ background: cards[state.card].color }}>{cards[state.card].key}</div>
 					<button className={styles.btn} onClick={() => cashOutHandler()} disabled={state.totalCoefficient === 1}>
 						cash out <br />
-						{(bet * state.totalCoefficient).toFixed(2)}$ <br />
+						{(state.currentBet * state.totalCoefficient).toFixed(2)}$ <br />
 						{state.totalCoefficient.toFixed(2)}x
 					</button>
 				</>
