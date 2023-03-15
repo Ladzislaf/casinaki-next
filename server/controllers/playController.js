@@ -128,6 +128,26 @@ class playController {
 		const token = generateToken(user.id, user.email, user.username, user.role, newBalance)
 		return res.json({ token, diceResult: newDice, gameResult: gameResult })
 	}
+
+	async playMiner(req, res, next) {
+		const { error } = validateDice(req.body)
+		if (error) {
+			console.log(error)
+			return next(ApiError.badRequest('Invalid request'))
+		}
+		const { bet, currentDice, gameMode } = req.body
+		const user = req.user
+		const profile = await Profile.findOne({ where: { userId: user.id } })
+
+		if (profile.balance < bet) return next(ApiError.badRequest('You don\'t have enough money, go to work, bro)'))
+
+
+
+		await History.create({ bet: `${bet} $`, coefficient: `${coefficient} x`, winnings: gameResult, userId: user.id, gameId: 2 })
+		await profile.update({ balance: newBalance })
+		const token = generateToken(user.id, user.email, user.username, user.role, newBalance)
+		return res.json({ token, diceResult: newDice, gameResult: gameResult })
+	}
 }
 
 module.exports = new playController()
