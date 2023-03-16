@@ -16,8 +16,7 @@
 }
 
 .container > a > div > img {
-	width: 100%;
-	margin: 15px;
+	width: 60%;
 }
 
 .container > a:hover {
