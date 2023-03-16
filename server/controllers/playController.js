@@ -160,10 +160,6 @@ class playController {
 			gameResult = {
 				nextCoefficient: currentGame.coefficient * nextCoefficient
 			}
-
-			
-			console.log('next-what: ', 25 - currentGame.bombs.length)
-			console.log('next-from what: ', 25)
 		} else if (info.cellNumber) {
 			if (currentGame.picked.includes(info.cellNumber)) return next(ApiError.badRequest('You already picked that shit!')) 
 			currentGame.picked.push(info.cellNumber)
@@ -177,6 +173,8 @@ class playController {
 				await History.create({ bet: `${currentGame.bet}$`, coefficient: `${currentGame.coefficient.toFixed(2)} x`, winnings: `- ${currentGame.bet}$`, userId: user.id, gameId: 3 })
 				fs.writeFileSync(require.resolve('../static/minerActiveGames.json'), JSON.stringify(activeGames.filter(el => el.player !== user.id)))
 			} else {
+				let coefficient = calculateCoefficient(26 - currentGame.picked.length - currentGame.bombs.length, 26 - currentGame.picked.length)
+				currentGame.coefficient *= coefficient
 				if (currentGame.bombs.length + currentGame.picked.length >= 25) {
 					gameResult = {
 						winnings: `+ ${(currentGame.bet * (currentGame.coefficient - 1)).toFixed(2)}$`,
@@ -188,16 +186,8 @@ class playController {
 					await History.create({ bet: `${currentGame.bet}$`, coefficient: `${currentGame.coefficient.toFixed(2)} x`, winnings: gameResult.winnings, userId: user.id, gameId: 3 })
 					fs.writeFileSync(require.resolve('../static/minerActiveGames.json'), JSON.stringify(activeGames.filter(el => el.player !== user.id)))		
 				} else {
-					let coefficient = calculateCoefficient(26 - currentGame.picked.length - currentGame.bombs.length, 26 - currentGame.picked.length)
-					currentGame.coefficient *= coefficient
 					let nextCoefficient = calculateCoefficient(25 - currentGame.picked.length - currentGame.bombs.length, 25 - currentGame.picked.length)
 	
-					console.log('what: ', 26 - currentGame.picked.length - currentGame.bombs.length)
-					console.log('from what: ', 26 - currentGame.picked.length)
-
-					console.log('next-what: ', 25 - currentGame.picked.length - currentGame.bombs.length)
-					console.log('next-from what: ', 25 - currentGame.picked.length)
-
 					gameResult = {
 						status: 'luck',
 						currentCoefficient: currentGame.coefficient,
