@@ -26,13 +26,19 @@ const Sidebar = observer(() => {
 	return (
 		<div className={styles.container}>
 			<NavLink to={HI_LOW_ROUTE} onClick={() => clickHandler('hilo')} className={app._sidebar.hilow && styles.clicked}>
-				<img src={hiLowLogo} alt='hilo' />
+				<div>
+					<img src={hiLowLogo} alt='hilo' />
+				</div>
 			</NavLink>
 			<NavLink to={DICE_ROUTE} onClick={() => clickHandler('dice')} className={app._sidebar.dice && styles.clicked}>
-				<img src={diceLogo} alt='dice' />
+				<div>
+					<img src={diceLogo} alt='dice' />
+				</div>
 			</NavLink>
 			<NavLink to={MINER_ROUTE} onClick={() => clickHandler('miner')} className={app._sidebar.miner && styles.clicked}>
-				<img src={minerLogo} alt='miner' />
+				<div>
+					<img src={minerLogo} alt='miner' />
+				</div>
 			</NavLink>
 		</div>
 	)

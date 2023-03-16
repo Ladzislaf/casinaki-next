@@ -6,15 +6,18 @@
 	height: 100%;
 }
 
-.container > * {
+.container > a > div {
+	width: 80px;
+	height: 80px;
+
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-.container > a > * {
+.container > a > div > img {
 	width: 100%;
-	height: 60%;
+	margin: 15px;
 }
 
 .container > a:hover {
