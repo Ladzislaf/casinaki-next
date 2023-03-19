@@ -41,7 +41,10 @@
 
 	.container > a {
 		width: 33.33%;
-		border: 1px solid green;
+	}
+
+	.container > a > div {
+		margin: 10px;
 	}
 
 	.container > a > div > img {
