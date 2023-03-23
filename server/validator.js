@@ -14,6 +14,15 @@ const sighInSchema = Joi.object({
 	password: Joi.string().min(8).required()
 })
 
+const checkUserSchema = Joi.object({
+	user: {
+		id: Joi.number().min(1).required(),
+		email: Joi.string().email().required(),
+		username: Joi.string().min(6).max(20).required(),
+		role: Joi.string().valid('USER', 'ADMIN').required()
+	}
+})
+
 const diceSchema = Joi.object({
 	bet: Joi.number().min(0.1).max(999999).required(),
 	currentDice: Joi.number().min(3).max(11).required(),
@@ -42,6 +51,7 @@ const minerSchema = Joi.object({
 module.exports = {
 	validateSignUp: validator(sighUpSchema),
 	validateSignIn: validator(sighInSchema),
+	validateCheckUser: validator(checkUserSchema),
 	validateDice: validator(diceSchema),
 	validateHilow: validator(hilowSchema),
 	validateMiner: validator(minerSchema),
