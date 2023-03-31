@@ -6,6 +6,7 @@ import BetMaker from '../BetMaker/BetMaker'
 import { getRand } from '../../utils/functions'
 import { playHiLow } from '../../http/playApi'
 import { observer } from 'mobx-react-lite'
+import { check } from '../../http/userAPI'
 
 const suits = ['♠', '♥', '♦', '♣']
 const cardValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
@@ -32,7 +33,11 @@ const HiLowGame = observer(() => {
 	const startGameHandler = () => {
 		playHiLow({ bet: bet, card: state.card })
 			.then(data => {
-				user.setBalance(data.newBalance)
+				// user.setBalance(data.newBalance)
+				check()
+					.then(data => {
+						user.setUser(data)
+					})
 				if (data.status) {
 					setState({ ...state, status: data.status, currentBet: bet })
 					setGameState('playing')
@@ -69,7 +74,11 @@ const HiLowGame = observer(() => {
 	const cashOutHandler = () => {
 		playHiLow({})
 			.then(data => {
-				user.setBalance(data.newBalance)
+				// user.setBalance(data.newBalance)
+				check()
+					.then(data => {
+						user.setUser(data)
+					})
 				setState({ ...state, status: data.status, totalCoefficient: 1 })
 				setGameState('betting')
 			})

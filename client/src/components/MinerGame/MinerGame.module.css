@@ -41,18 +41,18 @@
 
 .picked {
 	background-size: cover;
-	background-image: url(./img/money.jpg);
+	background-image: url(../../assets/miner_icons/money.jpg);
 }
 
 .bomb {
 	background: #ffffff;
 	background-size: cover;
-	background-image: url(./img/bomb.png);
+	background-image: url(../../assets/miner_icons/bomb.png);
 }
 
 .was_picked {
 	background-size: cover;
-	background-image: url(./img/money.jpg);
+	background-image: url(../../assets/miner_icons/money.jpg);
 	opacity: 0.3;
 }
 

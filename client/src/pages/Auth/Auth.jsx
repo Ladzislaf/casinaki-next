@@ -11,7 +11,6 @@ const Auth = observer(() => {
 	const location = useLocation()
 	const navigate = useNavigate()
 	const isLogin = location.pathname === LOGIN_ROUTE
-	const [email, setEmail] = useState('')
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [passwordConfirm, setPasswordConfirm] = useState('')
@@ -21,11 +20,11 @@ const Auth = observer(() => {
 		try {
 			let data
 			if (isLogin) {
-				data = await login(email, password)
+				data = await login(username, password)
 			} else {
 				if(!validateInputs())
 					return
-				data = await registration(email, username, password)
+				data = await registration(username, password)
 			}
 			user.setUser(data)
 			user.setIsAuth(true)
@@ -36,10 +35,6 @@ const Auth = observer(() => {
 	}
 
 	const validateInputs = () => {
-		if (!/^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[A-Za-z.]+$/.test(email)) {
-			alert('Incorrect email format')
-			return false
-		}
 		if (username.length < 5 || username.length > 20) {
 			alert('Username length must be from 5 to 20')
 			return false
@@ -59,10 +54,10 @@ const Auth = observer(() => {
 		<div className={styles.container}>
 			{isLogin ? <h2>authorization</h2> : <h2>registration</h2>}
 			<form>
-				<input type='email' placeholder='INPUT EMAIL' value={email} onChange={e => setEmail(e.target.value)} required />
+				<input type='text' placeholder='username' value={username} onChange={e => setUsername(e.target.value)} required />
+				<input type='password' placeholder='password' value={password} onChange={e => setPassword(e.target.value)} required />
 				{isLogin ?
 					<>
-						<input type='password' placeholder='INPUT PASSWORD' value={password} onChange={e => setPassword(e.target.value)} required />
 						<button onClick={e => submitHandler(e)}>login</button>
 						<div style={{ textAlign: 'center' }}>
 							Don't have an account? <NavLink to={REGISTER_ROUTE}>register</NavLink>
@@ -70,9 +65,7 @@ const Auth = observer(() => {
 					</>
 					:
 					<>
-						<input type='text' placeholder='INPUT USERNAME' value={username} onChange={e => setUsername(e.target.value)} required />
-						<input type='password' placeholder='INPUT PASSWORD' value={password} onChange={e => setPassword(e.target.value)} required />
-						<input type='password' placeholder='CONFIRM PASSWORD' value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} required />
+						<input type='password' placeholder='confirm' value={passwordConfirm} onChange={e => setPasswordConfirm(e.target.value)} required />
 						<button onClick={e => submitHandler(e)}>register</button>
 						<div style={{ textAlign: 'center' }}>
 							Have an account? <NavLink to={LOGIN_ROUTE}>login</NavLink>

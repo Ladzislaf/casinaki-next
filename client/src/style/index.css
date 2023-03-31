@@ -62,6 +62,20 @@ body {
 	width: 80px;
 }
 
+a {
+	color: #dbdbe7;
+	text-decoration: none;
+	text-align: center;
+}
+
+a:hover {
+	color: #f87d09;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
 @media only screen and (max-device-width: 600px) {
 	.navbar {
 		height: 150px;

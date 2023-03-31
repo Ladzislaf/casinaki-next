@@ -30,10 +30,6 @@
 	background: #F87D09;
 }
 
-.clicked {
-	background: #b55b07;
-}
-
 @media only screen and (max-device-width: 600px) {
 	.container {
 		flex-direction: row;

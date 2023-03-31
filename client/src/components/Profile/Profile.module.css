@@ -1,0 +1,21 @@
+.container {
+	font-size: 25px;
+}
+
+.img {
+	width: 100px;
+	border-radius: 50%;
+	padding: 0;
+	margin: 0 5px;
+	border: 4px solid white;
+}
+
+@media only screen and (max-device-width: 600px) {
+	.container {
+		font-size: 45px;
+	}
+	
+	.img {
+		width: 200px;
+	}
+}

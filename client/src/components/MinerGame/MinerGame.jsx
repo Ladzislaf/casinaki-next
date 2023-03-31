@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import React, { useContext, useState } from 'react'
 import { Context } from '../..'
 import { playMiner } from '../../http/playApi'
+import { check } from '../../http/userAPI'
 import { MIN_BET, sapperAnecdotes } from '../../utils/constants'
 import { getRand } from '../../utils/functions'
 import BetMaker from '../BetMaker/BetMaker'
@@ -35,7 +36,12 @@ const MinerGame = observer(() => {
 		setCurrentBet(bet)
 		playMiner({ bet, bombsCount })
 			.then(data => {
-				user.setBalance(data.newBalance)
+				// user.setBalance(data.newBalance)
+				check()
+					.then(data => {
+						user.setUser(data)
+						user.setIsAuth(true)
+					})
 				setCoefficients({ currentCoefficient: 1, nextCoefficient: data.gameResult.nextCoefficient })
 				setBalanceStatus(`- ${bet}$`)
 				setGameStatus('playing')
@@ -71,7 +77,12 @@ const MinerGame = observer(() => {
 					}))
 					setAnecdote('BOOOOOOM! ' + sapperAnecdotes[getRand(0, sapperAnecdotes.length - 1)])
 				} else {
-					user.setBalance(data.newBalance)
+					// user.setBalance(data.newBalance)
+					check()
+						.then(data => {
+							user.setUser(data)
+							user.setIsAuth(true)
+						})
 					setBalanceStatus(data.gameResult.winnings)
 					setGameStatus('betting')
 
@@ -94,7 +105,12 @@ const MinerGame = observer(() => {
 	const cashOutHandler = () => {
 		playMiner({})
 			.then(data => {
-				user.setBalance(data.newBalance)
+				// user.setBalance(data.newBalance)
+				check()
+					.then(data => {
+						user.setUser(data)
+						user.setIsAuth(true)
+					})
 				setBalanceStatus(data.gameResult.winnings)
 				setGameStatus('betting')
 

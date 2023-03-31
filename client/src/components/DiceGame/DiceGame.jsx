@@ -5,6 +5,7 @@ import { MIN_BET, overDiceCoefficients, underDiceCoefficients } from '../../util
 import BetMaker from '../BetMaker/BetMaker'
 import { playDice } from '../../http/playApi'
 import { observer } from 'mobx-react-lite'
+import { check } from '../../http/userAPI'
 
 const DiceGame = observer(() => {
 	const { user } = useContext(Context)
@@ -17,7 +18,11 @@ const DiceGame = observer(() => {
 		setDiceDisable(true)
 		playDice(bet, state.diceValue, buttons.over ? 'over' : 'under')
 			.then(data => {
-				user.setBalance(data.newBalance)
+				// user.setBalance(data.newBalance)
+				check()
+					.then(data => {
+						user.setUser(data)
+					})
 				setState({ ...state, dice: data.diceResult, gameResult: data.gameResult })
 			})
 			.catch(err => {

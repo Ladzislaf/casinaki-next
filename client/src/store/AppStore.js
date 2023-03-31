@@ -2,24 +2,24 @@ import { makeAutoObservable } from 'mobx'
 
 export default class AppStore {
 	constructor() {
-		this._sidebar = { hilow: false, dice: false, miner: false }
 		this._betsHistory = []
+		this._ranks = []
 		makeAutoObservable(this)
-	}
-
-	setSidebar(obj) {
-		this._sidebar = obj
 	}
 
 	setHistory(arr) {
 		this._betsHistory = arr
 	}
 
-	get sidebar() {
-		return this._sidebar
+	setRanks(arr) {
+		this._ranks = arr
 	}
 
 	get betsHistory() {
 		return this._betsHistory
+	}
+
+	get ranks() {
+		return this._ranks
 	}
 }
