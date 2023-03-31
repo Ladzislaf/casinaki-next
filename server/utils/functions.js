@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken')
+const { Rank } = require('../models/models')
 
-const generateToken = (id, email, username, role, balance) => {
+const generateToken = (id, username, role, balance, winnings, rank) => {
 	return jwt.sign(
-		{ id, email, username, role, balance },
+		{ id, username, role, balance, winnings, rank },
 		process.env.SECRET_KEY,
 		{ expiresIn: '24h' }
 	)
@@ -48,4 +49,14 @@ const calculateCoefficient = (a, b) => {
 	return 0.97 / (a / b)
 }
 
-module.exports = { generateToken, getRand, getCardValue, getCoefficients, getBombs, calculateCoefficient }
+const updateRank = async (profile) => {
+	const ranks = await Rank.findAll()
+	let rankId = 1
+	for (let i = 0; i < ranks.length; i++) {
+		if (profile.winnings_sum >= ranks[i].dataValues.value_to_achieve)
+			rankId = i + 1
+	}
+	if (profile.rankId !== rankId) await profile.update({ rankId: rankId })
+}
+
+module.exports = { generateToken, getRand, getCardValue, getCoefficients, getBombs, calculateCoefficient, updateRank }

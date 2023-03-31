@@ -1,7 +1,7 @@
 const ApiError = require('../error/ApiError')
 const HistoryService = require('../services/historyService')
 
-class historyController {
+class HistoryController {
 	async getHistory(req, res, next) {
 		try {
 			return res.json({ history: await HistoryService.getHistory() })
@@ -11,4 +11,4 @@ class historyController {
 	}
 }
 
-module.exports = new historyController()
+module.exports = new HistoryController()

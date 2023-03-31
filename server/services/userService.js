@@ -1,42 +1,40 @@
 const bcrypt = require('bcryptjs')
 
-const { User, Profile } = require("../models/models")
+const { User, Profile, Rank } = require("../models/models")
 const { generateToken } = require('../utils/functions')
 
 class UserService {
 	constructor() { }
 
-	registerUser = async (email, username, password) => {
-		let candidate = await User.findOne({ where: { email } })
-		if (candidate) {
-			throw new Error(`User with email ${email} is already exists`)
-		}
-		candidate = await User.findOne({ where: { username } })
+	registerUser = async (username, password) => {
+		let candidate = await User.findOne({ where: { username } })
 		if (candidate) {
 			throw new Error(`User with username ${username} is already exists`)
 		}
 		const hashPassword = await bcrypt.hash(password, 5)
-		const user = await User.create({ email, username, password: hashPassword, role: 'USER' })
-		const profile = await Profile.create({ userId: user.id, balance: 5 })
-		return generateToken(user.id, user.email, user.username, user.role, profile.balance)
+		const user = await User.create({ username, password: hashPassword, role: 'USER' })
+		const profile = await Profile.create({ userId: user.id, rankId: 1, balance: 5 })
+		return generateToken(user.id, user.username, user.role, profile.balance, 0, 'noob')
 	}
 
-	loginUser = async (email, password) => {
-		const user = await User.findOne({ where: { email: email } })
+	loginUser = async (username, password) => {
+		const user = await User.findOne({ where: { username } })
 		if (!user) {
-			throw new Error(`User with email ${email} not found`)
+			throw new Error(`User with username ${username} not found`)
 		}
 		let comparePassword = bcrypt.compareSync(password, user.password)
 		if (!comparePassword) {
 			throw new Error('Incorrect password')
 		}
 		const profile = await Profile.findOne({ where: { userId: user.id } })
-		return generateToken(user.id, user.email, user.username, user.role, profile.balance)
+		const rank = await Rank.findOne({ where: { id: profile.rankId } })
+		return generateToken(user.id, user.username, user.role, profile.balance, profile.winnings_sum, rank.name)
 	}
 
 	checkUser = async (user) => {
 		const profile = await Profile.findOne({ where: { userId: user.id } })
-		return generateToken(user.id, user.email, user.username, user.role, profile.balance)
+		const rank = await Rank.findOne({ where: { id: profile.rankId } })
+		return generateToken(user.id, user.username, user.role, profile.balance, profile.winnings_sum, rank.name)
 	}
 }
 

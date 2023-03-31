@@ -1,6 +1,6 @@
 const fs = require('fs')
-const { History, Profile } = require("../models/models")
-const { generateToken, getRand, getCardValue, getCoefficients, getBombs, calculateCoefficient } = require('../utils/functions')
+const { History, Profile, Rank } = require("../models/models")
+const { generateToken, getRand, getCardValue, getCoefficients, getBombs, calculateCoefficient, updateRank } = require('../utils/functions')
 const { MIN_CARD, MAX_CARD, MIN_DICE, MAX_DICE, overDiceCoefficients, underDiceCoefficients } = require('../utils/constants')
 
 class PlayService {
@@ -28,14 +28,14 @@ class PlayService {
 
 			const newBalance = +((profile.balance - activeGame.bet).toFixed(2))
 			await profile.update({ balance: newBalance })
-			const token = generateToken(user.id, user.email, user.username, user.role, newBalance)
+			const token = generateToken(user.id, user.username, user.role, newBalance)
 
 			const { hCoefficient, lCoefficient } = getCoefficients(getCardValue(activeGame.card))
 
 			return { token, status: status, coefficients: { hCoefficient, lCoefficient } }
 		} else if (info.mode) {
 			// playing
-			const token = generateToken(user.id, user.email, user.username, user.role, profile.balance)
+			const token = generateToken(user.id, user.username, user.role, profile.balance)
 
 			const currentCardValue = getCardValue(activeGame.card)
 			let newCard = getRand(MIN_CARD, MAX_CARD)
@@ -74,9 +74,10 @@ class PlayService {
 			status = `+ ${(activeGame.bet * activeGame.coefficient - activeGame.bet).toFixed(2)}$`
 			fs.writeFileSync(require.resolve('../static/hilowActiveGames.json'), JSON.stringify(games.filter(el => el.player !== user.id)))
 			const newBalance = +((profile.balance + activeGame.bet * activeGame.coefficient).toFixed(2))
-			const token = generateToken(user.id, user.email, user.username, user.role, newBalance)
+			const token = generateToken(user.id, user.username, user.role, newBalance)
 			await History.create({ bet: `${activeGame.bet}$`, coefficient: `${activeGame.coefficient.toFixed(2)} x`, winnings: status, userId: user.id, gameId: 1 })
-			await profile.update({ balance: newBalance })
+			await profile.update({ balance: newBalance, winnings_sum: +((profile.winnings_sum + newBalance - profile.balance - activeGame.bet).toFixed(2)) })
+			await updateRank(profile)
 			return { token, status }
 		}
 	}
@@ -107,8 +108,13 @@ class PlayService {
 		}
 
 		await History.create({ bet: `${bet}$`, coefficient: `${coefficient} x`, winnings: gameResult, userId: user.id, gameId: 2 })
-		await profile.update({ balance: newBalance })
-		const token = generateToken(user.id, user.email, user.username, user.role, newBalance)
+		if (newBalance > profile.balance)
+			await profile.update({ balance: newBalance, winnings_sum: +((profile.winnings_sum + newBalance - profile.balance).toFixed(2)) })
+		else
+			await profile.update({ balance: newBalance })
+		
+		await updateRank(profile)
+		const token = generateToken(user.id, user.username, user.role, newBalance)
 		return { token, diceResult: newDice, gameResult: gameResult }
 	}
 
@@ -160,12 +166,13 @@ class PlayService {
 						picked: currentGame.picked
 					}
 					newBalance = +((profile.balance + currentGame.bet * currentGame.coefficient).toFixed(2))
-					await profile.update({ balance: newBalance })
+					await profile.update({ balance: newBalance, winnings_sum: +((profile.winnings_sum + newBalance - profile.balance - currentGame.bet).toFixed(2)) })
+					await updateRank(profile)
 					await History.create({ bet: `${currentGame.bet}$`, coefficient: `${currentGame.coefficient.toFixed(2)} x`, winnings: gameResult.winnings, userId: user.id, gameId: 3 })
-					fs.writeFileSync(require.resolve('../static/minerActiveGames.json'), JSON.stringify(activeGames.filter(el => el.player !== user.id)))		
+					fs.writeFileSync(require.resolve('../static/minerActiveGames.json'), JSON.stringify(activeGames.filter(el => el.player !== user.id)))
 				} else {
 					let nextCoefficient = calculateCoefficient(25 - currentGame.picked.length - currentGame.bombs.length, 25 - currentGame.picked.length)
-	
+
 					gameResult = {
 						status: 'luck',
 						currentCoefficient: currentGame.coefficient,
@@ -182,12 +189,13 @@ class PlayService {
 				picked: currentGame.picked
 			}
 			newBalance = +((profile.balance + currentGame.bet * currentGame.coefficient).toFixed(2))
-			await profile.update({ balance: newBalance })
+			await profile.update({ balance: newBalance, winnings_sum: +((profile.winnings_sum + newBalance - profile.balance - currentGame.bet).toFixed(2)) })
+			await updateRank(profile)
 			await History.create({ bet: `${currentGame.bet}$`, coefficient: `${currentGame.coefficient.toFixed(2)} x`, winnings: gameResult.winnings, userId: user.id, gameId: 3 })
 			fs.writeFileSync(require.resolve('../static/minerActiveGames.json'), JSON.stringify(activeGames.filter(el => el.player !== user.id)))
 		}
 
-		const token = generateToken(user.id, user.email, user.username, user.role, newBalance)
+		const token = generateToken(user.id, user.username, user.role, newBalance)
 		return { token, gameResult }
 	}
 }

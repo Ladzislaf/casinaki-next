@@ -1,18 +1,17 @@
-const { validateSignUp, validateSignIn, validateCheckUser } = require('../validator')
+const { validateSignInUp, validateCheckUser } = require('../validator')
 const ApiError = require('../error/ApiError')
 const UserService = require('../services/userService')
 
 class UserController {
 	async registration(req, res, next) {
-		const { error } = validateSignUp(req.body)
+		const { error } = validateSignInUp(req.body)
 		if (error) {
 			console.log(error)
 			return next(ApiError.badRequest('Invalid request: ' + error.details[0].message))
 		}
-		const { email, username, password } = req.body
-
+		const { username, password } = req.body
 		try {
-			const token = await UserService.registerUser(email, username, password)
+			const token = await UserService.registerUser(username, password)
 			return res.json({ token })
 		} catch (error) {
 			return next(ApiError.badRequest(error.message))
@@ -20,15 +19,14 @@ class UserController {
 	}
 
 	async login(req, res, next) {
-		const { error } = validateSignIn(req.body)
+		const { error } = validateSignInUp(req.body)
 		if (error) {
 			console.log(error)
 			return next(ApiError.badRequest('Invalid request: ' + error.details[0].message))
 		}
-		const { email, password } = req.body
-
+		const { username, password } = req.body
 		try {
-			const token = await UserService.loginUser(email, password)
+			const token = await UserService.loginUser(username, password)
 			return res.json({ token })
 		} catch (error) {
 			return next(ApiError.badRequest(error.message))
@@ -47,11 +45,6 @@ class UserController {
 		} catch (error) {
 			return next(ApiError.badRequest(error.message))
 		}
-	}
-
-	async getProfile(req, res, next) {
-
-		return res.json({})
 	}
 }
 

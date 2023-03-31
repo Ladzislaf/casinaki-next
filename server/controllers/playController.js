@@ -2,7 +2,7 @@ const ApiError = require('../error/ApiError')
 const { validateHilow, validateDice, validateMiner } = require('../validator')
 const PlayService = require('../services/playService')
 
-class playController {
+class PlayController {
 	async playHiLow(req, res, next) {
 		const { error } = validateHilow(req.body)
 		if (error) {
@@ -55,4 +55,4 @@ class playController {
 	}
 }
 
-module.exports = new playController()
+module.exports = new PlayController()
