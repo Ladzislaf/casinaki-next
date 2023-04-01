@@ -39,6 +39,13 @@ const Review = sequelize.define('review', {
 	rating: { type: DataTypes.INTEGER, defaultValue: 5 },
 })
 
+const Promocode = sequelize.define('promocode', {
+	id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+	code: { type: DataTypes.STRING, unique: true, allowNull: false },
+	value: { type: DataTypes.DOUBLE, allowNull: false },
+	count: { type: DataTypes.INTEGER, defaultValue: 0 }
+}, { timestamps: false })
+
 User.hasOne(Profile)
 Profile.belongsTo(User)
 
@@ -55,5 +62,5 @@ User.hasMany(Review)
 Review.belongsTo(User)
 
 module.exports = {
-	User, Profile, History, Game, Rank, Review
+	User, Profile, History, Game, Rank, Review, Promocode
 }

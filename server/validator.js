@@ -40,10 +40,15 @@ const minerSchema = Joi.object({
 	}
 })
 
+const promocodeSchema = Joi.object({
+	promocode: Joi.string().alphanum().min(3).max(20).required()
+})
+
 module.exports = {
 	validateSignInUp: validator(signInUpSchema),
 	validateCheckUser: validator(checkUserSchema),
 	validateDice: validator(diceSchema),
 	validateHilow: validator(hilowSchema),
 	validateMiner: validator(minerSchema),
+	validatePromo: validator(promocodeSchema),
 }

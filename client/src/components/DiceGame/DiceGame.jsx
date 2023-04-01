@@ -18,11 +18,9 @@ const DiceGame = observer(() => {
 		setDiceDisable(true)
 		playDice(bet, state.diceValue, buttons.over ? 'over' : 'under')
 			.then(data => {
-				// user.setBalance(data.newBalance)
-				check()
-					.then(data => {
-						user.setUser(data)
-					})
+				check().then(data => {
+					user.setUser(data)
+				})
 				setState({ ...state, dice: data.diceResult, gameResult: data.gameResult })
 			})
 			.catch(err => {

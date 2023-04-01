@@ -33,11 +33,9 @@ const HiLowGame = observer(() => {
 	const startGameHandler = () => {
 		playHiLow({ bet: bet, card: state.card })
 			.then(data => {
-				// user.setBalance(data.newBalance)
-				check()
-					.then(data => {
-						user.setUser(data)
-					})
+				check().then(data => {
+					user.setUser(data)
+				})
 				if (data.status) {
 					setState({ ...state, status: data.status, currentBet: bet })
 					setGameState('playing')
@@ -74,11 +72,9 @@ const HiLowGame = observer(() => {
 	const cashOutHandler = () => {
 		playHiLow({})
 			.then(data => {
-				// user.setBalance(data.newBalance)
-				check()
-					.then(data => {
-						user.setUser(data)
-					})
+				check().then(data => {
+					user.setUser(data)
+				})
 				setState({ ...state, status: data.status, totalCoefficient: 1 })
 				setGameState('betting')
 			})

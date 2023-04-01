@@ -36,12 +36,9 @@ const MinerGame = observer(() => {
 		setCurrentBet(bet)
 		playMiner({ bet, bombsCount })
 			.then(data => {
-				// user.setBalance(data.newBalance)
-				check()
-					.then(data => {
-						user.setUser(data)
-						user.setIsAuth(true)
-					})
+				check().then(data => {
+					user.setUser(data)
+				})
 				setCoefficients({ currentCoefficient: 1, nextCoefficient: data.gameResult.nextCoefficient })
 				setBalanceStatus(`- ${bet}$`)
 				setGameStatus('playing')
@@ -77,12 +74,9 @@ const MinerGame = observer(() => {
 					}))
 					setAnecdote('BOOOOOOM! ' + sapperAnecdotes[getRand(0, sapperAnecdotes.length - 1)])
 				} else {
-					// user.setBalance(data.newBalance)
-					check()
-						.then(data => {
-							user.setUser(data)
-							user.setIsAuth(true)
-						})
+					check().then(data => {
+						user.setUser(data)
+					})
 					setBalanceStatus(data.gameResult.winnings)
 					setGameStatus('betting')
 
@@ -105,12 +99,9 @@ const MinerGame = observer(() => {
 	const cashOutHandler = () => {
 		playMiner({})
 			.then(data => {
-				// user.setBalance(data.newBalance)
-				check()
-					.then(data => {
-						user.setUser(data)
-						user.setIsAuth(true)
-					})
+				check().then(data => {
+					user.setUser(data)
+				})
 				setBalanceStatus(data.gameResult.winnings)
 				setGameStatus('betting')
 

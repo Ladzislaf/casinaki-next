@@ -13,7 +13,7 @@ class UserService {
 		}
 		const hashPassword = await bcrypt.hash(password, 5)
 		const user = await User.create({ username, password: hashPassword, role: 'USER' })
-		const profile = await Profile.create({ userId: user.id, rankId: 1, balance: 5 })
+		const profile = await Profile.create({ userId: user.id, rankId: 1, balance: 0 })
 		return generateToken(user.id, user.username, user.role, profile.balance, 0, 'noob')
 	}
 

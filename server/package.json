@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js --ignore *.json",
-	"start": "node index.js"
+    "dev": "nodemon index.js -e js",
+    "start": "node index.js"
   },
   "author": "ladzislaf",
   "license": "ISC",
@@ -23,6 +23,6 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.22"
   }
 }
