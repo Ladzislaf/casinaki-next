@@ -27,8 +27,9 @@ const Promocode = () => {
 
 	return (
 		<div className={styles.container}>
+			<div>If you are new here, you can use '/kit start' promocode</div>
 			<input className={styles.inp} placeholder='promocode' onChange={(e) => setPromo(e.target.value)} />
-			<Button onClick={() => applyPromocode()} width={'100px'}>apply</Button>
+			<Button onClick={() => applyPromocode()} width={'300px'} height={'50px'}>apply</Button>
 		</div>
 	)
 }

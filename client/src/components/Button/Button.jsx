@@ -2,9 +2,9 @@ import React from 'react'
 
 import styles from './Button.module.css'
 
-const Button = ({ children, onClick, width, disabled }) => {
+const Button = ({ children, onClick, width, height, disabled }) => {
 	return (
-		<button className={styles.btn} onClick={onClick} style={{ width: width }} disabled={disabled}>{children}</button>
+		<button className={styles.btn} onClick={onClick} style={{ width: width, height: height }} disabled={disabled}>{children}</button>
 	)
 }
 

@@ -46,6 +46,8 @@ const Promocode = sequelize.define('promocode', {
 	count: { type: DataTypes.INTEGER, defaultValue: 0 }
 }, { timestamps: false })
 
+const ActivatedPromos = sequelize.define('activated_promos')
+
 User.hasOne(Profile)
 Profile.belongsTo(User)
 
@@ -61,6 +63,9 @@ Profile.belongsTo(Rank)
 User.hasMany(Review)
 Review.belongsTo(User)
 
+Promocode.belongsToMany(Profile, { through: ActivatedPromos })
+Profile.belongsToMany(Promocode, { through: ActivatedPromos })
+
 module.exports = {
-	User, Profile, History, Game, Rank, Review, Promocode
+	User, Profile, History, Game, Rank, Review, Promocode, ActivatedPromos
 }

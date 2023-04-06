@@ -1,4 +1,4 @@
-const { Rank, Promocode, Profile } = require("../models/models")
+const { Rank, Promocode, Profile, ActivatedPromos } = require("../models/models")
 
 class AppService {
 	constructor() { }
@@ -8,13 +8,18 @@ class AppService {
 	}
 
 	applyPromo = async (promocode, userId) => {
-		const row = await Promocode.findOne({ where: { code: promocode } })
-		if (!row) throw new Error(`Promocode ${promocode} not found`)
-		if (row.count <= 0) throw new Error(`Promocode ${promocode} is not available`)
-		await row.update({ count: row.count - 1 })
+		const promo = await Promocode.findOne({ where: { code: promocode } })
+		if (!promo) throw new Error(`Promocode ${promocode} not found`)
+		if (promo.count <= 0) throw new Error(`Promocode ${promocode} is not available`)
+
 		const profile = await Profile.findOne({ where: { userId } })
-		await profile.update({ balance: profile.balance + row.value })
-		return { value: row.value }
+		const activePromo = ActivatedPromos.findOne({ where: { userProfileId: profile.id, promocodeId: promo.id } })
+		if (activePromo) throw new Error(`You already activated promocode ${promocode}`)
+
+		await promo.update({ count: promo.count - 1 })
+		await profile.update({ balance: profile.balance + promo.value })
+		await ActivatedPromos.create({ userProfileId: profile.id, promocodeId: promo.id })
+		return { value: promo.value }
 	}
 }
 
