@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './Main.module.css'
-import logo from '../../static/logo.png'
+import logo from '../../assets/logo.png'
 import BetHistory from '../../components/BetHistory/BetHistory'
 
 const Main = () => {

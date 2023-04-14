@@ -13,7 +13,7 @@ class AppService {
 		if (promo.count <= 0) throw new Error(`Promocode ${promocode} is not available`)
 
 		const profile = await Profile.findOne({ where: { userId } })
-		const activePromo = ActivatedPromos.findOne({ where: { userProfileId: profile.id, promocodeId: promo.id } })
+		const activePromo = await ActivatedPromos.findOne({ where: { userProfileId: profile.id, promocodeId: promo.id } })
 		if (activePromo) throw new Error(`You already activated promocode ${promocode}`)
 
 		await promo.update({ count: promo.count - 1 })

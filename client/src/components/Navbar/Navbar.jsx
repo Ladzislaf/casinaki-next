@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { Context } from '../..'
 import styles from './NavBar.module.css'
 import { DEPOSIT_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, PROFILE_ROUTE, RANKS_ROUTE, REGISTER_ROUTE } from '../../utils/constants'
-import logo from '../../static/logo.png'
+import logo from '../../assets/logo.png'
 
 const Navbar = observer(() => {
 	const { user } = useContext(Context)

@@ -5,7 +5,7 @@ import { DICE_ROUTE, HI_LOW_ROUTE, MINER_ROUTE } from '../../utils/constants'
 
 import hiLowLogo from '../../assets/sidebar_icons/hilo.svg'
 import diceLogo from '../../assets/sidebar_icons/dice.svg'
-import minerLogo from '../../assets/sidebar_icons/miner.svg'
+import minerLogo from '../../assets/sidebar_icons/bomb.svg'
 
 const Sidebar = () => {
 	return (

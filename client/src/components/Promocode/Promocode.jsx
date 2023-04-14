@@ -11,7 +11,7 @@ const Promocode = () => {
 	const [promo, setPromo] = useState('')
 
 	const applyPromocode = () => {
-		applyPromo({ promo })
+		applyPromo({ promo: promo.toLowerCase() })
 			.then(data => {
 				alert(`Success! You earned ${data.value}$`)
 			})
@@ -27,7 +27,7 @@ const Promocode = () => {
 
 	return (
 		<div className={styles.container}>
-			<div>If you are new here, you can use '/kit start' promocode</div>
+			<div>If you are new here, you can use 'kitstart' promocode</div>
 			<input className={styles.inp} placeholder='promocode' onChange={(e) => setPromo(e.target.value)} />
 			<Button onClick={() => applyPromocode()} width={'300px'} height={'50px'}>apply</Button>
 		</div>
