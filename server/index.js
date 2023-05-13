@@ -10,8 +10,6 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use('/api', router)
-
-// error handling => last middleware
 app.use(errorHandler)
 
 const start = async () => {
