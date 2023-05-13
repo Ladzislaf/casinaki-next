@@ -7,6 +7,7 @@ import { getRand } from '../../utils/functions'
 import { playHiLow } from '../../http/playApi'
 import { observer } from 'mobx-react-lite'
 import { check } from '../../http/userAPI'
+import BetHistory from '../BetHistory/BetHistory'
 
 const suits = ['♠', '♥', '♦', '♣']
 const cardValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
@@ -128,6 +129,8 @@ const HiLowGame = observer(() => {
 					<button className={styles.btn} onClick={() => setState({ ...state, card: getRand(0, cards.length - 1) })}>change</button>
 				</>
 			}
+			<br/>
+			<BetHistory/>
 		</div>
 	)
 })

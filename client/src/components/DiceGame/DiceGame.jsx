@@ -6,6 +6,7 @@ import BetMaker from '../BetMaker/BetMaker'
 import { playDice } from '../../http/playApi'
 import { observer } from 'mobx-react-lite'
 import { check } from '../../http/userAPI'
+import BetHistory from '../BetHistory/BetHistory'
 
 const DiceGame = observer(() => {
 	const { user } = useContext(Context)
@@ -64,6 +65,8 @@ const DiceGame = observer(() => {
 				</div>
 			</div>
 			<div>{buttons.over ? overDiceCoefficients[state.diceValue - 2] : underDiceCoefficients[state.diceValue - 2]} x</div>
+			<br/>
+			<BetHistory/>
 		</div>
 	)
 })

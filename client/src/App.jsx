@@ -7,6 +7,7 @@ import Loading from './components/Loading/Loading'
 import Navbar from './components/Navbar/Navbar'
 import Sidebar from './components/Sidebar/Sidebar'
 import { check } from './http/userAPI'
+import Chat from './components/Chat/Chat'
 
 const App = observer(() => {
 	const { user } = useContext(Context)
@@ -37,6 +38,9 @@ const App = observer(() => {
 				</div>
 				<div className='content'>
 					<AppRouter />
+				</div>
+				<div className='chat'>
+					<Chat/>
 				</div>
 			</div>
 		</BrowserRouter>

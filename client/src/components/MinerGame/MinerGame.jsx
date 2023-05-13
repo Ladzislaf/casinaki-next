@@ -7,6 +7,7 @@ import { MIN_BET, sapperAnecdotes } from '../../utils/constants'
 import { getRand } from '../../utils/functions'
 import BetMaker from '../BetMaker/BetMaker'
 import styles from './MinerGame.module.css'
+import BetHistory from '../BetHistory/BetHistory'
 
 const gameField = [
 	[1, 2, 3, 4, 5],
@@ -156,6 +157,8 @@ const MinerGame = observer(() => {
 					}</div>
 				})}
 			</div>
+			<br/>
+			<BetHistory/>
 		</div>
 	)
 })

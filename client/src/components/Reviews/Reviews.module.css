@@ -1,0 +1,50 @@
+.container {
+
+}
+
+.container > * {
+    width: 99%;
+    border-radius: 10px;
+}
+
+.reviewsArea {
+    height: 100%;
+    display:inline;
+    overflow-wrap: anywhere;
+	overflow-y: scroll;
+    margin: 5px 0;
+    font-size: 20px;
+}
+
+.reviewsArea > div {
+    padding: 5px;
+}
+
+.inputArea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 2px solid orange;
+}
+
+.inputArea > * {
+    font-size: 20px;
+    resize: none;
+    padding: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.reviewRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+	background: #3d3c3c;
+    border-radius: 10px;
+    min-height: 80px;
+    margin: 10px;
+}
+
