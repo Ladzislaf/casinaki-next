@@ -48,3 +48,11 @@
     margin: 10px;
 }
 
+@media only screen and (max-device-width: 600px) {
+    .container > * {
+        font-size: 50px;
+    }
+    .inputArea > * {
+        font-size: 50px;
+    }
+}

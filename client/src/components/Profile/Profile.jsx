@@ -28,10 +28,8 @@ const Profile = observer(() => {
 	}, [user._user.rank])
 
 	const changeUname = () => {
-		console.log(newUname)
 		changeUsername(newUname)
 			.then(data => {
-				console.log(data)
 				user.setUser(data)
 			})
 			.catch(err => {

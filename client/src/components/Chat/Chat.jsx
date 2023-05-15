@@ -32,13 +32,19 @@ const Chat = observer(() => {
 		if (message.trim().length !== 0) {
 			socket.emit('sendMessage', { username: user.user.username, message: message.trim() })
 			setMessage('')
-			setMessages([...messages, { username: user.user.username, message: message.trim() }])
+			setMessages([{ username: user.user.username, message: message.trim() }, ...messages])
 		}
 	}
 
 	return (
 		<div className={styles.container}>
 			<h2>chat</h2>
+			{user.isAuth && (
+				<div className={styles.inputArea}>
+					<textarea placeholder="write a message" rows={3} value={message} onChange={(e) => setMessage(e.target.value)} />
+					<Button onClick={() => sendMessage()}>send</Button>
+				</div>
+			)}
 			<div className={styles.messagesArea}>
 				{messages.map((el, index) => {
 					if (el.username === user.user.username) {
@@ -56,12 +62,6 @@ const Chat = observer(() => {
 					}
 				})}
 			</div>
-			{user.isAuth && (
-				<div className={styles.inputArea}>
-					<textarea placeholder="write a message" rows={3} value={message} onChange={(e) => setMessage(e.target.value)} />
-					<Button onClick={() => sendMessage()}>send</Button>
-				</div>
-			)}
 		</div>
 	)
 })

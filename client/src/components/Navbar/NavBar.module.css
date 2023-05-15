@@ -52,7 +52,7 @@ a.routes:hover {
 
 @media only screen and (max-device-width: 600px) {
 	.nav {
-		font-size: 30px;
+		font-size: 24px;
 		height: 140px;
 		padding: 5px;
 	}
