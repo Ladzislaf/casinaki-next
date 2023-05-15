@@ -18,3 +18,24 @@ export const check = async () => {
 	localStorage.setItem('token', data.token)
 	return jwt_decode(data.token)
 }
+
+export const changeUsername = async (newUsername) => {
+	const { data } = await $authHost.post('api/user/change', { newUsername })
+	localStorage.setItem('token', data.token)
+	return jwt_decode(data.token)
+}
+
+export const getUsersList = async () => {
+	const { data } = await $authHost.get('api/user/all', {})
+	return data.usersList
+}
+
+export const blockUser = async (userId) => {
+	const { data } = await $authHost.post('api/user/block', { userId })
+	return data.info
+}
+
+export const getBonus = async () => {
+	const { data } = await $authHost.get('api/user/bonus', {})
+	return data.info
+}

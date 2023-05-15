@@ -7,6 +7,7 @@ const User = sequelize.define('user', {
 	username: { type: DataTypes.STRING, unique: true },
 	password: { type: DataTypes.STRING },
 	role: { type: DataTypes.STRING, defaultValue: 'USER' },
+	bonus: { type: DataTypes.DATE, allowNull: true },
 })
 
 const Profile = sequelize.define('user_profile', {

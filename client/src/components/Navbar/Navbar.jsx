@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { observer } from 'mobx-react-lite'
 import { Context } from '../..'
 import styles from './NavBar.module.css'
-import { DEPOSIT_ROUTE, LOGIN_ROUTE, MAIN_ROUTE, PROFILE_ROUTE, RANKS_ROUTE, REGISTER_ROUTE, REVIEWS_ROUTE } from '../../utils/constants'
+import { DEPOSIT_ROUTE, LOGIN_ROUTE, ADMIN_ROUTE, MAIN_ROUTE, PROFILE_ROUTE, RANKS_ROUTE, REGISTER_ROUTE, REVIEWS_ROUTE } from '../../utils/constants'
 import logo from '../../assets/logo.png'
 
 const Navbar = observer(() => {
@@ -28,7 +28,7 @@ const Navbar = observer(() => {
 						<div className={styles.info}>balance: {user.user.balance}$</div>
 						<NavLink className={styles.routes} to={PROFILE_ROUTE}>{user.user.username}</NavLink>
 						{user.user.role === 'ADMIN' && 
-							<NavLink className={styles.routes} to={MAIN_ROUTE}>admin_panel</NavLink>
+							<NavLink className={styles.routes} to={ADMIN_ROUTE}>admin_panel</NavLink>
 						}
 						<NavLink className={styles.routes} to={RANKS_ROUTE}>ranks</NavLink>
 						<NavLink className={styles.routes} to={REVIEWS_ROUTE}>reviews</NavLink>

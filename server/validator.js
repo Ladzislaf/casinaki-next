@@ -15,6 +15,14 @@ const checkUserSchema = Joi.object({
 	}
 })
 
+const changeUserSchema = Joi.object({
+	newUsername: Joi.string().trim().alphanum().min(6).max(20).required()
+})
+
+const blockUserSchema = Joi.object({
+	userId: Joi.number().min(1).required()
+})
+
 const diceSchema = Joi.object({
 	bet: Joi.number().min(0.1).max(999999).required(),
 	currentDice: Joi.number().min(3).max(11).required(),
@@ -51,6 +59,8 @@ const reviewSchema = Joi.object({
 module.exports = {
 	validateSignInUp: validator(signInUpSchema),
 	validateCheckUser: validator(checkUserSchema),
+	validateChangeUser: validator(changeUserSchema),
+	validateBlockUser: validator(blockUserSchema),
 	validateDice: validator(diceSchema),
 	validateHilow: validator(hilowSchema),
 	validateMiner: validator(minerSchema),

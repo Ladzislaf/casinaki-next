@@ -1,0 +1,21 @@
+.tbl {
+	width: 80%;
+	margin: 20px;
+	border-collapse: separate;
+	border-radius: 10px;
+	background: #5d5d5d;
+}
+
+.tbl * {
+    padding: 5px;
+}
+
+thead > tr > td {
+	background: #b55b07;
+	border-radius: 10px;
+	text-align: center;
+}
+
+tbody > tr > td {
+    text-align: center;
+}

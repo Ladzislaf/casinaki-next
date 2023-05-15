@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js -e js",
-    "ws-dev": "nodemon websocket/index.js -e js",
+    "ws-dev": "nodemon index-ws.js -e js",
     "start": "node index.js"
   },
   "author": "ladzislaf",

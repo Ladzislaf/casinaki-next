@@ -30,23 +30,32 @@ const MinerGame = observer(() => {
 	const [cellsDisable, setCellsDisable] = useState(false)
 
 	const startGame = () => {
-		setCells(cells.map(() => {
-			return ''
-		}))
-		setAnecdote('')
-		setCurrentBet(bet)
-		playMiner({ bet, bombsCount })
+		check()
 			.then(data => {
-				check().then(data => {
-					user.setUser(data)
-				})
-				setCoefficients({ currentCoefficient: 1, nextCoefficient: data.gameResult.nextCoefficient })
-				setBalanceStatus(`- ${bet}$`)
-				setGameStatus('playing')
-			})
-			.catch(err => {
-				console.log(err.response.data)
-				alert(err.response.data.message)
+				user.setUser(data)
+				if (data.role === 'BLOCKED') {
+					alert('sorry, you have been blocked by admin')
+					return
+				} else {
+					setCells(cells.map(() => {
+						return ''
+					}))
+					setAnecdote('')
+					setCurrentBet(bet)
+					playMiner({ bet, bombsCount })
+						.then(data => {
+							check().then(data => {
+								user.setUser(data)
+							})
+							setCoefficients({ currentCoefficient: 1, nextCoefficient: data.gameResult.nextCoefficient })
+							setBalanceStatus(`- ${bet}$`)
+							setGameStatus('playing')
+						})
+						.catch(err => {
+							console.log(err.response.data)
+							alert(err.response.data.message)
+						})
+				}
 			})
 	}
 
@@ -117,7 +126,7 @@ const MinerGame = observer(() => {
 				alert(err.response.data.message)
 			})
 	}
-
+	
 	return (
 		<div className={styles.container}>
 			<h2>miner game</h2>

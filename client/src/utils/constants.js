@@ -1,5 +1,6 @@
 export const MAIN_ROUTE = '/casinaki-project/'
 export const LOGIN_ROUTE = '/casinaki-project/login'
+export const ADMIN_ROUTE = '/casinaki-project/admin'
 export const REGISTER_ROUTE = '/casinaki-project/register'
 export const DEPOSIT_ROUTE = '/casinaki-project/deposit'
 export const HI_LOW_ROUTE = '/casinaki-project/hilow'

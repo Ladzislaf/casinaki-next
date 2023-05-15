@@ -16,21 +16,30 @@ const DiceGame = observer(() => {
 	const [diceDisable, setDiceDisable] = useState(false)
 
 	const rollDice = () => {
-		setDiceDisable(true)
-		playDice(bet, state.diceValue, buttons.over ? 'over' : 'under')
+		check()
 			.then(data => {
-				check().then(data => {
-					user.setUser(data)
-				})
-				setState({ ...state, dice: data.diceResult, gameResult: data.gameResult })
+				user.setUser(data)
+				if (data.role === 'BLOCKED') {
+					alert('sorry, you have been blocked by admin')
+					return
+				} else {
+					setDiceDisable(true)
+					playDice(bet, state.diceValue, buttons.over ? 'over' : 'under')
+						.then(data => {
+							check().then(data => {
+								user.setUser(data)
+							})
+							setState({ ...state, dice: data.diceResult, gameResult: data.gameResult })
+						})
+						.catch(err => {
+							console.log(err.response.data)
+							alert(err.response.data.message)
+						})
+						.finally(() => [
+							setDiceDisable(false)
+						])
+				}
 			})
-			.catch(err => {
-				console.log(err.response.data)
-				alert(err.response.data.message)
-			})
-			.finally(() => [
-				setDiceDisable(false)
-			])
 	}
 
 	const changeDiceValue = (mode) => {

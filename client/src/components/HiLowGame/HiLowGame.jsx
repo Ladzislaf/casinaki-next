@@ -32,20 +32,29 @@ const HiLowGame = observer(() => {
 	const [playDisable, setPlayDisable] = useState(false)
 
 	const startGameHandler = () => {
-		playHiLow({ bet: bet, card: state.card })
+		check()
 			.then(data => {
-				check().then(data => {
-					user.setUser(data)
-				})
-				if (data.status) {
-					setState({ ...state, status: data.status, currentBet: bet })
-					setGameState('playing')
-					setCoefficients({ higher: data.coefficients.hCoefficient, lower: data.coefficients.lCoefficient })
-				}
-			})
-			.catch(err => {
-				console.log(err.response.data)
-				alert(err.response.data.message)
+				user.setUser(data)
+				if (data.role === 'BLOCKED') {
+					alert('sorry, you have been blocked by admin')
+					return
+				} else {
+					playHiLow({ bet: bet, card: state.card })
+						.then(data => {
+							check().then(data => {
+								user.setUser(data)
+							})
+							if (data.status) {
+								setState({ ...state, status: data.status, currentBet: bet })
+								setGameState('playing')
+								setCoefficients({ higher: data.coefficients.hCoefficient, lower: data.coefficients.lCoefficient })
+							}
+						})
+						.catch(err => {
+							console.log(err.response.data)
+							alert(err.response.data.message)
+						})
+					}
 			})
 	}
 
