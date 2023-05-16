@@ -19,9 +19,9 @@ io.on('connection', (socket) => {
 	socket.on('sendMessage', (info) => {
 		console.log(info)
 		socket.broadcast.emit('recieveMessage', info.username, info.message)
-		messages.push(info)
+		messages.unshift(info)
 		if (messages.length >= 11) {
-			messages.shift()
+			messages.pop()
 		}
 	})
 })
