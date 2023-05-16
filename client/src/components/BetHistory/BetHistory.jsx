@@ -64,7 +64,7 @@ const BetHistory = observer(() => {
 								{rank} {el.user.username}
 							</td>
 							<td>
-								{el.game.name === 'hilow' && <NavLink to={HI_LOW_ROUTE}>{el.game.name}</NavLink>}
+								{el.game.name === 'hi-low' && <NavLink to={HI_LOW_ROUTE}>{el.game.name}</NavLink>}
 								{el.game.name === 'dice' && <NavLink to={DICE_ROUTE}>{el.game.name}</NavLink>}
 								{el.game.name === 'miner' && <NavLink to={MINER_ROUTE}>{el.game.name}</NavLink>}
 							</td>
