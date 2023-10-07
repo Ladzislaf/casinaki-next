@@ -1,7 +1,7 @@
 # casinaki-project
 # fullstack app
 Deployment with render.com:
-# https://casinaki.onrender.com
+# [casinaki.com](https://casinaki.onrender.com)
 ---
 * React
 * MobX
