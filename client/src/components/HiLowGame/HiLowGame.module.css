@@ -1,21 +1,5 @@
-.card {
-	border: 2px black solid;
-	border-radius: 5px;
-	color: #ffffff;
-	width: 150px;
-	min-height: 220px;
-	font-size: 60px;
-	text-align: center;
-}
-
 @media only screen and (max-device-width: 600px) {
 	.container {
 		font-size: 40px;
 	}
-
-	.card {
-		font-size: 150px;
-		width: 400px;
-		min-height: 600px;
-	}	
 }

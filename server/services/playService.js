@@ -45,8 +45,8 @@ class PlayService {
 			const newCardValue = getCardValue(newCard)
 			const { hCoefficient, lCoefficient } = getCoefficients(newCardValue)
 			if (info.mode === 'high') {
-				if ((currentCardValue === 1 && newCardValue > currentCardValue) ||
-					(currentCardValue !== 1 && newCardValue >= currentCardValue)) {
+				if ((currentCardValue === 2 && newCardValue > currentCardValue) ||
+					(currentCardValue !== 2 && newCardValue >= currentCardValue)) {
 					activeGame.coefficient = activeGame.coefficient * getCoefficients(currentCardValue).hCoefficient
 					activeGame.card = newCard
 					fs.writeFileSync(require.resolve('../static/hilowActiveGames.json'), JSON.stringify(games))
@@ -57,8 +57,8 @@ class PlayService {
 					return { token, card: newCard }
 				}
 			} else if (info.mode === 'low') {
-				if ((currentCardValue === 13 && newCardValue < currentCardValue) ||
-					(currentCardValue !== 13 && newCardValue <= currentCardValue)) {
+				if ((currentCardValue === 14 && newCardValue < currentCardValue) ||
+					(currentCardValue !== 14 && newCardValue <= currentCardValue)) {
 					activeGame.coefficient = activeGame.coefficient * getCoefficients(currentCardValue).lCoefficient
 					activeGame.card = newCard
 					fs.writeFileSync(require.resolve('../static/hilowActiveGames.json'), JSON.stringify(games))

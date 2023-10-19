@@ -11,6 +11,7 @@ import BetHistory from '../BetHistory/BetHistory'
 import Button from '../Button/Button'
 import { getCardsDeck } from '../../utils/functions'
 import { GREEN_BTN_COLOR } from '../../utils/constants'
+import Card from '../Card/Card'
 
 const cards = getCardsDeck()
 
@@ -88,12 +89,12 @@ const HiLowGame = observer(() => {
 	const checkButtons = (mode) => {
 		switch (mode) {
 			case 'higher':
-				if (cards[state.card].value === 13) return 'same'
-				else if (cards[state.card].value === 1) return 'higher'
+				if (cards[state.card].key[0] === 'A') return 'same'
+				else if (cards[state.card].key[0] === '2') return 'higher'
 				else return 'higher or same'
 			case 'lower':
-				if (cards[state.card].value === 1) return 'same'
-				else if (cards[state.card].value === 13) return 'lower'
+				if (cards[state.card].key[0] === '2') return 'same'
+				else if (cards[state.card].key[0] === 'A') return 'lower'
 				else return 'lower or same'
 			default: console.log('Error: no such mode in checkName function')
 		}
@@ -116,7 +117,7 @@ const HiLowGame = observer(() => {
 							{coefficients.higher.toFixed(2)}x <br />
 						</Button>
 					</div>
-					<div className={styles.card} style={{ background: cards[state.card].color }}>{cards[state.card].key}</div>
+					<Card cardIndex={state.card}/>
 					<Button onClick={() => cashOutHandler()} disabled={state.totalCoefficient === 1} bg={GREEN_BTN_COLOR}>
 						cash out <br />
 						{(state.currentBet * state.totalCoefficient).toFixed(2)}$ <br />
@@ -125,8 +126,8 @@ const HiLowGame = observer(() => {
 				</>
 				: <>
 					<Button onClick={() => { startGameHandler() }} bg={GREEN_BTN_COLOR}>play</Button>
-					<div className={styles.card} style={{ background: cards[state.card].color }}>{cards[state.card].key}</div>
-					<Button onClick={() => setState({ ...state, card: getRand(0, cards.length - 1) })} bg={GREEN_BTN_COLOR}>change card</Button>
+					<Card cardIndex={state.card}/>
+					<Button onClick={() => setState({ ...state, card: getRand(0, 51) })} bg={GREEN_BTN_COLOR}>change card</Button>
 				</>
 			}
 			<br/>

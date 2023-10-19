@@ -9,13 +9,11 @@ export const getCardsDeck = () => {
 
 	for (let i = 0; i < cardValues.length; i++) {
 		for (let j = 0; j < suits.length; j++) {
-			const key = cardValues[i] + suits[j]
-			if (suits[j] === '♥' || suits[j] === '♦')
-				cards.push({ key: key, value: i + 1, color: 'red' })
-			else
-				cards.push({ key: key, value: i + 1, color: 'black' })
+			let key = cardValues[i] + suits[j]
+			cards.push({ 'key': key, 'value': i + 2 })
 		}
 	}
+	cards.push({ key:'joker', value: 0 })
 
 	return cards
 }
