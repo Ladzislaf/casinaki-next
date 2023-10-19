@@ -8,20 +8,11 @@ import { playHiLow } from '../../http/playApi'
 import { observer } from 'mobx-react-lite'
 import { check } from '../../http/userAPI'
 import BetHistory from '../BetHistory/BetHistory'
+import Button from '../Button/Button'
+import { getCardsDeck } from '../../utils/functions'
+import { GREEN_BTN_COLOR } from '../../utils/constants'
 
-const suits = ['♠', '♥', '♦', '♣']
-const cardValues = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
-const cards = []
-
-for (let i = 0; i < cardValues.length; i++) {
-	for (let j = 0; j < suits.length; j++) {
-		const key = cardValues[i] + suits[j]
-		if (suits[j] === '♥' || suits[j] === '♦')
-			cards.push({ key: key, value: i + 1, color: 'red' })
-		else
-			cards.push({ key: key, value: i + 1, color: 'black' })
-	}
-}
+const cards = getCardsDeck()
 
 const HiLowGame = observer(() => {
 	const { user } = useContext(Context)
@@ -116,26 +107,26 @@ const HiLowGame = observer(() => {
 			{gameState === 'playing' ?
 				<>
 					<div>
-						<button className={styles.btn} onClick={() => playHandler('low')} disabled={playDisable}>
+						<Button onClick={() => playHandler('low')} disabled={playDisable} width={'160px'} bg={GREEN_BTN_COLOR}>
 							{checkButtons('lower')} <br />
 							{coefficients.lower.toFixed(2)}x <br />
-						</button>
-						<button className={styles.btn} onClick={() => playHandler('high')} disabled={playDisable}>
+						</Button>
+						<Button onClick={() => playHandler('high')} disabled={playDisable} width={'160px'} bg={GREEN_BTN_COLOR}>
 							{checkButtons('higher')} <br />
 							{coefficients.higher.toFixed(2)}x <br />
-						</button>
+						</Button>
 					</div>
 					<div className={styles.card} style={{ background: cards[state.card].color }}>{cards[state.card].key}</div>
-					<button className={styles.btn} onClick={() => cashOutHandler()} disabled={state.totalCoefficient === 1}>
+					<Button onClick={() => cashOutHandler()} disabled={state.totalCoefficient === 1} bg={GREEN_BTN_COLOR}>
 						cash out <br />
 						{(state.currentBet * state.totalCoefficient).toFixed(2)}$ <br />
 						{state.totalCoefficient.toFixed(2)}x
-					</button>
+					</Button>
 				</>
 				: <>
-					<button className={styles.btn} onClick={() => { startGameHandler() }}>play</button>
+					<Button onClick={() => { startGameHandler() }} bg={GREEN_BTN_COLOR}>play</Button>
 					<div className={styles.card} style={{ background: cards[state.card].color }}>{cards[state.card].key}</div>
-					<button className={styles.btn} onClick={() => setState({ ...state, card: getRand(0, cards.length - 1) })}>change</button>
+					<Button onClick={() => setState({ ...state, card: getRand(0, cards.length - 1) })} bg={GREEN_BTN_COLOR}>change card</Button>
 				</>
 			}
 			<br/>

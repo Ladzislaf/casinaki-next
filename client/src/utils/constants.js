@@ -6,9 +6,12 @@ export const DEPOSIT_ROUTE = '/casinaki-project/deposit'
 export const HI_LOW_ROUTE = '/casinaki-project/hilow'
 export const DICE_ROUTE = '/casinaki-project/dice'
 export const MINER_ROUTE = '/casinaki-project/miner'
+export const BLACKJACK_ROUTE = '/casinaki-project/blackjack'
 export const PROFILE_ROUTE = '/casinaki-project/profile'
 export const RANKS_ROUTE = '/casinaki-project/ranks'
 export const REVIEWS_ROUTE = '/casinaki-project/reviews'
+
+export const GREEN_BTN_COLOR = '#47924d'
 
 export const MIN_BET = 0.1
 export const MAX_BET = 999999.99

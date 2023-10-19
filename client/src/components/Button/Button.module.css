@@ -24,3 +24,10 @@
 	cursor: not-allowed;
 	background: #b55b07;
 }
+
+@media only screen and (max-device-width: 600px) {
+	.btn {
+		font-size: 40px;
+		margin: 10px;
+	}	
+}

@@ -3,11 +3,12 @@ import React, { useContext, useState } from 'react'
 import { Context } from '../..'
 import { playMiner } from '../../http/playApi'
 import { check } from '../../http/userAPI'
-import { MIN_BET, sapperAnecdotes } from '../../utils/constants'
+import { GREEN_BTN_COLOR, MIN_BET, sapperAnecdotes } from '../../utils/constants'
 import { getRand } from '../../utils/functions'
 import BetMaker from '../BetMaker/BetMaker'
 import styles from './MinerGame.module.css'
 import BetHistory from '../BetHistory/BetHistory'
+import Button from '../Button/Button'
 
 const gameField = [
 	[1, 2, 3, 4, 5],
@@ -133,18 +134,18 @@ const MinerGame = observer(() => {
 			<h2 style={{ color: '#F87D09' }}>balance: {user.user.balance}$ {balanceStatus}</h2>
 			<BetMaker bet={bet} setBet={setBet} />
 			<div className={styles.bombsPicker}>
-				<button className={styles.btn} onClick={() => { bombsCount !== 3 && setBombsCount(bombsCount - 1) }}>-</button>
+				<Button onClick={() => { bombsCount !== 3 && setBombsCount(bombsCount - 1) }} bg={GREEN_BTN_COLOR} width={'50px'}>-</Button>
 				<div>bombs: {bombsCount}</div>
-				<button className={styles.btn} onClick={() => { bombsCount !== 24 && setBombsCount(bombsCount + 1) }}>+</button> <br />
+				<Button onClick={() => { bombsCount !== 24 && setBombsCount(bombsCount + 1) }} bg={GREEN_BTN_COLOR} width={'50px'}>+</Button> <br />
 			</div>
 			{gameStatus === 'betting' ?
-				<button className={styles.btn} onClick={() => startGame()}>play</button>
+				<Button onClick={() => startGame()} width={'320px'} bg={GREEN_BTN_COLOR}>play</Button>
 				:
 				<>
 					<div>next coefficient: {coefficients.nextCoefficient.toFixed(2)}x</div>
-					<button className={styles.btn} onClick={() => cashOutHandler()} disabled={coefficients.currentCoefficient === 1}>
+					<Button onClick={() => cashOutHandler()} disabled={coefficients.currentCoefficient === 1} bg={GREEN_BTN_COLOR} width={'200px'}>
 						cash out {(coefficients.currentCoefficient * currentBet).toFixed(2)}$ ({coefficients.currentCoefficient.toFixed(2)}x)
-					</button>
+					</Button>
 				</>
 			}
 			<div style={{textAlign: 'center'}}>{anecdote}</div>

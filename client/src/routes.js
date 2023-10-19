@@ -1,10 +1,11 @@
 import Auth from './pages/Auth/Auth'
 import Main from './pages/Main/Main'
 import Deposit from './pages/Deposit/Deposit'
-import { LOGIN_ROUTE, REGISTER_ROUTE, ADMIN_ROUTE, MAIN_ROUTE, HI_LOW_ROUTE, DICE_ROUTE, MINER_ROUTE, DEPOSIT_ROUTE, PROFILE_ROUTE, RANKS_ROUTE, REVIEWS_ROUTE } from './utils/constants'
+import { LOGIN_ROUTE, REGISTER_ROUTE, ADMIN_ROUTE, MAIN_ROUTE, HI_LOW_ROUTE, DICE_ROUTE, MINER_ROUTE, DEPOSIT_ROUTE, PROFILE_ROUTE, RANKS_ROUTE, REVIEWS_ROUTE, BLACKJACK_ROUTE } from './utils/constants'
 import HiLowGame from './components/HiLowGame/HiLowGame'
 import DiceGame from './components/DiceGame/DiceGame'
 import MinerGame from './components/MinerGame/MinerGame'
+import BlackJack from './components/BlackJack/BlackJack'
 import Profile from './components/Profile/Profile'
 import Ranks from './pages/Ranks/Ranks'
 import Reviews from './components/Reviews/Reviews'
@@ -21,7 +22,7 @@ export const authRoutes = [
 	},
 	{
 		path: ADMIN_ROUTE,
-		Component: AdminPanel,
+		Component: AdminPanel
 	},
 ]
 
@@ -57,5 +58,9 @@ export const publicRoutes = [
 	{
 		path: MINER_ROUTE,
 		Component: MinerGame
+	},
+	{
+		path: BLACKJACK_ROUTE,
+		Component: BlackJack
 	},
 ]

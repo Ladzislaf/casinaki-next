@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
 import { Context } from '../..'
 import styles from './BetMaker.module.css'
-import { MAX_BET, MIN_BET } from '../../utils/constants'
+import { GREEN_BTN_COLOR, MAX_BET, MIN_BET } from '../../utils/constants'
+import Button from '../Button/Button'
 
 const BetMaker = ({ bet, setBet }) => {
 	const { user } = useContext(Context)
@@ -18,15 +19,15 @@ const BetMaker = ({ bet, setBet }) => {
 	return (
 		<div className={styles.container}>
 			<div>
-				<button className={`${styles.btn} ${styles.little}`} onClick={() => changeBet(bet - MIN_BET)}>-</button>
+				<Button onClick={() => changeBet(bet - MIN_BET)} width={'50px'} bg={GREEN_BTN_COLOR}>-</Button>
 				<span>bet: {bet.toFixed(2)}$</span>
-				<button className={`${styles.btn} ${styles.little}`} onClick={() => changeBet(bet + MIN_BET)}>+</button> <br />
+				<Button onClick={() => changeBet(bet + MIN_BET)} width={'50px'} bg={GREEN_BTN_COLOR}>+</Button> <br/>
 			</div>
 
-			<button className={styles.btn} onClick={() => setBet(MIN_BET)}>min</button>
-			<button className={styles.btn} onClick={() => changeBet(+((bet * 2).toFixed(2)))}>x2</button>
-			<button className={styles.btn} onClick={() => changeBet(+((bet / 2).toFixed(2)))}>1/2</button>
-			<button className={styles.btn} onClick={() => user.user.balance < MIN_BET ? setBet(MIN_BET) : setBet(+(user.user.balance.toFixed(2)))}>all-in</button>
+			<Button onClick={() => setBet(MIN_BET)} width={'25%'} bg={GREEN_BTN_COLOR}>min</Button>
+			<Button onClick={() => changeBet(+((bet * 2).toFixed(2)))} width={'25%'} bg={GREEN_BTN_COLOR}>x2</Button>
+			<Button onClick={() => changeBet(+((bet / 2).toFixed(2)))} width={'25%'} bg={GREEN_BTN_COLOR}>1/2</Button>
+			<Button onClick={() => user.user.balance < MIN_BET ? setBet(MIN_BET) : setBet(+(user.user.balance.toFixed(2)))} width={'25%'} bg={GREEN_BTN_COLOR}>all-in</Button>
 		</div>
 	)
 }

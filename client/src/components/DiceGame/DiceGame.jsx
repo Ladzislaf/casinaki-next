@@ -1,12 +1,13 @@
 import React, { useContext, useState } from 'react'
 import { Context } from '../..'
 import styles from './DiceGame.module.css'
-import { MIN_BET, overDiceCoefficients, underDiceCoefficients } from '../../utils/constants'
+import { GREEN_BTN_COLOR, MIN_BET, overDiceCoefficients, underDiceCoefficients } from '../../utils/constants'
 import BetMaker from '../BetMaker/BetMaker'
 import { playDice } from '../../http/playApi'
 import { observer } from 'mobx-react-lite'
 import { check } from '../../http/userAPI'
 import BetHistory from '../BetHistory/BetHistory'
+import Button from '../Button/Button'
 
 const DiceGame = observer(() => {
 	const { user } = useContext(Context)
@@ -61,16 +62,16 @@ const DiceGame = observer(() => {
 
 			<BetMaker bet={bet} setBet={setBet} />
 			<h1>dice: {state.dice}</h1>
-			<button className={styles.btn} onClick={() => rollDice()} disabled={diceDisable}>roll</button>
+			<Button bg={GREEN_BTN_COLOR} onClick={() => rollDice()} disabled={diceDisable}>roll</Button>
 			<div className={styles.dicePicker}>
 				<div>
-					<button className={`${styles.btn} ${buttons.over && styles.clicked}`} onClick={() => setButtons({ over: true, under: false })}>over</button> <br />
-					<button className={`${styles.btn} ${buttons.under && styles.clicked}`} onClick={() => setButtons({ over: false, under: true })}>under</button>
+					<Button bg={buttons.over ? '#0a6b12' : GREEN_BTN_COLOR} onClick={() => setButtons({ over: true, under: false })} width={'150px'}>over</Button> <br/>
+					<Button bg={buttons.under ? '#0a6b12' : GREEN_BTN_COLOR} onClick={() => setButtons({ over: false, under: true })} width={'150px'}>under</Button>
 				</div>
 				<span>{state.diceValue}</span>
 				<div>
-					<button className={styles.btn} onClick={() => changeDiceValue('inc')}>▲</button> <br />
-					<button className={styles.btn} onClick={() => changeDiceValue('dec')}>▼</button>
+					<Button bg={GREEN_BTN_COLOR} onClick={() => changeDiceValue('inc')}>▲</Button> <br/>
+					<Button bg={GREEN_BTN_COLOR} onClick={() => changeDiceValue('dec')}>▼</Button>
 				</div>
 			</div>
 			<div>{buttons.over ? overDiceCoefficients[state.diceValue - 2] : underDiceCoefficients[state.diceValue - 2]} x</div>
