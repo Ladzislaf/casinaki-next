@@ -31,33 +31,30 @@ const MinerGame = observer(() => {
 	const [cellsDisable, setCellsDisable] = useState(false)
 
 	const startGame = () => {
-		check()
-			.then(data => {
-				user.setUser(data)
-				if (data.role === 'BLOCKED') {
-					alert('sorry, you have been blocked by admin')
-					return
-				} else {
-					setCells(cells.map(() => {
-						return ''
-					}))
-					setAnecdote('')
-					setCurrentBet(bet)
-					playMiner({ bet, bombsCount })
-						.then(data => {
-							check().then(data => {
-								user.setUser(data)
-							})
-							setCoefficients({ currentCoefficient: 1, nextCoefficient: data.gameResult.nextCoefficient })
-							setBalanceStatus(`- ${bet}$`)
-							setGameStatus('playing')
-						})
-						.catch(err => {
-							console.log(err.response.data)
-							alert(err.response.data.message)
-						})
-				}
-			})
+		check().then(data => {
+			user.setUser(data)
+			if (data.role === 'BLOCKED') {
+				alert('sorry, you have been blocked by admin')
+				return
+			} else {
+				setCells(cells.map(() => {
+					return ''
+				}))
+				setAnecdote('')
+				setCurrentBet(bet)
+				playMiner({ bet, bombsCount })
+					.then(data => {
+						user.setUserBalance(user.balance - bet)
+						setCoefficients({ currentCoefficient: 1, nextCoefficient: data.gameResult.nextCoefficient })
+						setBalanceStatus(`- ${bet}$`)
+						setGameStatus('playing')
+					})
+					.catch(err => {
+						console.log(err.response.data)
+						alert(err.response.data.message)
+					})
+			}
+		})
 	}
 
 	const pickCell = (number) => {
@@ -131,7 +128,7 @@ const MinerGame = observer(() => {
 	return (
 		<div className={styles.container}>
 			<h2>miner game</h2>
-			<h2 style={{ color: '#F87D09' }}>balance: {user.user.balance}$ {balanceStatus}</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user.balance}$ {balanceStatus}</h2>
 			<BetMaker bet={bet} setBet={setBet} />
 			<div className={styles.bombsPicker}>
 				<Button onClick={() => { bombsCount !== 3 && setBombsCount(bombsCount - 1) }} bg={GREEN_BTN_COLOR} width={'50px'}>-</Button>

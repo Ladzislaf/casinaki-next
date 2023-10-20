@@ -18,36 +18,33 @@ const cards = getCardsDeck()
 const HiLowGame = observer(() => {
 	const { user } = useContext(Context)
 	const [bet, setBet] = useState(MIN_BET)
-	const [state, setState] = useState({ card: 49, status: '', totalCoefficient: 1, currentBet: bet })
+	const [state, setState] = useState({ card: getRand(0, 51), status: '', totalCoefficient: 1, currentBet: bet })
 	const [coefficients, setCoefficients] = useState({ higher: 1, lower: 1 })
 	const [gameState, setGameState] = useState('betting')
 	const [playDisable, setPlayDisable] = useState(false)
 
 	const startGameHandler = () => {
-		check()
-			.then(data => {
-				user.setUser(data)
-				if (data.role === 'BLOCKED') {
-					alert('sorry, you have been blocked by admin')
-					return
-				} else {
-					playHiLow({ bet: bet, card: state.card })
-						.then(data => {
-							check().then(data => {
-								user.setUser(data)
-							})
-							if (data.status) {
-								setState({ ...state, status: data.status, currentBet: bet })
-								setGameState('playing')
-								setCoefficients({ higher: data.coefficients.hCoefficient, lower: data.coefficients.lCoefficient })
-							}
-						})
-						.catch(err => {
-							console.log(err.response.data)
-							alert(err.response.data.message)
-						})
-					}
-			})
+		check().then(data => {
+			user.setUser(data)
+			if (data.role === 'BLOCKED') {
+				alert('sorry, you have been blocked by admin')
+				return
+			} else {
+				playHiLow({ bet: bet, card: state.card })
+					.then(data => {
+						user.setUserBalance(user.balance - bet)
+						if (data.status) {
+							setState({ ...state, status: data.status, currentBet: bet })
+							setGameState('playing')
+							setCoefficients({ higher: data.coefficients.hCoefficient, lower: data.coefficients.lCoefficient })
+						}
+					})
+					.catch(err => {
+						console.log(err.response.data)
+						alert(err.response.data.message)
+					})
+				}
+		})
 	}
 
 	const playHandler = (mode) => {
@@ -74,9 +71,7 @@ const HiLowGame = observer(() => {
 	const cashOutHandler = () => {
 		playHiLow({})
 			.then(data => {
-				check().then(data => {
-					user.setUser(data)
-				})
+				user.setUserBalance(data.newBalance)
 				setState({ ...state, status: data.status, totalCoefficient: 1 })
 				setGameState('betting')
 			})
@@ -89,12 +84,12 @@ const HiLowGame = observer(() => {
 	const checkButtons = (mode) => {
 		switch (mode) {
 			case 'higher':
-				if (cards[state.card].key[0] === 'A') return 'same'
-				else if (cards[state.card].key[0] === '2') return 'higher'
+				if (cards[state.card].value === 13) return 'same'
+				else if (cards[state.card].value === 1) return 'higher'
 				else return 'higher or same'
 			case 'lower':
-				if (cards[state.card].key[0] === '2') return 'same'
-				else if (cards[state.card].key[0] === 'A') return 'lower'
+				if (cards[state.card].value === 1) return 'same'
+				else if (cards[state.card].value === 13) return 'lower'
 				else return 'lower or same'
 			default: console.log('Error: no such mode in checkName function')
 		}
@@ -103,7 +98,7 @@ const HiLowGame = observer(() => {
 	return (
 		<div className={styles.container}>
 			<h2>higher-lower game</h2>
-			<h2 style={{ color: '#F87D09' }}>balance: {user.user.balance}$ {state.status}</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user.balance}$ {state.status}</h2>
 			<BetMaker bet={bet} setBet={setBet} />
 			{gameState === 'playing' ?
 				<>

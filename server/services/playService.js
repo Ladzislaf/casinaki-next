@@ -1,5 +1,5 @@
 const fs = require('fs')
-const { History, Profile, Rank } = require("../models/models")
+const { History, Profile } = require("../models/models")
 const { generateToken, getRand, getCardValue, getCoefficients, getBombs, calculateCoefficient, updateRank } = require('../utils/functions')
 const { MIN_CARD, MAX_CARD, MIN_DICE, MAX_DICE, overDiceCoefficients, underDiceCoefficients } = require('../utils/constants')
 
@@ -45,8 +45,8 @@ class PlayService {
 			const newCardValue = getCardValue(newCard)
 			const { hCoefficient, lCoefficient } = getCoefficients(newCardValue)
 			if (info.mode === 'high') {
-				if ((currentCardValue === 2 && newCardValue > currentCardValue) ||
-					(currentCardValue !== 2 && newCardValue >= currentCardValue)) {
+				if ((currentCardValue === 1 && newCardValue > currentCardValue) ||
+					(currentCardValue !== 1 && newCardValue >= currentCardValue)) {
 					activeGame.coefficient = activeGame.coefficient * getCoefficients(currentCardValue).hCoefficient
 					activeGame.card = newCard
 					fs.writeFileSync(require.resolve('../static/hilowActiveGames.json'), JSON.stringify(games))
@@ -57,8 +57,8 @@ class PlayService {
 					return { token, card: newCard }
 				}
 			} else if (info.mode === 'low') {
-				if ((currentCardValue === 14 && newCardValue < currentCardValue) ||
-					(currentCardValue !== 14 && newCardValue <= currentCardValue)) {
+				if ((currentCardValue === 13 && newCardValue < currentCardValue) ||
+					(currentCardValue !== 13 && newCardValue <= currentCardValue)) {
 					activeGame.coefficient = activeGame.coefficient * getCoefficients(currentCardValue).lCoefficient
 					activeGame.card = newCard
 					fs.writeFileSync(require.resolve('../static/hilowActiveGames.json'), JSON.stringify(games))

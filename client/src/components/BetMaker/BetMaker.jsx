@@ -27,7 +27,7 @@ const BetMaker = ({ bet, setBet }) => {
 			<Button onClick={() => setBet(MIN_BET)} width={'25%'} bg={GREEN_BTN_COLOR}>min</Button>
 			<Button onClick={() => changeBet(+((bet * 2).toFixed(2)))} width={'25%'} bg={GREEN_BTN_COLOR}>x2</Button>
 			<Button onClick={() => changeBet(+((bet / 2).toFixed(2)))} width={'25%'} bg={GREEN_BTN_COLOR}>1/2</Button>
-			<Button onClick={() => user.user.balance < MIN_BET ? setBet(MIN_BET) : setBet(+(user.user.balance.toFixed(2)))} width={'25%'} bg={GREEN_BTN_COLOR}>all-in</Button>
+			<Button onClick={() => user.balance < MIN_BET ? setBet(MIN_BET) : setBet(user.balance)} width={'25%'} bg={GREEN_BTN_COLOR}>all-in</Button>
 		</div>
 	)
 }

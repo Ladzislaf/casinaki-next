@@ -6,5 +6,6 @@ const authMiddleware = require('../middlewares/authMiddleware')
 router.post('/dice', authMiddleware, PlayController.playDice)
 router.post('/hilow', authMiddleware, PlayController.playHiLow)
 router.post('/miner', authMiddleware, PlayController.playMiner)
+router.post('/blackjack', authMiddleware, PlayController.playBlackJack)
 
 module.exports = router

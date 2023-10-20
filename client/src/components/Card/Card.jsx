@@ -15,8 +15,8 @@ const Card = ({ cardIndex }) => {
         (cardIndex === 52) ?
         <div className={styles.card} style={{ background: 'green' }}></div>
         :
-		<div className={styles.card} style={{ background: currentCard.key[1] === '♥' || currentCard.key[1] === '♦' ? 'red' : 'black' }}>
-			{currentCard.key}
+		<div className={styles.card} style={{ background: currentCard.index[1] === '♥' || currentCard.index[1] === '♦' ? 'red' : 'black' }}>
+			{currentCard.index}
 		</div>
 	)
 }

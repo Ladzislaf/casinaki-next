@@ -15,11 +15,19 @@ export default class UserStore {
 		this._user = user
 	}
 
+	setUserBalance(balance) {
+		this._user.balance = balance
+	}
+
 	get isAuth() {
 		return this._isAuth
 	}
 
 	get user() {
 		return this._user
+	}
+
+	get balance() {
+		return +this._user.balance.toFixed(2)
 	}
 }

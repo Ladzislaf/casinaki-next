@@ -48,6 +48,12 @@ const minerSchema = Joi.object({
 	}
 })
 
+const blackJackSchema = Joi.object({
+	parameters: {
+		bet: Joi.number().min(0.1).max(999999),
+	}
+})
+
 const promocodeSchema = Joi.object({
 	promocode: Joi.string().trim().alphanum().min(3).max(20).required()
 })
@@ -64,6 +70,7 @@ module.exports = {
 	validateDice: validator(diceSchema),
 	validateHilow: validator(hilowSchema),
 	validateMiner: validator(minerSchema),
+	validateBlackJack: validator(blackJackSchema),
 	validatePromo: validator(promocodeSchema),
 	validateReview: validator(reviewSchema),
 }

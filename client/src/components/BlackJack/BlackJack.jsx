@@ -1,12 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from './BlackJack.module.css'
 import Card from '../Card/Card'
 import Button from '../Button/Button'
-import { getCardsDeck, getRand } from '../../utils/functions'
+import { getCardsDeck } from '../../utils/functions'
+import { playBlackJack } from '../../http/playApi'
+import { Context } from '../..'
+import { MIN_BET } from '../../utils/constants'
+import BetMaker from '../BetMaker/BetMaker'
+import { check } from '../../http/userAPI'
+import { observer } from 'mobx-react-lite'
 
-const cardsDeck = getCardsDeck()
+const cardsDeck = getCardsDeck('blackjack')
 
-const BlackJack = () => {
+const BlackJack = observer(() => {
+    const { user } = useContext(Context)
+	const [bet, setBet] = useState(MIN_BET)
+	const [balanceStatus, setBalanceStatus] = useState('')
+
     const [dealerHand, setDealerHand] = useState({ 'cards': [-1, -1], 'sum': 0 })
     const [myHand, setMyHand] = useState({ 'cards': [-1, -1], 'sum': 0 })
     
@@ -15,11 +25,23 @@ const BlackJack = () => {
     }, [myHand])
 
     const startGame = () => {
-        let newDealerCards = [getRand(0, 51), getRand(0, 51)]
-        let newPlayerCards = [getRand(0, 51), getRand(0, 51)]
-        setDealerHand({ 'cards': newDealerCards, 'sum': calculateSumCardsValue([...newDealerCards]) })
-        setMyHand({ 'cards': newPlayerCards, 'sum': calculateSumCardsValue([...newPlayerCards]) })
-
+        check().then(userInfo => {
+            user.setUser(userInfo)
+            if (userInfo.role === 'BLOCKED') {
+                alert('sorry, you have been blocked by admin')
+            } else {
+                playBlackJack({ bet: bet })
+                    .then(data => {
+                        user.setUserBalance(user.balance - bet)
+                        setBalanceStatus(`- ${bet}$`)
+                        setMyHand({ 'cards': data.cards, 'sum': calculateSumCardsValue([...data.cards]) })
+                    })
+                    .catch(err => {
+                        console.log(err.response.data)
+                        alert(err.response.data.message)
+                    })
+            }
+        })
     }
 
     const reloadGame = () => {
@@ -30,10 +52,7 @@ const BlackJack = () => {
     const calculateSumCardsValue = (cardsArray) => {
         let sum = 0
         for (let card of cardsArray) {
-            let cardValue = cardsDeck[card].value
-            if (cardValue === 14) cardValue = 11
-            else if (cardValue > 10) cardValue = 10
-            sum += cardValue
+            sum += cardsDeck[card].value
         }
         return sum
     }
@@ -43,6 +62,8 @@ const BlackJack = () => {
     return (
         <div className={styles.container}>
             <h2>BlackJack</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user.balance}$ {balanceStatus}</h2>
+			<BetMaker bet={bet} setBet={setBet} />
 
             <div className={styles.playerHand}>
                 <p>dealer</p>
@@ -73,6 +94,6 @@ const BlackJack = () => {
             
         </div>
     )
-}
+})
 
 export default BlackJack

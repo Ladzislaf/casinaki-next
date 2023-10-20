@@ -58,7 +58,7 @@ const DiceGame = observer(() => {
 	return (
 		<div className={styles.container}>
 			<h2>dice game</h2>
-			<h2 style={{ color: '#F87D09' }}>balance: {user.user.balance}$ {state.gameResult}</h2>
+			<h2 style={{ color: '#F87D09' }}>balance: {user.balance}$ {state.gameResult}</h2>
 
 			<BetMaker bet={bet} setBet={setBet} />
 			<h1>dice: {state.dice}</h1>

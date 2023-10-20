@@ -25,7 +25,7 @@ const Navbar = observer(() => {
 			<div className={styles.links_container}>
 				{user.isAuth ?
 					<>
-						<div className={styles.info}>balance: {user.user.balance}$</div>
+						<div className={styles.info}>balance: {user.balance}$</div>
 						<NavLink className={styles.routes} to={PROFILE_ROUTE}>{user.user.username}</NavLink>
 						{user.user.role === 'ADMIN' && 
 							<NavLink className={styles.routes} to={ADMIN_ROUTE}>admin_panel</NavLink>

@@ -21,3 +21,10 @@ export const playMiner = async (info) => {
 	const { balance: newBalance } = jwt_decode(data.token)
 	return { newBalance, gameResult: data.gameResult }
 }
+
+export const playBlackJack = async (parameters) => {
+	const { data } = await $authHost.post('api/play/blackjack', { parameters })
+	localStorage.setItem('token', data.token)
+	const { balance: newBalance } = jwt_decode(data.token)
+	return { newBalance, cards: data.cards }
+}
