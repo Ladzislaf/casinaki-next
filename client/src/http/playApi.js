@@ -26,5 +26,5 @@ export const playBlackJack = async (parameters) => {
 	const { data } = await $authHost.post('api/play/blackjack', { parameters })
 	localStorage.setItem('token', data.token)
 	const { balance: newBalance } = jwt_decode(data.token)
-	return { newBalance, cards: data.cards }
+	return { newBalance, results: data.results }
 }

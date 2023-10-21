@@ -12,19 +12,29 @@ import { observer } from 'mobx-react-lite'
 
 const cardsDeck = getCardsDeck('blackjack')
 
+// TODO:    - результат: ничья
+//          - А = 1\11
+//          - сообщение: win/lose
+//          - генерация уникальных карт на сервере
+//          - 
+//          - merge
+
 const BlackJack = observer(() => {
     const { user } = useContext(Context)
 	const [bet, setBet] = useState(MIN_BET)
 	const [balanceStatus, setBalanceStatus] = useState('')
+    const [gameStatus, setGameStatus] = useState('betting')
 
     const [dealerHand, setDealerHand] = useState({ 'cards': [-1, -1], 'sum': 0 })
-    const [myHand, setMyHand] = useState({ 'cards': [-1, -1], 'sum': 0 })
+    const [playerHand, setPlayerHand] = useState({ 'cards': [-1, -1], 'sum': 0 })
     
     useEffect(() => {
-        if (myHand.sum === 21) alert('CONGRATULATIONS!')
-    }, [myHand])
+        // if (playerHand.sum === 21) 
+        //     alert('CONGRATULATIONS!')
+    }, [playerHand])
 
     const startGame = () => {
+        setGameStatus('playing')
         check().then(userInfo => {
             user.setUser(userInfo)
             if (userInfo.role === 'BLOCKED') {
@@ -34,19 +44,15 @@ const BlackJack = observer(() => {
                     .then(data => {
                         user.setUserBalance(user.balance - bet)
                         setBalanceStatus(`- ${bet}$`)
-                        setMyHand({ 'cards': data.cards, 'sum': calculateSumCardsValue([...data.cards]) })
+                        setDealerHand({ 'cards': data.results.dealerCards, 'sum': calculateSumCardsValue(data.results.dealerCards) })
+                        setPlayerHand({ 'cards': data.results.playerCards, 'sum': calculateSumCardsValue(data.results.playerCards) })
                     })
                     .catch(err => {
-                        console.log(err.response.data)
-                        alert(err.response.data.message)
+                        console.log(err.response?.data)
+                        alert(err.response?.data.message)
                     })
             }
         })
-    }
-
-    const reloadGame = () => {
-        setDealerHand({ 'cards': [-1, -1], 'sum': 0 })
-        setMyHand({ 'cards': [-1, -1], 'sum': 0 })
     }
 
     const calculateSumCardsValue = (cardsArray) => {
@@ -57,7 +63,40 @@ const BlackJack = observer(() => {
         return sum
     }
 
+    const getAnotherCard = () => {
+        playBlackJack({ another: true })
+            .then(data => {
+                if (data.results.gameOver) {
+                    console.log('GAME OVER')
+                    setGameStatus('betting')
+                }
+                setPlayerHand({ 'cards': data.results.playerCards, 'sum': calculateSumCardsValue(data.results.playerCards) })
+            })
+            .catch(err => {
+                console.log(err.response?.data)
+                alert(err.response?.data.message)
+            })
+    }
 
+    const checkResults = () => {
+        playBlackJack({ another: false })
+            .then(data => {
+                if (data.results.gameOver) {
+                    console.log('GAME OVER')
+                    setGameStatus('betting')
+                } else {
+                    console.log('WINNER!')
+                    setGameStatus('betting')
+                    user.setUserBalance(user.balance + bet * 2)
+                    setBalanceStatus(`+ ${bet}$`)
+                }
+                setDealerHand({ 'cards': data.results.dealerCards, 'sum': calculateSumCardsValue(data.results.dealerCards) })
+            })
+            .catch(err => {
+                console.log(err.response?.data)
+                alert(err.response?.data.message)
+            })
+    }
 
     return (
         <div className={styles.container}>
@@ -78,18 +117,17 @@ const BlackJack = observer(() => {
             <div className={styles.playerHand}>
                 <p>you</p>
                 <div>
-                    {myHand.cards.map( (cardI, index) => {
+                    {playerHand.cards.map( (cardI, index) => {
                         return <Card key={index} cardIndex={cardI}/>
                     } )}
                 </div>
-                {myHand.sum}
+                {playerHand.sum}
             </div>
             
             <div>
-                <Button onClick={() => startGame()}>play</Button>
-                <Button onClick={() => reloadGame()}>reload</Button>
-                <Button>more</Button>
-                <Button>enough</Button>
+                {gameStatus === 'betting' && <Button onClick={() => startGame()}>play</Button>}
+                {gameStatus === 'playing' && <Button onClick={() => getAnotherCard()}>more</Button>}
+                {gameStatus === 'playing' && <Button onClick={() => checkResults()}>enough</Button>}
             </div>
             
         </div>

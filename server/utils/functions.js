@@ -59,4 +59,15 @@ const updateRank = async (profile) => {
 	if (profile.rankId !== rankId) await profile.update({ rankId: rankId })
 }
 
-module.exports = { generateToken, getRand, getCardValue, getCoefficients, getBombs, calculateCoefficient, updateRank }
+const getBlackJackCardValue = (cardIndex) => {
+	const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11]
+	let cards = Array(52)
+
+	for (let i = 0; i < cards.length; i++) {
+		cards[i] = values[Math.floor((i / 4))]
+	}
+
+	return cards[cardIndex]
+}
+
+module.exports = { generateToken, getRand, getCardValue, getCoefficients, getBombs, calculateCoefficient, updateRank, getBlackJackCardValue }

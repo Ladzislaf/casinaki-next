@@ -51,6 +51,8 @@ const minerSchema = Joi.object({
 const blackJackSchema = Joi.object({
 	parameters: {
 		bet: Joi.number().min(0.1).max(999999),
+		another: Joi.bool()
+			.when('bet', { is: Joi.exist(), then: Joi.forbidden() })
 	}
 })
 
