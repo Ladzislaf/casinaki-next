@@ -98,8 +98,13 @@ const HiLowGame = observer(() => {
 	return (
 		<div className={styles.container}>
 			<h2>higher-lower game</h2>
-			<h2 style={{ color: '#F87D09' }}>balance: {user.balance}$ {state.status}</h2>
-			<BetMaker bet={bet} setBet={setBet} />
+			{user.isAuth && 
+                <>
+                    <h2 style={{ color: '#F87D09' }}>balance: {user.balance}$ {state.status}</h2>
+                    <BetMaker bet={bet} setBet={setBet} />
+
+                </>
+            }
 			{gameState === 'playing' ?
 				<>
 					<div>
@@ -120,7 +125,7 @@ const HiLowGame = observer(() => {
 					</Button>
 				</>
 				: <>
-					<Button onClick={() => { startGameHandler() }} bg={GREEN_BTN_COLOR}>play</Button>
+					<Button onClick={() => { startGameHandler() }} bg={GREEN_BTN_COLOR} disabled={!user.isAuth}>play</Button>
 					<Card cardIndex={state.card}/>
 					<Button onClick={() => setState({ ...state, card: getRand(0, 51) })} bg={GREEN_BTN_COLOR}>change card</Button>
 				</>

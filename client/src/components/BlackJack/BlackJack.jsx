@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styles from './BlackJack.module.css'
 import Card from '../Card/Card'
 import Button from '../Button/Button'
@@ -12,29 +12,19 @@ import { observer } from 'mobx-react-lite'
 
 const cardsDeck = getCardsDeck('blackjack')
 
-// TODO:    - результат: ничья
-//          - А = 1\11
-//          - сообщение: win/lose
-//          - генерация уникальных карт на сервере
-//          - 
-//          - merge
-
 const BlackJack = observer(() => {
     const { user } = useContext(Context)
 	const [bet, setBet] = useState(MIN_BET)
 	const [balanceStatus, setBalanceStatus] = useState('')
     const [gameStatus, setGameStatus] = useState('betting')
+    const [gameResultMessage, setGameResultMessage] = useState('')
 
     const [dealerHand, setDealerHand] = useState({ 'cards': [-1, -1], 'sum': 0 })
     const [playerHand, setPlayerHand] = useState({ 'cards': [-1, -1], 'sum': 0 })
-    
-    useEffect(() => {
-        // if (playerHand.sum === 21) 
-        //     alert('CONGRATULATIONS!')
-    }, [playerHand])
 
     const startGame = () => {
         setGameStatus('playing')
+        setGameResultMessage('')
         check().then(userInfo => {
             user.setUser(userInfo)
             if (userInfo.role === 'BLOCKED') {
@@ -44,7 +34,7 @@ const BlackJack = observer(() => {
                     .then(data => {
                         user.setUserBalance(user.balance - bet)
                         setBalanceStatus(`- ${bet}$`)
-                        setDealerHand({ 'cards': data.results.dealerCards, 'sum': calculateSumCardsValue(data.results.dealerCards) })
+                        setDealerHand({ 'cards': [...data.results.dealerCards, -1], 'sum': calculateSumCardsValue(data.results.dealerCards) })
                         setPlayerHand({ 'cards': data.results.playerCards, 'sum': calculateSumCardsValue(data.results.playerCards) })
                     })
                     .catch(err => {
@@ -57,8 +47,15 @@ const BlackJack = observer(() => {
 
     const calculateSumCardsValue = (cardsArray) => {
         let sum = 0
+        let counterOfA = 0
         for (let card of cardsArray) {
-            sum += cardsDeck[card].value
+            let value = cardsDeck[card].value
+            if (value === 11) { counterOfA++ } 
+            sum += value
+        }
+        while (counterOfA && sum > 21) {
+            sum -= 10
+            counterOfA--
         }
         return sum
     }
@@ -67,7 +64,7 @@ const BlackJack = observer(() => {
         playBlackJack({ another: true })
             .then(data => {
                 if (data.results.gameOver) {
-                    console.log('GAME OVER')
+                    setGameResultMessage('LOOSER')
                     setGameStatus('betting')
                 }
                 setPlayerHand({ 'cards': data.results.playerCards, 'sum': calculateSumCardsValue(data.results.playerCards) })
@@ -82,10 +79,15 @@ const BlackJack = observer(() => {
         playBlackJack({ another: false })
             .then(data => {
                 if (data.results.gameOver) {
-                    console.log('GAME OVER')
+                    setGameResultMessage('LOOSER')
                     setGameStatus('betting')
+                } else if (data.results.draw) {
+                    setGameResultMessage('DRAW')
+                    setGameStatus('betting')
+                    user.setUserBalance(user.balance + bet)
+                    setBalanceStatus(`+ 0$`)
                 } else {
-                    console.log('WINNER!')
+                    setGameResultMessage('WINNER!')
                     setGameStatus('betting')
                     user.setUserBalance(user.balance + bet * 2)
                     setBalanceStatus(`+ ${bet}$`)
@@ -101,11 +103,16 @@ const BlackJack = observer(() => {
     return (
         <div className={styles.container}>
             <h2>BlackJack</h2>
-			<h2 style={{ color: '#F87D09' }}>balance: {user.balance}$ {balanceStatus}</h2>
-			<BetMaker bet={bet} setBet={setBet} />
+            {user.isAuth && 
+                <>
+                    <h2 style={{ color: '#F87D09' }}>balance: {user.balance}$ {balanceStatus}</h2>
+                    <BetMaker bet={bet} setBet={setBet} />
+                    <h3 style={{ color: '#F87D09' }}>{gameResultMessage}</h3>
+                </>
+            }
 
             <div className={styles.playerHand}>
-                <p>dealer</p>
+                <p>dealer (stand on 17)</p>
                 <div>
                     {dealerHand.cards.map( (cardI, index) => {
                         return <Card key={index} cardIndex={cardI}/>
@@ -124,12 +131,13 @@ const BlackJack = observer(() => {
                 {playerHand.sum}
             </div>
             
-            <div>
-                {gameStatus === 'betting' && <Button onClick={() => startGame()}>play</Button>}
-                {gameStatus === 'playing' && <Button onClick={() => getAnotherCard()}>more</Button>}
-                {gameStatus === 'playing' && <Button onClick={() => checkResults()}>enough</Button>}
-            </div>
-            
+            {user.isAuth && 
+                <div>
+                    {gameStatus === 'betting' && <Button onClick={() => startGame()}>play</Button>}
+                    {gameStatus === 'playing' && <Button onClick={() => getAnotherCard()}>more</Button>}
+                    {gameStatus === 'playing' && <Button onClick={() => checkResults()}>enough</Button>}
+                </div>
+            }
         </div>
     )
 })

@@ -28,6 +28,6 @@ export default class UserStore {
 	}
 
 	get balance() {
-		return +this._user.balance.toFixed(2)
+		return +this._user.balance?.toFixed(2)
 	}
 }

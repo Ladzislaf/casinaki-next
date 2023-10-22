@@ -58,11 +58,15 @@ const DiceGame = observer(() => {
 	return (
 		<div className={styles.container}>
 			<h2>dice game</h2>
-			<h2 style={{ color: '#F87D09' }}>balance: {user.balance}$ {state.gameResult}</h2>
+			{user.isAuth && 
+                <>
+                    <h2 style={{ color: '#F87D09' }}>balance: {user.balance}$ {state.gameResult}</h2>
+                    <BetMaker bet={bet} setBet={setBet} />
 
-			<BetMaker bet={bet} setBet={setBet} />
+                </>
+            }
 			<h1>dice: {state.dice}</h1>
-			<Button bg={GREEN_BTN_COLOR} onClick={() => rollDice()} disabled={diceDisable}>roll</Button>
+			<Button bg={GREEN_BTN_COLOR} onClick={() => rollDice()} disabled={diceDisable || !user.isAuth}>roll</Button>
 			<div className={styles.dicePicker}>
 				<div>
 					<Button bg={buttons.over ? '#0a6b12' : GREEN_BTN_COLOR} onClick={() => setButtons({ over: true, under: false })} width={'150px'}>over</Button> <br/>

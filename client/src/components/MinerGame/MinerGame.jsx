@@ -128,15 +128,20 @@ const MinerGame = observer(() => {
 	return (
 		<div className={styles.container}>
 			<h2>miner game</h2>
-			<h2 style={{ color: '#F87D09' }}>balance: {user.balance}$ {balanceStatus}</h2>
-			<BetMaker bet={bet} setBet={setBet} />
+			{user.isAuth && 
+                <>
+                    <h2 style={{ color: '#F87D09' }}>balance: {user.balance}$ {balanceStatus}</h2>
+                    <BetMaker bet={bet} setBet={setBet} />
+
+                </>
+            }
 			<div className={styles.bombsPicker}>
 				<Button onClick={() => { bombsCount !== 3 && setBombsCount(bombsCount - 1) }} bg={GREEN_BTN_COLOR} width={'50px'}>-</Button>
 				<div>bombs: {bombsCount}</div>
 				<Button onClick={() => { bombsCount !== 24 && setBombsCount(bombsCount + 1) }} bg={GREEN_BTN_COLOR} width={'50px'}>+</Button> <br />
 			</div>
 			{gameStatus === 'betting' ?
-				<Button onClick={() => startGame()} width={'320px'} bg={GREEN_BTN_COLOR}>play</Button>
+				<Button onClick={() => startGame()} width={'320px'} bg={GREEN_BTN_COLOR} disabled={!user.isAuth}>play</Button>
 				:
 				<>
 					<div>next coefficient: {coefficients.nextCoefficient.toFixed(2)}x</div>
