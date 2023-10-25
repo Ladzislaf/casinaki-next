@@ -1,16 +1,17 @@
 import { observer } from 'mobx-react-lite'
 import React, { useContext, useEffect } from 'react'
 import { Context } from '../..'
-import { fetchRanks } from '../../http/appApi'
+import { fetchRanks } from '../../services/http/appApi'
 
 import styles from './Ranks.module.css'
 
-import first from '../../assets/ranks_icons/first.png'
-import second from '../../assets/ranks_icons/second.png'
-import third from '../../assets/ranks_icons/third.png'
-import fourth from '../../assets/ranks_icons/fourth.png'
-import fifth from '../../assets/ranks_icons/fifth.png'
-import sixth from '../../assets/ranks_icons/sixth.png'
+import first from '../../assets/images/ranks_icons/first.png'
+import second from '../../assets/images/ranks_icons/second.png'
+import third from '../../assets/images/ranks_icons/third.png'
+import fourth from '../../assets/images/ranks_icons/fourth.png'
+import fifth from '../../assets/images/ranks_icons/fifth.png'
+import sixth from '../../assets/images/ranks_icons/sixth.png'
+import Logo from '../../components/ui/Logo'
 
 const Ranks = observer(() => {
 	const { app } = useContext(Context)
@@ -22,12 +23,12 @@ const Ranks = observer(() => {
 	}, [app])
 
 	return (
-		<div className={styles.container}>
-			<div>Each rank is a kind of level, for which you need to score the required number of points.</div>
+		<>
+			<div style={{ textAlign: 'center' }}>Each rank is a kind of level, for which you need to score the required number of points.</div>
 			<table className={styles.tbl}>
 				<thead>
 					<tr>
-						<td colSpan={2}>rank</td>
+						<td>rank</td>
 						<td>winnings to achieve</td>
 					</tr>
 				</thead>
@@ -41,15 +42,20 @@ const Ranks = observer(() => {
 						else if (el.name === 'boss') image = fifth
 						else if (el.name === 'sheikh') image = sixth
 
-						return (<tr key={i}>
-							<td><img className={styles.img} src={image} alt={''} /></td>
-							<td>{el.name}</td>
-							<td>{el.value_to_achieve} $</td>
-						</tr>)
+						return (
+							<tr key={i}>
+								<td>
+									<Logo src={image} scale={0.8} bordered/> <br/>
+									{/* <img className={styles.img} src={image} alt={''}/><br/> */}
+									{el.name}
+									</td>
+								<td>{el.value_to_achieve} $</td>
+							</tr>
+						)
 					})}
 				</tbody>
 			</table>
-		</div>
+		</>
 	)
 })
 

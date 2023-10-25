@@ -1,19 +1,10 @@
 .card {
-	border: 3px #f87d09c2 solid;
-	border-radius: 10px;
-	color: #ffffff;
-	min-width: 120px;
-	min-height: 180px;
-	font-size: 40px;
-	text-align: center;
-	margin-left: -15px;
-	margin-right: -15px;
-}
+	border: 0.15rem #f87d09 solid;
+	border-radius: 0.5rem;
 
-@media only screen and (max-device-width: 600px) {
-	.card {
-		font-size: 150px;
-		width: 400px;
-		min-height: 600px;
-	}	
+	width: 7rem;
+	height: 9rem;
+	text-align: center;
+	margin-left: -0.6rem;
+	margin-right: -0.6rem;
 }

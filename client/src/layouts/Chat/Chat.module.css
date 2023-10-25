@@ -1,0 +1,14 @@
+.messagesList {
+    height: 100%;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+	overflow-y: scroll;
+}
+
+.messagesRow {
+
+}
+
+.messagesRow, .messagesRow > span {
+    font-size: 0.8rem;
+}

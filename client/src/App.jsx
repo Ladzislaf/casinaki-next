@@ -4,10 +4,10 @@ import { BrowserRouter } from 'react-router-dom'
 import { Context } from '.'
 import AppRouter from './components/AppRouter'
 import Loading from './components/Loading/Loading'
-import Navbar from './components/Navbar/Navbar'
-import Sidebar from './components/Sidebar/Sidebar'
-import { check } from './http/userAPI'
-import Chat from './components/Chat/Chat'
+import Navbar from './layouts/Navbar/Navbar'
+import Sidebar from './layouts/Sidebar/Sidebar'
+import { check } from './services/http/userAPI'
+import Chat from './layouts/Chat/Chat'
 
 const App = observer(() => {
 	const { user } = useContext(Context)
@@ -29,9 +29,9 @@ const App = observer(() => {
 
 	return (
 		<BrowserRouter>
-			<div className='navbar'>
+			<nav>
 				<Navbar />
-			</div>
+			</nav>
 			<div className='main-container'>
 				<div className='sidebar'>
 					<Sidebar />

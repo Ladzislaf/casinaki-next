@@ -1,43 +1,11 @@
-.container {
-	text-align: center;
-}
-
 .tbl {
 	width: 70%;
-	margin: 20px;
 	border-collapse: separate;
-	border-radius: 10px;
+	border-radius: 0.5rem;
 	background: #5d5d5d;
 }
 
-.tbl > thead > tr > td{
-	background: #b55b07;
-	border-radius: 10px;
+.tbl > * > tr > td{
+	padding: 0.4rem;
 	text-align: center;
-}
-
-.tbl * {
-	padding: 5px;
-}
-
-.img {
-	width: 50px;
-	border-radius: 50%;
-	padding: 0;
-	margin: 0 5px;
-	border: 2px solid white;
-}
-
-@media only screen and (max-device-width: 600px) {
-	.container {
-		font-size: 45px;
-	}
-
-	.tbl {
-		width: 100%;
-	}
-
-	.img {
-		width: 150px;
-	}
 }

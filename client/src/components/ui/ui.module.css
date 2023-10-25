@@ -1,0 +1,70 @@
+.btn, .inp, .inpArea {
+	margin: 0.2rem;
+	background: transparent;
+	border-radius: 0.5rem;
+	transition: 0.2s;
+	border: 0.15rem solid #f87d09;
+}
+
+.btn {
+	padding: 0.2rem 1.2rem;
+	color: #f87d09;
+	cursor: pointer;
+}
+
+.inp, .inpArea {
+	padding: 0.2rem;
+	color: #ffffff;
+}
+
+.inpArea {
+	width: calc(100% - 0.4rem);
+    resize: none;
+}
+
+.btn:hover, .inp:hover, .inpArea:hover {
+	background: #f87d0974;
+	border: 0.15rem solid #ffffff;
+	color: #ffffff;
+}
+
+.btn:active {
+	background: #f87d09;
+}
+
+.btn:disabled, .inp:disabled, .inpArea:disabled {
+	cursor: not-allowed;
+	color: #f87d094f;
+	border: 0.15rem solid #f87d094f;
+}
+
+.heading {
+	font-size: 30px;
+	text-align: center;
+}
+
+.logo {
+	width: 5rem;
+	border-radius: 0.5rem;
+}
+
+.linker {
+	display: inline-block;
+	line-height: 0;
+	
+	color: #dbdbe7;
+	text-decoration: none;
+}
+
+.linker:hover {
+	color: #f87d09;
+	text-decoration: underline;
+}
+
+@media only screen and (max-device-width: 600px) {
+	.heading {
+		font-size: 50px;
+	}
+
+
+}

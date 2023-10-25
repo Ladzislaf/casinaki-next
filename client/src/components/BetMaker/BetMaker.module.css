@@ -1,19 +1,10 @@
 .container {
-	border: 1px solid #F87D09;
-	border-radius: 10px;
-	background: #000000b1;
-	margin: 10px auto;
-	padding: 10px;
-	width: 60%;
+	border: 0.15rem solid #F87D09;
+	border-radius: 0.5rem;
+	background: #00000088;
+	width: 100%;
 }
 
-.container > * {
+.container > div {
 	text-align: center;
-}
-
-@media only screen and (max-device-width: 600px) {
-	.container {
-		font-size: 60px;
-		width: 90%;
-	}
 }

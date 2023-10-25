@@ -10,7 +10,7 @@ const io = new Server(process.env.WS_PORT || 5001, {
 let messages = []
 
 io.on('connection', (socket) => {
-	console.log(socket.id)
+	console.log('user connected:', socket.id)
 	
 	socket.on('sync', () => {
 		socket.emit('sync', messages)
@@ -18,10 +18,10 @@ io.on('connection', (socket) => {
 
 	socket.on('sendMessage', (info) => {
 		console.log(info)
-		socket.broadcast.emit('recieveMessage', info.username, info.message)
-		messages.unshift(info)
-		if (messages.length >= 11) {
-			messages.pop()
+		socket.broadcast.emit('receiveMessage', info.username, info.message)
+		messages.push(info)
+		if (messages.length >= 31) {
+			messages.shift()
 		}
 	})
 })

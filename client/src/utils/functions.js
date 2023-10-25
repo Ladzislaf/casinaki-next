@@ -4,7 +4,7 @@ export const getRand = (min, max) => {
 
 export const getCardsDeck = (game = 'default') => {
 	const suits = ['♠', '♥', '♦', '♣']
-	const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+	const ranks = [' 2', ' 3', ' 4', ' 5', ' 6', ' 7', ' 8', ' 9', '10', ' J', ' Q', ' K', ' A']
 	const values = {
 		'default': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 		'blackjack': [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11],

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import styles from './Deposit.module.css'
-import Promocode from '../../components/Promocode/Promocode'
-import Button from '../../components/Button/Button'
-import { check, getBonus } from '../../http/userAPI'
+import Promocode from './Promocode'
+import Button from '../../components/ui/Button'
+import { check, getBonus } from '../../services/http/userAPI'
 import { Context } from '../..'
+import Heading from '../../components/ui/Heading'
 
 const Deposit = () => {
 	const { user } = useContext(Context)
@@ -24,11 +24,11 @@ const Deposit = () => {
 	}
 
 	return (
-		<div className={styles.container}>
+		<>
 			<Promocode/>
-			<h3>daily bonus</h3>
+			<Heading>daily bonus</Heading>
 			<Button onClick={() => getDailyBonus()}>get 1$</Button>
-		</div>
+		</>
 	)
 }
 

@@ -1,14 +1,14 @@
 import React from 'react'
-import styles from './Main.module.css'
-import logo from '../../assets/logo.png'
-import BetHistory from '../../components/BetHistory/BetHistory'
+import logo from '../../assets/images/logo.png'
+import BetHistory from './BetHistory'
+import Logo from '../../components/ui/Logo'
 
 const Main = () => {
 	return (
-		<div className={styles.container}>
-			<img src={logo} className={styles.img} alt='logo' />
+		<>
+			<Logo src={logo} scale={3} />
 			<BetHistory />
-		</div>
+		</>
 	)
 }
 
