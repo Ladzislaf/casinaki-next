@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  PLAYER
+  ADMIN
+}
+
+model Player {
+  id            String         @id @default(uuid())
+  username      String         @unique
+  password      String         @db.VarChar(255)
+  role          Role           @default(PLAYER)
+  bonus         DateTime?      @db.Date
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  playerProfile PlayerProfile?
+  review        Review?
+  gameLog       GameLog[]
+}
+
+model PlayerProfile {
+  id                 Int                  @id @default(autoincrement())
+  balance            Float                @default(0)
+  winnings_sum       Float                @default(0)
+  playerId           String               @unique
+  rankId             Int                  @default(1)
+  player             Player               @relation(fields: [playerId], references: [id])
+  rank               Rank                 @relation(fields: [rankId], references: [id])
+  activatedPromocode ActivatedPromocode[]
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  plqyerId  String   @unique
+  player    Player   @relation(fields: [plqyerId], references: [id])
+}
+
+model Promocode {
+  id                 Int                  @id @default(autoincrement())
+  code               String               @unique
+  value              Float
+  count              Int                  @default(10)
+  activatedPromocode ActivatedPromocode[]
+}
+
+model ActivatedPromocode {
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  promocodeId     Int
+  playerProfileId Int
+  promocode       Promocode     @relation(fields: [promocodeId], references: [id], onDelete: Cascade)
+  playerProfile   PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+
+  @@id([promocodeId, playerProfileId])
+}
+
+model Game {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  gameLog GameLog[]
+}
+
+model Rank {
+  id             Int             @id @default(autoincrement())
+  name           String          @unique
+  valueToAchieve Int
+  playerProfile  PlayerProfile[]
+}
+
+model GameLog {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  bet         String
+  coefficient String
+  winnings    String
+  playerId    String
+  gameId      Int
+  player      Player   @relation(fields: [playerId], references: [id])
+  game        Game     @relation(fields: [gameId], references: [id])
+}
