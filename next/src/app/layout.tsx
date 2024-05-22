@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Kanit } from 'next/font/google';
 import './globals.css';
-import Sidebar from '@/components/Sidebar';
-import Navbar from '@/components/Navbar';
+import Sidebar from '@/components/Sidebar/Sidebar';
+import Navbar from '@/components/Navbar/Navbar';
 
 const inter = Inter({ subsets: ['latin'] });
+const kanit = Kanit({ subsets: ['latin'], weight: ['600'] });
 
 export const metadata: Metadata = {
 	title: 'Casinaki project',
@@ -18,12 +19,12 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${inter.className} antialiased text-base flex flex-col h-screen`}>
+			<body className={`${kanit.className} text-base flex flex-col h-screen`}>
 				<Navbar />
 				<div className='flex h-full justify-between'>
 					<Sidebar />
 					{children}
-					<div className=' w-1/4 border border-sky-500'>chat</div>
+					<div className='chat'>chat</div>
 				</div>
 			</body>
 		</html>

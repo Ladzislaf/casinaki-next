@@ -1,0 +1,41 @@
+.nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 100%;
+	height: 60px;
+	background: #222225;
+	padding: 0 150px;
+
+	a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		img {
+			height: 80%;
+			width: auto;
+		}
+	}
+
+	div {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		a {
+			color: #dbdbe7;
+			padding: 0 10px;
+			height: 100%;
+
+			&:hover {
+				color: rgba(255, 255, 255, 0.60);
+				text-decoration: underline;
+			}
+		}
+
+		.sign {
+			color: #f87d09;
+		}
+	}
+}

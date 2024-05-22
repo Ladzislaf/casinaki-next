@@ -1,0 +1,23 @@
+.sidebar {
+	display: flex;
+	flex-direction: column;
+	background: #2A2A30;
+
+	a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 80px;
+		width: 80px;
+
+		img {
+			width: 60%;
+			height: 60%;
+		}
+
+		&:hover {
+			background: #F87D09;
+		}
+	}
+}
+
