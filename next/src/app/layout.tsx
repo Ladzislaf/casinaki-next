@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter, Kanit } from 'next/font/google';
-import './globals.css';
-import Sidebar from '@/components/Sidebar/Sidebar';
-import Navbar from '@/components/Navbar/Navbar';
+import '@/ui/globals.scss';
+import Sidebar from '@/ui/Sidebar/Sidebar';
+import Navbar from '@/ui/Navbar/Navbar';
+import Chat from '@/ui/Chat/Chat';
 
 const inter = Inter({ subsets: ['latin'] });
 const kanit = Kanit({ subsets: ['latin'], weight: ['600'] });
@@ -19,12 +20,12 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={`${kanit.className} text-base flex flex-col h-screen`}>
+			<body className={kanit.className}>
 				<Navbar />
-				<div className='flex h-full justify-between'>
+				<div>
 					<Sidebar />
-					{children}
-					<div className='chat'>chat</div>
+					<main>{children}</main>
+					<Chat />
 				</div>
 			</body>
 		</html>

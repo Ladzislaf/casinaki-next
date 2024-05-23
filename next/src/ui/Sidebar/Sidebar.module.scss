@@ -1,0 +1,34 @@
+.sidebar {
+	margin: auto;
+	margin-left: 10px;
+	display: flex;
+	flex-direction: column;
+	background: #222222;
+	justify-content: center;
+	border-radius: 10px;
+	border: 2px solid rgba(255, 255, 255, 0.2);
+
+	a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 80px;
+		width: 80px;
+		border-radius: 10px;
+
+		img {
+			width: 60%;
+			height: 60%;
+		}
+
+		&:hover {
+			background: #f87d0950;
+
+			img {
+				width: 70%;
+				height: 70%;
+			}
+		}
+	}
+}
+
