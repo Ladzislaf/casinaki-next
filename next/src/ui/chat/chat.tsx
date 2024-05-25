@@ -1,4 +1,4 @@
-import styles from './Chat.module.scss';
+import styles from './chat.module.scss';
 
 export default function Chat() {
 	return (

@@ -4,7 +4,7 @@
 	justify-content: space-between;
 	width: 70%;
 	height: 60px;
-	background: #222222;
+	background: #333333;
 	margin: auto;
 	margin-top: 10px;
 	border-radius: 10px;
@@ -44,8 +44,14 @@
 			}
 		}
 
-		.sign {
+		.player {
 			color: #f87d09;
+
+			img {
+				border-radius: 50%;
+				border: 2px solid white;
+				margin-right: 10px;
+			}
 		}
 	}
 }

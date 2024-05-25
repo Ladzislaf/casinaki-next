@@ -14,36 +14,28 @@ enum Role {
 }
 
 model Player {
-  id            String         @id @default(uuid())
-  username      String         @unique
-  password      String         @db.VarChar(255)
-  role          Role           @default(PLAYER)
-  bonus         DateTime?      @db.Date
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  playerProfile PlayerProfile?
-  review        Review?
-  gameLog       GameLog[]
-}
-
-model PlayerProfile {
-  id                 Int                  @id @default(autoincrement())
-  balance            Float                @default(0)
-  winnings_sum       Float                @default(0)
-  playerId           String               @unique
+  email              String               @id
+  password           String?
+  role               Role                 @default(PLAYER)
+  balance            String               @default("5")
+  winnings_sum       String               @default("0")
   rankId             Int                  @default(1)
-  player             Player               @relation(fields: [playerId], references: [id])
+  bonus              DateTime?            @db.Date
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  review             Review?
   rank               Rank                 @relation(fields: [rankId], references: [id])
+  gameLog            GameLog[]
   activatedPromocode ActivatedPromocode[]
 }
 
 model Review {
-  id        Int      @id @default(autoincrement())
-  text      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  plqyerId  String   @unique
-  player    Player   @relation(fields: [plqyerId], references: [id])
+  id          Int      @id @default(autoincrement())
+  text        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  playerEmail String   @unique
+  player      Player   @relation(fields: [playerEmail], references: [email])
 }
 
 model Promocode {
@@ -55,14 +47,14 @@ model Promocode {
 }
 
 model ActivatedPromocode {
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  promocodeId     Int
-  playerProfileId Int
-  promocode       Promocode     @relation(fields: [promocodeId], references: [id], onDelete: Cascade)
-  playerProfile   PlayerProfile @relation(fields: [playerProfileId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  promocodeId Int
+  playerEmail String
+  promocode   Promocode @relation(fields: [promocodeId], references: [id], onDelete: Cascade)
+  player      Player    @relation(fields: [playerEmail], references: [email], onDelete: Cascade)
 
-  @@id([promocodeId, playerProfileId])
+  @@id([promocodeId, playerEmail])
 }
 
 model Game {
@@ -72,10 +64,10 @@ model Game {
 }
 
 model Rank {
-  id             Int             @id @default(autoincrement())
-  name           String          @unique
+  id             Int      @id @default(autoincrement())
+  name           String   @unique
   valueToAchieve Int
-  playerProfile  PlayerProfile[]
+  Player         Player[]
 }
 
 model GameLog {
@@ -85,8 +77,8 @@ model GameLog {
   bet         String
   coefficient String
   winnings    String
-  playerId    String
+  playerEmail String
   gameId      Int
-  player      Player   @relation(fields: [playerId], references: [id])
+  player      Player   @relation(fields: [playerEmail], references: [email])
   game        Game     @relation(fields: [gameId], references: [id])
 }

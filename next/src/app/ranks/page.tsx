@@ -10,7 +10,7 @@ import fifth from '@/assets/ranks/fifth.png';
 import sixth from '@/assets/ranks/sixth.png';
 
 export default async function Ranks() {
-	const ranks = await fetchRanks();
+	const ranks = (await fetchRanks()) || [];
 	const images = [first, second, third, fourth, fifth, sixth];
 
 	return (
@@ -28,7 +28,7 @@ export default async function Ranks() {
 						return (
 							<tr key={el.id}>
 								<td>
-									<Image src={images[i]} alt={''} />
+									<Image src={images[i]} alt={'rank image'} />
 								</td>
 								<td>{el.name.toUpperCase()}</td>
 								<td>{el.valueToAchieve} $</td>

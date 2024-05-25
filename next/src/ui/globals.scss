@@ -45,7 +45,7 @@ body {
 	main {
 		display: flex;
 		overflow-y: scroll;
-		background: #222222;
+		background: #333333;
 		width: 100%;
 		margin: 10px;
 		padding: 10px;
@@ -54,8 +54,42 @@ body {
 
 		> div {
 			width: 100%;
-			text-align: center;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
 		}
+
+		> .signin {
+			margin: auto;
+		}
+	}
+}
+
+.btn {
+	font-size: inherit;
+	font-family: inherit;
+	padding: 5px 10px;
+	border-radius: 10px;
+	cursor: pointer;
+	border: 2px solid #f87d09;
+	background: transparent;
+	color: #f87d09;
+	width: fit-content;
+	margin: 5px;
+
+	&:hover {
+		background: #f87d0950;
+	}
+
+	&:active {
+		background: #f87d09ac;
+		color: #ffc48c;
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+		border: 2px solid #f87d0987;
+		color: #f87d0987;
 	}
 }
 

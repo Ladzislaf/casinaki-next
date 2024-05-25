@@ -3,6 +3,7 @@ import Image from 'next/image';
 import styles from './Navbar.module.scss';
 
 import logo from '@/assets/logo.png';
+import ProfileButton from './ProfileButton';
 
 export default function Navbar() {
 	return (
@@ -10,13 +11,10 @@ export default function Navbar() {
 			<Link href='/'>
 				<Image src={logo} alt='project logo' />
 			</Link>
-
 			<div>
 				<Link href='/ranks'>RANKS</Link>
 				<Link href='/reviews'>REVIEWS</Link>
-				<Link className={styles.sign} href='/signin'>
-					SIGN IN
-				</Link>
+				<ProfileButton />
 			</div>
 		</nav>
 	);

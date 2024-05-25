@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import styles from './Sidebar.module.scss';
+import styles from './sidebar.module.scss';
 
 import hiLowLogo from '@/assets/sidebar/hilo.svg';
 import diceLogo from '@/assets/sidebar/dice.svg';
