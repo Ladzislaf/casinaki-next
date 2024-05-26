@@ -1,0 +1,45 @@
+.container {
+	width: calc(100% - 10px);
+	text-align: center;
+
+	> table > tbody img {
+		width: 50px;
+		height: auto;
+		border-radius: 50%;
+		padding: 0;
+		border: 2px solid white;
+	}
+}
+
+.tbl {
+	width: calc(100% - 40px);
+	margin: 20px;
+	border-collapse: separate;
+	border-radius: 10px;
+	background: #5d5d5d;
+}
+
+.tbl > thead > tr > td {
+	background: #b55b07;
+	border-radius: 10px;
+	text-align: center;
+}
+
+.tbl * {
+	padding: 5px;
+}
+
+.link {
+	margin-right: 5px;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+}
+
+.player {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

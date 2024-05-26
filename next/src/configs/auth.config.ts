@@ -12,7 +12,6 @@ export const authConfig: AuthOptions = {
 	callbacks: {
 		async signIn({ profile }) {
 			if (profile?.email) {
-				console.log(profile);
 				await createPlayerAction(profile?.email);
 				return true;
 			}

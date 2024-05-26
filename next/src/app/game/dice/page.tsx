@@ -1,34 +1,42 @@
 'use client';
-import { useState } from 'react';
-import styles from './dice.module.scss';
-import { diceAction } from '@/actions/actions';
+import clsx from 'clsx';
 import Button from '@/ui/button';
-
-const overDiceCoefficients = [1.07, 1.19, 1.33, 1.52, 1.79, 2.13, 2.67, 3.56, 5.36, 10.67, 0];
-const underDiceCoefficients = [0, 10.67, 5.36, 3.56, 2.67, 2.13, 1.79, 1.52, 1.33, 1.19, 1.07];
+import BetMaker from '@/ui/BetMaker/BetMaker';
+import styles from './dice.module.scss';
+import playDiceAction from '@/actions/playDiceAction';
+import { useContext, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
+import { MIN_BET } from '@/lib/constants';
+import { overDiceCoefficients, underDiceCoefficients } from '@/lib/constants';
 
 export default function Dice() {
-	const [state, setState] = useState({ dice: 2, diceValue: 7, gameResult: '' });
+	const session = useSession();
+	const [state, setState] = useState({ dice: 0, diceValue: 7, gameResult: '' });
 	const [buttons, setButtons] = useState({ over: true, under: false });
-	const [diceDisable, setDiceDisable] = useState(false);
+	const [rollButtonDisable, setRollButtonDisable] = useState(false);
 
-	const rollDice = () => {
-		setDiceDisable(true);
-		playDice(bet, state.diceValue, buttons.over ? 'over' : 'under')
-			.then((data) => {
-				check().then((data) => {
-					user.setUser(data);
+	const [bet, setBet] = useState(MIN_BET);
+	const { updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+
+	function rollDice() {
+		setRollButtonDisable(true);
+
+		playDiceAction(bet, state.diceValue, buttons.over ? 'over' : 'under', session.data?.user?.email as string).then(
+			(res) => {
+				const gameRes = res?.gameResult as string;
+				setState({
+					...state,
+					dice: res?.diceResult as number,
+					gameResult: gameRes,
 				});
-				setState({ ...state, dice: data.diceResult, gameResult: data.gameResult });
-			})
-			.catch((err) => {
-				console.log(err.response.data);
-				alert(err.response.data.message);
-			})
-			.finally(() => [setDiceDisable(false)]);
-	};
+				updateBalance(res?.newBalance as string);
+				setRollButtonDisable(false);
+			}
+		);
+	}
 
-	const changeDiceValue = (mode) => {
+	const changeDiceValue = (mode: string) => {
 		if (mode === 'inc') {
 			if (state.diceValue === 11) return;
 			setState({ ...state, diceValue: ++state.diceValue });
@@ -40,54 +48,42 @@ export default function Dice() {
 
 	return (
 		<div className={styles.dice}>
-			<Button>button</Button>
-			<h2>dice game</h2>
-			{/* {user.isAuth && (
-				<>
-					<h2 style={{ color: '#F87D09' }}>
-						balance: {user.balance}$ {state.gameResult}
-					</h2>
-					<BetMaker bet={bet} setBet={setBet} />
-				</>
-			)} */}
-			<h1>dice: {state.dice}</h1>
-			<Button bg='green' onClick={() => rollDice()} disabled={diceDisable}>
-				roll
+			<h1>Dice game</h1>
+			<BetMaker bet={bet} setBet={setBet} />
+			<Button onClick={() => rollDice()} disabled={rollButtonDisable}>
+				Roll
 			</Button>
-			<div
-			//  className={styles.dicePicker}
-			>
-				<div>
+			<div className={styles.gameContainer}>
+				<div className={styles.gameModeButtons}>
 					<Button
-						bg={buttons.over ? '#0a6b12' : 'green'}
+						background={clsx(buttons.over && '#00800080')}
 						onClick={() => setButtons({ over: true, under: false })}
-						width={'150px'}
 					>
 						over
 					</Button>{' '}
-					<br />
 					<Button
-						bg={buttons.under ? '#0a6b12' : 'green'}
+						background={clsx(buttons.under && '#00800080')}
 						onClick={() => setButtons({ over: false, under: true })}
-						width={'150px'}
 					>
 						under
 					</Button>
 				</div>
-				<span>{state.diceValue}</span>
+				<div className={styles.diceValue}>{state.diceValue}</div>
 				<div>
-					<Button bg='green' onClick={() => changeDiceValue('inc')}>
-						▲
-					</Button>{' '}
-					<br />
-					<Button bg='green' onClick={() => changeDiceValue('dec')}>
-						▼
-					</Button>
+					<Button onClick={() => changeDiceValue('inc')}>▲</Button> <br />
+					<Button onClick={() => changeDiceValue('dec')}>▼</Button>
 				</div>
 			</div>
 			<div>
+				Game coefficient:{' '}
 				{buttons.over ? overDiceCoefficients[state.diceValue - 2] : underDiceCoefficients[state.diceValue - 2]} x
 			</div>
+			{state.dice > 0 && (
+				<>
+					<h2>{`Result: ${state.dice}`}</h2>
+					<h2>{state.gameResult}</h2>
+				</>
+			)}
 		</div>
 	);
 }

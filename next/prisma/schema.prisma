@@ -18,7 +18,7 @@ model Player {
   password           String?
   role               Role                 @default(PLAYER)
   balance            String               @default("5")
-  winnings_sum       String               @default("0")
+  winnings           String               @default("0")
   rankId             Int                  @default(1)
   bonus              DateTime?            @db.Date
   createdAt          DateTime             @default(now())

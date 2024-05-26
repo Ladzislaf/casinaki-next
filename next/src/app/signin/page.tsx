@@ -2,7 +2,7 @@
 import Button from '@/ui/button';
 import { signIn } from 'next-auth/react';
 
-export default async function SignIn() {
+export default function SignIn() {
 	return (
 		<div className='signin'>
 			<Button onClick={() => signIn('google', { callbackUrl: '/' })} disabled={true}>
