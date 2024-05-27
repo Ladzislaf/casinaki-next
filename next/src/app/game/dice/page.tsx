@@ -1,9 +1,9 @@
 'use client';
 import clsx from 'clsx';
-import Button from '@/ui/button';
 import BetMaker from '@/ui/BetMaker/BetMaker';
 import styles from './dice.module.scss';
 import playDiceAction from '@/actions/playDiceAction';
+import Button from '@/ui/Button';
 import { useContext, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
@@ -12,6 +12,7 @@ import { overDiceCoefficients, underDiceCoefficients } from '@/lib/constants';
 
 export default function Dice() {
 	const session = useSession();
+	const userEmail = session.data?.user?.email as string;
 	const [state, setState] = useState({ dice: 0, diceValue: 7, gameResult: '' });
 	const [buttons, setButtons] = useState({ over: true, under: false });
 	const [rollButtonDisable, setRollButtonDisable] = useState(false);
@@ -21,9 +22,8 @@ export default function Dice() {
 
 	function rollDice() {
 		setRollButtonDisable(true);
-
-		playDiceAction(bet, state.diceValue, buttons.over ? 'over' : 'under', session.data?.user?.email as string).then(
-			(res) => {
+		playDiceAction(bet, state.diceValue, buttons.over ? 'over' : 'under', userEmail)
+			.then((res) => {
 				const gameRes = res?.gameResult as string;
 				setState({
 					...state,
@@ -31,9 +31,10 @@ export default function Dice() {
 					gameResult: gameRes,
 				});
 				updateBalance(res?.newBalance as string);
+			})
+			.finally(() => {
 				setRollButtonDisable(false);
-			}
-		);
+			});
 	}
 
 	const changeDiceValue = (mode: string) => {
@@ -50,7 +51,7 @@ export default function Dice() {
 		<div className={styles.dice}>
 			<h1>Dice game</h1>
 			<BetMaker bet={bet} setBet={setBet} />
-			<Button onClick={() => rollDice()} disabled={rollButtonDisable}>
+			<Button onClick={() => rollDice()} disabled={rollButtonDisable || !session.data?.user}>
 				Roll
 			</Button>
 			<div className={styles.gameContainer}>

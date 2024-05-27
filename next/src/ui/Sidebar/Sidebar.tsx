@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import styles from './sidebar.module.scss';
+import styles from './Sidebar.module.scss';
 
 import hiLowLogo from '@/assets/sidebar/hilo.svg';
 import diceLogo from '@/assets/sidebar/dice.svg';
@@ -11,7 +11,7 @@ export default function Sidebar() {
 	return (
 		<div className={styles.sidebar}>
 			<div>
-				<Link href='/game/hilow'>
+				<Link href='/game/hi-low'>
 					<Image src={hiLowLogo} alt='higher-lower game logo' />
 				</Link>
 				<Link href='/game/dice'>

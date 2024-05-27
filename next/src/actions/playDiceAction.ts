@@ -1,13 +1,10 @@
 'use server';
 import { overDiceCoefficients, underDiceCoefficients } from '@/lib/constants';
+import { getRand } from '@/lib/functions';
 import prisma from '@/lib/prisma';
 
 const MIN_DICE = 2;
 const MAX_DICE = 12;
-
-const getRand = (min: number, max: number) => {
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-};
 
 export default async function playDiceAction(
 	bet: number,
@@ -17,12 +14,12 @@ export default async function playDiceAction(
 ) {
 	const player = await prisma.player.findUnique({ where: { email: playerEmail } });
 	if (!player) {
-		console.error('[PlayDiceAction] player not found');
+		console.error(`[PlayDiceAction] player ${playerEmail} not found`);
 		return;
 	}
 	const playerBalance = Number(player.balance);
 	if (playerBalance < bet) {
-		console.error('[PlayDiceAction] player has not enough money');
+		console.error(`[PlayDiceAction] player ${playerEmail} has not enough money`);
 		return;
 	}
 

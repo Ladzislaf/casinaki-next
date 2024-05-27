@@ -1,7 +1,7 @@
 'use client';
 import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import { MAX_BET, MIN_BET } from '@/lib/constants';
-import Button from '../button';
+import Button from '../Button';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
 import { useSession } from 'next-auth/react';
 
