@@ -41,7 +41,7 @@ export function getCoefficients(cardValue) {
 	return { hCoeff: higherCoefficient, lCoeff: lowerCoefficient };
 }
 
-const getBombs = (bombsCount) => {
+export function getBombs(bombsCount) {
 	let bombsArr = [];
 	while (bombsCount !== 0) {
 		let bomb = getRand(1, 25);
@@ -51,22 +51,22 @@ const getBombs = (bombsCount) => {
 		}
 	}
 	return bombsArr;
-};
+}
 
-const calculateCoefficient = (a, b) => {
+export function calculateCoefficient(a, b) {
 	return 0.97 / (a / b);
-};
+}
 
-const updateRank = async (profile) => {
+export async function updateRank(profile) {
 	const ranks = await Rank.findAll();
 	let rankId = 1;
 	for (let i = 0; i < ranks.length; i++) {
 		if (profile.winnings_sum >= ranks[i].dataValues.value_to_achieve) rankId = i + 1;
 	}
 	if (profile.rankId !== rankId) await profile.update({ rankId: rankId });
-};
+}
 
-const getBlackJackCardValue = (cardIndex) => {
+export function getBlackJackCardValue(cardIndex) {
 	const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11];
 	let cards = Array(52);
 
@@ -75,4 +75,4 @@ const getBlackJackCardValue = (cardIndex) => {
 	}
 
 	return cards[cardIndex];
-};
+}

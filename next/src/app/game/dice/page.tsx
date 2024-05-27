@@ -12,17 +12,17 @@ import { overDiceCoefficients, underDiceCoefficients } from '@/lib/constants';
 
 export default function Dice() {
 	const session = useSession();
-	const userEmail = session.data?.user?.email as string;
+	const playerEmail = session.data?.user?.email as string;
+	const { updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+
+	const [bet, setBet] = useState(MIN_BET);
 	const [state, setState] = useState({ dice: 0, diceValue: 7, gameResult: '' });
 	const [buttons, setButtons] = useState({ over: true, under: false });
 	const [rollButtonDisable, setRollButtonDisable] = useState(false);
 
-	const [bet, setBet] = useState(MIN_BET);
-	const { updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
-
 	function rollDice() {
 		setRollButtonDisable(true);
-		playDiceAction(bet, state.diceValue, buttons.over ? 'over' : 'under', userEmail)
+		playDiceAction(bet, state.diceValue, buttons.over ? 'over' : 'under', playerEmail)
 			.then((res) => {
 				const gameRes = res?.gameResult as string;
 				setState({

@@ -74,7 +74,7 @@ export default async function playHilow(playerEmail: string, gameMode?: 'high' |
 			} else {
 				await prisma.gameLog.create({
 					data: {
-						bet: `${bet}$`,
+						bet: `${activeGame.bet}$`,
 						coefficient: `${activeGame.coeff} x`,
 						winnings: status,
 						playerEmail: playerEmail,
@@ -105,7 +105,7 @@ export default async function playHilow(playerEmail: string, gameMode?: 'high' |
 			} else {
 				await prisma.gameLog.create({
 					data: {
-						bet: `${bet}$`,
+						bet: `${activeGame.bet}$`,
 						coefficient: `${activeGame.coeff} x`,
 						winnings: status,
 						playerEmail: playerEmail,
@@ -128,7 +128,7 @@ export default async function playHilow(playerEmail: string, gameMode?: 'high' |
 
 		await prisma.gameLog.create({
 			data: {
-				bet: `${bet}$`,
+				bet: `${activeGame.bet}$`,
 				coefficient: `${activeGame.coeff} x`,
 				winnings: status,
 				playerEmail: playerEmail,

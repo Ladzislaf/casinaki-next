@@ -13,9 +13,9 @@ const cards = getCardsDeck();
 
 export default function Hilow() {
 	const session = useSession();
-	const userEmail = session.data?.user?.email as string;
+	const playerEmail = session.data?.user?.email as string;
 	const [bet, setBet] = useState(MIN_BET);
-	const { balance, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
 
 	const [state, setState] = useState({ card: 52, status: '', totalCoefficient: 1, currentBet: bet });
 	const [coefficients, setCoefficients] = useState({ higher: 1, lower: 1 });
@@ -29,7 +29,7 @@ export default function Hilow() {
 
 	const startGameHandler = () => {
 		setStartGameDisable(true);
-		playHilow(userEmail, undefined, bet, state.card).then((res) => {
+		playHilow(playerEmail, undefined, bet, state.card).then((res) => {
 			if (res?.status) {
 				setState({ ...state, status: res.status, currentBet: bet });
 				setCoefficients({ higher: res.coeffs?.hCoeff as number, lower: res.coeffs?.lCoeff as number });
@@ -42,7 +42,7 @@ export default function Hilow() {
 
 	const playHandler = (gameMode: 'high' | 'low') => {
 		setPlayDisable(true);
-		playHilow(userEmail, gameMode)
+		playHilow(playerEmail, gameMode)
 			.then((res) => {
 				if (res?.coeffs) {
 					setState({ ...state, card: res.newCard, totalCoefficient: res.coeffs?.tCoeff });
@@ -58,7 +58,7 @@ export default function Hilow() {
 	};
 
 	const cashOutHandler = () => {
-		playHilow(userEmail).then((res) => {
+		playHilow(playerEmail).then((res) => {
 			if (res?.status) {
 				updateBalance(res.newBalance);
 				setState({ ...state, status: res.status, totalCoefficient: 1 });
