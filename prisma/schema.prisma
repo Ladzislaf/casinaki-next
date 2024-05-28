@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+enum Role {
+  PLAYER
+  ADMIN
+}
+
+model Player {
+  email              String               @id
+  password           String?
+  role               Role                 @default(PLAYER)
+  balance            String               @default("5")
+  winnings           String               @default("0")
+  rankId             Int                  @default(1)
+  bonus              DateTime?            @db.Date
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  review             Review?
+  rank               Rank                 @relation(fields: [rankId], references: [id])
+  gameLog            GameLog[]
+  activatedPromocode ActivatedPromocode[]
+}
+
+model Review {
+  id          Int      @id @default(autoincrement())
+  text        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  playerEmail String   @unique
+  player      Player   @relation(fields: [playerEmail], references: [email])
+}
+
+model Promocode {
+  id                 Int                  @id @default(autoincrement())
+  code               String               @unique
+  value              Float
+  count              Int                  @default(10)
+  activatedPromocode ActivatedPromocode[]
+}
+
+model ActivatedPromocode {
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  promocodeId Int
+  playerEmail String
+  promocode   Promocode @relation(fields: [promocodeId], references: [id], onDelete: Cascade)
+  player      Player    @relation(fields: [playerEmail], references: [email], onDelete: Cascade)
+
+  @@id([promocodeId, playerEmail])
+}
+
+model Game {
+  id      Int       @id @default(autoincrement())
+  name    String    @unique
+  gameLog GameLog[]
+}
+
+model Rank {
+  id             Int      @id @default(autoincrement())
+  name           String   @unique
+  valueToAchieve Int
+  Player         Player[]
+}
+
+model GameLog {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  bet         String
+  coefficient String
+  winnings    String
+  playerEmail String
+  gameId      Int
+  player      Player   @relation(fields: [playerEmail], references: [email])
+  game        Game     @relation(fields: [gameId], references: [id])
+}

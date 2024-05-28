@@ -1,0 +1,132 @@
+:root {
+	--foreground: #1b1b1e;
+	--background: #dbdbe7;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--foreground: #dbdbe7;
+		--background: #1b1b1e;
+	}
+}
+
+*::-webkit-scrollbar {
+	display: none;
+}
+
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+html,
+body {
+	/* overflow-x: hidden; */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+body {
+	max-width: 100vw;
+	max-height: 100vh;
+	color: var(--foreground);
+	background: var(--background);
+	font-size: 20px;
+	display: flex;
+	flex-direction: column;
+
+	> div {
+		display: flex;
+		justify-content: space-between;
+		height: calc(100vh - 70px);
+	}
+
+	main {
+		display: flex;
+		overflow-y: scroll;
+		background: #333333;
+		width: 100%;
+		margin: 10px;
+		padding: 10px;
+		border-radius: 10px;
+		border: 2px solid rgba(255, 255, 255, 0.2);
+
+		> div {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		> .signin {
+			margin: auto;
+		}
+
+		.betMaker {
+			border: 2px solid #f87d09;
+			border-radius: 10px;
+			background: #00000050;
+			margin: 5px auto;
+			padding: 5px;
+			text-align: center;
+			width: 400px;
+			height: 120px;
+
+			button {
+				width: 20%;
+			}
+		}
+
+		.card {
+			border: 3px #f87d09c2 solid;
+			border-radius: 10px;
+			color: #ffffff;
+			min-width: 120px;
+			min-height: 180px;
+			font-size: 40px;
+			text-align: center;
+			margin-left: -15px;
+			margin-right: -15px;
+		}
+	}
+}
+
+.btn {
+	font-size: inherit;
+	font-family: inherit;
+	padding: 5px 10px;
+	border-radius: 10px;
+	cursor: pointer;
+	border: 2px solid #f87d09;
+	background: transparent;
+	color: #f87d09;
+	width: fit-content;
+	margin: 5px;
+
+	&:hover {
+		background: #f87d0950;
+	}
+
+	&:active {
+		background: #f87d09ac;
+		color: #ffc48c;
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+		border: 2px solid #f87d0987;
+		color: #f87d0987;
+	}
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+	html {
+		color-scheme: dark;
+	}
+}

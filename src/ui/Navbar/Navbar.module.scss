@@ -1,0 +1,57 @@
+.nav {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 70%;
+	height: 60px;
+	background: #333333;
+	margin: auto;
+	margin-top: 10px;
+	border-radius: 10px;
+	border: 2px solid rgba(255, 255, 255, 0.2);
+
+	a {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 10px;
+
+		img {
+			height: 80%;
+			width: auto;
+		}
+
+		&:hover {
+			background: #f87d0950;
+			text-decoration: underline;
+		}
+	}
+
+	div {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		a {
+			color: #dbdbe7;
+			padding: 0 10px;
+			height: 100%;
+			border-radius: 10px;
+
+			&:hover {
+				background: #f87d0950;
+				text-decoration: underline;
+			}
+		}
+
+		.player {
+			color: #f87d09;
+
+			img {
+				border-radius: 50%;
+				border: 2px solid white;
+				margin-right: 10px;
+			}
+		}
+	}
+}
