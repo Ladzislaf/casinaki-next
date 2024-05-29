@@ -1,14 +1,16 @@
 'use client';
-import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Button from '../Button';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
 import { useSession } from 'next-auth/react';
 import { MAX_BET, MIN_BET } from '@/lib/utils';
+import styles from './BetMaker.module.scss';
 
-export default function BetMaker({ bet, setBet }: { bet: number; setBet: Dispatch<SetStateAction<number>> }) {
-	const session = useSession();
+export default function BetMaker({ children }: { children: React.ReactNode }) {
 	const [betStep, setBetStep] = useState(MIN_BET);
-	const { balance } = useContext(CurrentPlayerContext) as PlayerContextType;
+
+	const session = useSession();
+	const { balance, bet, setBet } = useContext(CurrentPlayerContext) as PlayerContextType;
 
 	useEffect(() => {
 		if (bet >= 10000) setBetStep(1000);
@@ -23,31 +25,31 @@ export default function BetMaker({ bet, setBet }: { bet: number; setBet: Dispatc
 	}, [bet]);
 
 	const changeBet = (newBet: number) => {
-		if (newBet < MIN_BET) setBet(MIN_BET);
+		if (Number.isNaN(newBet)) setBet(MAX_BET);
+		else if (newBet < MIN_BET) setBet(MIN_BET);
 		else if (newBet > MAX_BET) setBet(MAX_BET);
 		else setBet(Number(newBet.toFixed(2)));
 	};
 
 	return (
-		<div className='betMaker'>
-			{session?.data ? (
-				<>
-					<div>
-						<Button onClick={() => changeBet(bet - betStep)}>-</Button>
-						<span>BET: {bet.toFixed(2)}$</span>
-						<Button onClick={() => changeBet(bet + betStep)}>+</Button>
-					</div>
+		<div className={styles.container}>
+			<>
+				<div className={styles.bet}>
+					<Button onClick={() => changeBet(bet - betStep)}>-</Button>
+					<h2>BET: {bet.toFixed(2)}$</h2>
+					<Button onClick={() => changeBet(bet + betStep)}>+</Button>
+				</div>
 
+				<div className={styles.betOptions}>
 					<Button onClick={() => setBet(MIN_BET)}>min</Button>
 					<Button onClick={() => changeBet(bet * 2)}>x2</Button>
 					<Button onClick={() => changeBet(bet / 2)}>1/2</Button>
-					<Button onClick={() => (Number(balance) < MIN_BET ? setBet(MIN_BET) : setBet(Number(balance)))}>
-						all-in
-					</Button>
-				</>
-			) : (
-				<h2>Sign in to make a bet</h2>
-			)}
+					<Button onClick={() => changeBet(Number(balance))}>all-in</Button>
+				</div>
+
+				{children}
+			</>
+			{!session?.data && <h3>Sign in to play</h3>}
 		</div>
 	);
 }

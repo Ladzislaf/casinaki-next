@@ -14,8 +14,8 @@ export default function ProfileButton() {
 	useEffect(() => {
 		async function fetchBalance() {
 			const playerBalance = await getBalanceAction(session?.data?.user?.email as string);
-			if (playerBalance) {
-				updateBalance(playerBalance.toFixed(2));
+			if (playerBalance !== undefined) {
+				updateBalance(playerBalance);
 			}
 		}
 		if (session.status === 'authenticated' && session.data) {

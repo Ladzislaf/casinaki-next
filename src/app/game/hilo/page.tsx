@@ -6,15 +6,14 @@ import Button from '@/ui/Button';
 import Card from '@/ui/Card';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
 import playHiloAction from '@/actions/playHiLowAction';
-import { MIN_BET, calcHiloCoeff, genCardsDeck, getRand } from '@/lib/utils';
+import { calcHiloCoeff, genCardsDeck, getRand } from '@/lib/utils';
 
 const cards = genCardsDeck('hilo');
 
 export default function Hilo() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
-	const [bet, setBet] = useState(MIN_BET);
-	const { balance, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { balance, bet, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
 
 	const [state, setState] = useState({ card: 52, status: '', totalCoefficient: 1, currentBet: bet });
 	const [coefficients, setCoefficients] = useState({ higher: 1, lower: 1 });
@@ -27,12 +26,16 @@ export default function Hilo() {
 	}, []);
 
 	const startGameHandler = () => {
+		if (bet > Number(balance)) {
+			alert(`You don't have enough balance!`);
+			return;
+		}
 		setStartGameDisable(true);
 		playHiloAction({ playerEmail, bet, cardIndex: state.card })
 			.then((res) => {
 				setCoefficients({ higher: calcHiloCoeff(state.card, 'higher'), lower: calcHiloCoeff(state.card, 'lower') });
 				setState({ ...state, status: `- ${bet}$`, currentBet: bet });
-				updateBalance(res?.newBalance?.toFixed(2) || balance);
+				res?.newBalance && updateBalance(res?.newBalance);
 			})
 			.finally(() => {
 				setGameState('playing');
@@ -64,7 +67,7 @@ export default function Hilo() {
 		playHiloAction({ playerEmail })
 			.then((res) => {
 				if (res?.newBalance && res.gameWinnings) {
-					updateBalance(res.newBalance.toFixed(2));
+					updateBalance(res.newBalance);
 					setState({ ...state, status: `+ ${res.gameWinnings.toFixed(2)}$`, totalCoefficient: 1 });
 				}
 			})
@@ -90,44 +93,41 @@ export default function Hilo() {
 	};
 
 	return (
-		<div>
-			<h1>Higher-lower game</h1>
-			<BetMaker bet={bet} setBet={setBet} />
+		<div className='game'>
+			<div className='main'>
+				<h1>HIGHER-LOWER GAME</h1>
+				<Card cardIndex={state.card} />
+				<h2>{state.status}</h2>
+			</div>
 
-			{gameState === 'playing' ? (
-				<>
-					<div>
-						<Button onClick={() => playHandler('lower')} disabled={playDisable} width={'160px'}>
-							{checkButtons('lower')} <br />
-							{coefficients.lower.toFixed(2)}x <br />
+			<BetMaker>
+				{gameState === 'betting' ? (
+					<>
+						<Button
+							onClick={() => {
+								startGameHandler();
+							}}
+							disabled={!session.data?.user || startGameDisable || bet > Number(balance)}
+						>
+							Start the game
 						</Button>
-						<Button onClick={() => playHandler('higher')} disabled={playDisable} width={'160px'}>
-							{checkButtons('higher')} <br />
-							{coefficients.higher.toFixed(2)}x <br />
+						<Button onClick={() => setState({ ...state, card: getRand(0, 51) })}>Skip card</Button>
+					</>
+				) : (
+					<>
+						<Button onClick={() => playHandler('lower')} disabled={playDisable}>
+							{coefficients.lower.toFixed(2)}x {checkButtons('lower')}
 						</Button>
-					</div>
-					<Card cardIndex={state.card} />
-					<Button onClick={() => cashOutHandler()} disabled={state.totalCoefficient === 1}>
-						cash out <br />
-						{(state.currentBet * state.totalCoefficient).toFixed(2)}$ <br />
-						{state.totalCoefficient.toFixed(2)}x
-					</Button>
-				</>
-			) : (
-				<>
-					<Button
-						onClick={() => {
-							startGameHandler();
-						}}
-						disabled={!session.data?.user || startGameDisable}
-					>
-						play
-					</Button>
-					<Card cardIndex={state.card} />
-					<Button onClick={() => setState({ ...state, card: getRand(0, 51) })}>change card</Button>
-				</>
-			)}
-			<h2>{state.status}</h2>
+						<Button onClick={() => playHandler('higher')} disabled={playDisable}>
+							{coefficients.higher.toFixed(2)}x {checkButtons('higher')}
+						</Button>
+						<Button onClick={() => cashOutHandler()} disabled={state.totalCoefficient === 1}>
+							{state.totalCoefficient.toFixed(2)}x cash out{' '}
+							{(state.currentBet * state.totalCoefficient).toFixed(2)}$
+						</Button>
+					</>
+				)}
+			</BetMaker>
 		</div>
 	);
 }

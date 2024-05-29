@@ -3,18 +3,18 @@
 	flex-direction: row;
 	justify-content: space-between;
 	width: 70%;
-	height: 60px;
-	background: #333333;
+	height: 4rem;
+	background: var(--grey);
 	margin: auto;
-	margin-top: 10px;
-	border-radius: 10px;
-	border: 2px solid rgba(255, 255, 255, 0.2);
+	margin-top: 1rem;
+	border-radius: 1rem;
+	border: 0.1rem solid var(--greyBorder);
 
 	a {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border-radius: 10px;
+		border-radius: 1rem;
 
 		img {
 			height: 80%;
@@ -22,7 +22,7 @@
 		}
 
 		&:hover {
-			background: #f87d0950;
+			background: var(--orangeHover);
 			text-decoration: underline;
 		}
 	}
@@ -33,24 +33,23 @@
 		justify-content: center;
 
 		a {
-			color: #dbdbe7;
-			padding: 0 10px;
+			padding: 0 1rem;
 			height: 100%;
-			border-radius: 10px;
+			border-radius: 1rem;
 
 			&:hover {
-				background: #f87d0950;
+				background: var(--orangeHover);
 				text-decoration: underline;
 			}
 		}
 
 		.player {
-			color: #f87d09;
+			color: var(--orange);
 
 			img {
 				border-radius: 50%;
-				border: 2px solid white;
-				margin-right: 10px;
+				border: 0.1rem solid white;
+				margin-right: 1rem;
 			}
 		}
 	}

@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
 	await prisma.game.createMany({
-		data: [{ name: 'hi-low' }, { name: 'dice' }, { name: 'miner' }],
+		data: [{ name: 'hilo' }, { name: 'dice' }, { name: 'miner' }],
 	});
 
 	await prisma.rank.createMany({

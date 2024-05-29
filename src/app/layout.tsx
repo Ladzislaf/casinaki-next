@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
-import { Inter, Kanit } from 'next/font/google';
+import { Kanit, Oswald } from 'next/font/google';
 import '@/ui/globals.scss';
 import Sidebar from '@/ui/Sidebar/Sidebar';
 import Navbar from '@/ui/Navbar/Navbar';
-import Chat from '@/ui/chat/chat';
 import Providers from '@/app/Providers';
+import BetMaker from '@/ui/BetMaker/BetMaker';
 
 const kanit = Kanit({ subsets: ['latin'], weight: ['600'] });
+const oswald = Oswald({ subsets: ['latin'], weight: ['700'] });
 
 export const metadata: Metadata = {
 	title: 'Casinaki project',
@@ -20,13 +21,12 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<body className={kanit.className}>
+			<body className={oswald.className}>
 				<Providers>
 					<Navbar />
 					<div>
 						<Sidebar />
 						<main>{children}</main>
-						<Chat />
 					</div>
 				</Providers>
 			</body>

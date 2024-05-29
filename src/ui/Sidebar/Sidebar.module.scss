@@ -1,20 +1,19 @@
 .sidebar {
 	margin: auto;
-	margin-left: 10px;
 	display: flex;
 	flex-direction: column;
-	background: #333333;
+	background: var(--grey);
 	justify-content: center;
-	border-radius: 10px;
-	border: 2px solid rgba(255, 255, 255, 0.2);
+	border-radius: 1rem;
+	border: 0.1rem solid var(--greyBorder);
 
 	a {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 80px;
-		width: 80px;
-		border-radius: 10px;
+		height: 5rem;
+		width: 5rem;
+		border-radius: 1rem;
 
 		img {
 			width: 60%;
@@ -22,7 +21,7 @@
 		}
 
 		&:hover {
-			background: #f87d0950;
+			background: var(--orange);
 
 			img {
 				width: 70%;
