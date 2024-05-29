@@ -7,8 +7,7 @@ import Button from '@/ui/Button';
 import { useContext, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
-import { MIN_BET } from '@/lib/constants';
-import { overDiceCoefficients, underDiceCoefficients } from '@/lib/constants';
+import { MIN_BET, overDiceCoeffs, underDiceCoeffs } from '@/lib/utils';
 
 export default function Dice() {
 	const session = useSession();
@@ -77,7 +76,7 @@ export default function Dice() {
 			</div>
 			<div>
 				Game coefficient:{' '}
-				{buttons.over ? overDiceCoefficients[state.diceValue - 2] : underDiceCoefficients[state.diceValue - 2]} x
+				{buttons.over ? overDiceCoeffs[state.diceValue - 2] : underDiceCoeffs[state.diceValue - 2]} x
 			</div>
 			{state.dice > 0 && (
 				<>

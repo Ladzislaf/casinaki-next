@@ -1,5 +1,5 @@
-import { getHistory } from '@/actions/actions';
 import styles from './BetHistory.module.scss';
+import { fetchHistory } from '@/actions/dataActions';
 
 import first from '@/assets/ranks/first.png';
 import second from '@/assets/ranks/second.png';
@@ -12,7 +12,7 @@ import Link from 'next/link';
 
 export default async function BetHistory() {
 	const images = [first, second, third, fourth, fifth, sixth];
-	const history = await getHistory();
+	const history = await fetchHistory();
 
 	return (
 		<div className={styles.container}>

@@ -1,12 +1,12 @@
 'use client';
 import { useContext, useState } from 'react';
 import styles from './MinerGame.module.scss';
-import { MIN_BET } from '@/lib/constants';
 import Button from '@/ui/Button';
 import BetMaker from '@/ui/BetMaker/BetMaker';
 import { useSession } from 'next-auth/react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
 import playMinerAction from '@/actions/playMinerAction';
+import { MIN_BET } from '@/lib/utils';
 
 const gameField = [
 	[1, 2, 3, 4, 5],

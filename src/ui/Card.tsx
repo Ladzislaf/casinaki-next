@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
-import { getCardsDeck } from '@/lib/functions';
+import { genCardsDeck } from '@/lib/utils';
 
-const cardsDeck = getCardsDeck();
+const cardsDeck = genCardsDeck('hilo');
 
 export default function Card({
 	cardIndex,

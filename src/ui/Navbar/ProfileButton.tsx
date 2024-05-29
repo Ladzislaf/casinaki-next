@@ -5,7 +5,7 @@ import styles from './Navbar.module.scss';
 import { useSession, signOut } from 'next-auth/react';
 import { useContext, useEffect } from 'react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
-import { getBalanceAction } from '@/actions/actions';
+import { getBalanceAction } from '@/actions/dataActions';
 
 export default function ProfileButton() {
 	const session = useSession();
@@ -13,7 +13,10 @@ export default function ProfileButton() {
 
 	useEffect(() => {
 		async function fetchBalance() {
-			updateBalance(await getBalanceAction(session?.data?.user?.email as string));
+			const playerBalance = await getBalanceAction(session?.data?.user?.email as string);
+			if (playerBalance) {
+				updateBalance(playerBalance.toFixed(2));
+			}
 		}
 		if (session.status === 'authenticated' && session.data) {
 			fetchBalance();

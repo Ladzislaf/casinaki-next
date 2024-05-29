@@ -1,7 +1,8 @@
 'use server';
-import { calculateCoefficient, getBombs } from '@/lib/functions';
 import prisma from '@/lib/prisma';
+import { calcCoeff, genMinerBombs } from '@/lib/utils';
 import { kv } from '@vercel/kv';
+import { addGameLogRecord } from './dataActions';
 
 export default async function playMinerAction(
 	playerEmail: string,
@@ -23,21 +24,21 @@ export default async function playMinerAction(
 	let activeGame: { bet: number; coeff: number; bombs: number[]; picked: number[] } | null = await kv.get(
 		`miner:${playerEmail}`
 	);
-	let newBalance = player.balance;
+	let newBalance = player.balance.toFixed(2);
 	let gameResult = null;
 
-	if (bet) {
-		newBalance = (Number(player.balance) - bet).toFixed(2);
+	if (bet && bombsCount) {
+		newBalance = (player.balance - bet).toFixed(2);
 		await prisma.player.update({
 			where: {
 				email: player.email,
 			},
 			data: {
-				balance: newBalance,
+				balance: +newBalance,
 			},
 		});
 
-		const bombsArray = getBombs(bombsCount);
+		const bombsArray = genMinerBombs(bombsCount);
 		if (activeGame) {
 			await kv.del(`miner:${playerEmail}`);
 		}
@@ -45,7 +46,7 @@ export default async function playMinerAction(
 
 		kv.setex(`miner:${playerEmail}`, 1800, activeGame);
 
-		let nextCoefficient = calculateCoefficient(25 - activeGame.bombs.length, 25);
+		let nextCoefficient = calcCoeff(25 - activeGame.bombs.length, 25);
 
 		gameResult = {
 			nextCoefficient: activeGame.coeff * nextCoefficient,
@@ -75,7 +76,7 @@ export default async function playMinerAction(
 
 			await kv.del(`miner:${playerEmail}`);
 		} else {
-			let coefficient = calculateCoefficient(
+			let coefficient = calcCoeff(
 				26 - activeGame.picked.length - activeGame.bombs.length,
 				26 - activeGame.picked.length
 			);
@@ -89,32 +90,22 @@ export default async function playMinerAction(
 					picked: activeGame.picked,
 				};
 
-				newBalance = (Number(player.balance) + activeGame.bet * activeGame.coeff).toFixed(2);
+				newBalance = (player.balance + activeGame.bet * activeGame.coeff).toFixed(2);
 
 				await prisma.player.update({
 					where: {
 						email: player.email,
 					},
 					data: {
-						balance: newBalance,
+						balance: +newBalance,
 					},
 				});
 
-				// await updateRank(profile);
-
-				await prisma.gameLog.create({
-					data: {
-						bet: `${activeGame.bet}$`,
-						coefficient: `${activeGame.coeff} x`,
-						winnings: gameResult.winnings,
-						playerEmail: playerEmail,
-						gameId: 3,
-					},
-				});
+				addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, gameResult.winnings);
 
 				await kv.del(`miner:${playerEmail}`);
 			} else {
-				let nextCoefficient = calculateCoefficient(
+				let nextCoefficient = calcCoeff(
 					25 - activeGame.picked.length - activeGame.bombs.length,
 					25 - activeGame.picked.length
 				);
@@ -136,31 +127,19 @@ export default async function playMinerAction(
 			picked: activeGame.picked,
 		};
 
-		newBalance = (Number(player.balance) + activeGame.bet * activeGame.coeff).toFixed(2);
+		newBalance = (player.balance + activeGame.bet * activeGame.coeff).toFixed(2);
 
 		await prisma.player.update({
 			where: {
 				email: player.email,
 			},
 			data: {
-				balance: newBalance,
-				winnings: (Number(player.winnings) + Number(newBalance) - Number(player.balance) - activeGame.bet).toFixed(
-					2
-				),
+				balance: +newBalance,
+				winnings: Number(player.winnings) + Number(newBalance) - Number(player.balance) - activeGame.bet,
 			},
 		});
 
-		// await updateRank(profile);
-
-		await prisma.gameLog.create({
-			data: {
-				bet: `${activeGame.bet}$`,
-				coefficient: `${activeGame.coeff} x`,
-				winnings: gameResult.winnings,
-				playerEmail: playerEmail,
-				gameId: 3,
-			},
-		});
+		addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, gameResult.winnings);
 
 		await kv.del(`miner:${playerEmail}`);
 	}

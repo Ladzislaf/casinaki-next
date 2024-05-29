@@ -11,7 +11,7 @@ export default function Sidebar() {
 	return (
 		<div className={styles.sidebar}>
 			<div>
-				<Link href='/game/hi-low'>
+				<Link href='/game/hilo'>
 					<Image src={hiLowLogo} alt='higher-lower game logo' />
 				</Link>
 				<Link href='/game/dice'>

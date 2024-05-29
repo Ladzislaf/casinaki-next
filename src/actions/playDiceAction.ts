@@ -1,7 +1,7 @@
 'use server';
-import { overDiceCoefficients, underDiceCoefficients } from '@/lib/constants';
-import { getRand } from '@/lib/functions';
 import prisma from '@/lib/prisma';
+import { getRand, overDiceCoeffs, underDiceCoeffs } from '@/lib/utils';
+import { addGameLogRecord, updatePlayerBalance } from './dataActions';
 
 const MIN_DICE = 2;
 const MAX_DICE = 12;
@@ -24,12 +24,12 @@ export default async function playDiceAction(
 	}
 
 	let newDice = getRand(MIN_DICE, MAX_DICE),
-		newBalance = player.balance,
+		newBalance = player.balance.toFixed(2),
 		coefficient,
 		gameResult;
 
 	if (gameMode === 'over') {
-		coefficient = overDiceCoefficients[currentDice - 2];
+		coefficient = overDiceCoeffs[currentDice - 2];
 		if (newDice > currentDice) {
 			gameResult = `+ ${(bet * coefficient - bet).toFixed(2)}$`;
 			newBalance = (playerBalance - bet + bet * coefficient).toFixed(2);
@@ -38,7 +38,7 @@ export default async function playDiceAction(
 			newBalance = (playerBalance - bet).toFixed(2);
 		}
 	} else {
-		coefficient = underDiceCoefficients[currentDice - 2];
+		coefficient = underDiceCoeffs[currentDice - 2];
 		if (newDice < currentDice) {
 			gameResult = `+ ${(bet * coefficient - bet).toFixed(2)}$`;
 			newBalance = (playerBalance - bet + bet * coefficient).toFixed(2);
@@ -49,30 +49,14 @@ export default async function playDiceAction(
 	}
 
 	if (gameResult) {
-		await prisma.gameLog.create({
-			data: {
-				bet: `${bet}$`,
-				coefficient: `${coefficient} x`,
-				winnings: gameResult,
-				playerEmail: playerEmail,
-				gameId: 2,
-			},
-		});
+		addGameLogRecord(playerEmail, 2, bet, coefficient, gameResult);
 	}
 
-	await prisma.player.update({
-		where: {
-			email: player.email,
-		},
-		data: {
-			balance: newBalance,
-			winnings:
-				Number(newBalance) > playerBalance
-					? (Number(player.winnings) + Number(newBalance) - playerBalance).toFixed(2)
-					: player.winnings,
-		},
-	});
+	if (Number(newBalance) > playerBalance) {
+		await updatePlayerBalance(playerEmail, +newBalance, Number(player.winnings) + Number(newBalance) - playerBalance);
+	} else {
+		await updatePlayerBalance(playerEmail, +newBalance);
+	}
 
-	// await updateRank(profile);
 	return { gameResult, diceResult: newDice, newBalance };
 }

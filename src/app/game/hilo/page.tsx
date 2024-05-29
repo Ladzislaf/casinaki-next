@@ -1,21 +1,20 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
 import BetMaker from '../../../ui/BetMaker/BetMaker';
-import { getCardsDeck, getRand } from '@/lib/functions';
 import { useSession } from 'next-auth/react';
 import Button from '@/ui/Button';
-import { MIN_BET } from '@/lib/constants';
 import Card from '@/ui/Card';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
-import playHilow from '@/actions/playHiLowAction';
+import playHiloAction from '@/actions/playHiLowAction';
+import { MIN_BET, calcHiloCoeff, genCardsDeck, getRand } from '@/lib/utils';
 
-const cards = getCardsDeck();
+const cards = genCardsDeck('hilo');
 
-export default function Hilow() {
+export default function Hilo() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
 	const [bet, setBet] = useState(MIN_BET);
-	const { updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { balance, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
 
 	const [state, setState] = useState({ card: 52, status: '', totalCoefficient: 1, currentBet: bet });
 	const [coefficients, setCoefficients] = useState({ higher: 1, lower: 1 });
@@ -29,26 +28,30 @@ export default function Hilow() {
 
 	const startGameHandler = () => {
 		setStartGameDisable(true);
-		playHilow({ playerEmail, bet, card: state.card }).then((res) => {
-			if (res?.status) {
-				setState({ ...state, status: res.status, currentBet: bet });
-				setCoefficients({ higher: res.coeffs?.hCoeff as number, lower: res.coeffs?.lCoeff as number });
+		playHiloAction({ playerEmail, bet, cardIndex: state.card })
+			.then((res) => {
+				setCoefficients({ higher: calcHiloCoeff(state.card, 'higher'), lower: calcHiloCoeff(state.card, 'lower') });
+				setState({ ...state, status: `- ${bet}$`, currentBet: bet });
+				updateBalance(res?.newBalance?.toFixed(2) || balance);
+			})
+			.finally(() => {
 				setGameState('playing');
 				setStartGameDisable(false);
-			}
-			updateBalance(res?.newBalance as string);
-		});
+			});
 	};
 
-	const playHandler = (gameMode: 'high' | 'low') => {
+	const playHandler = (choice: 'higher' | 'lower') => {
 		setPlayDisable(true);
-		playHilow({ playerEmail, gameMode })
+		playHiloAction({ playerEmail, choice })
 			.then((res) => {
-				if (res?.coeffs) {
-					setState({ ...state, card: res.newCard, totalCoefficient: res.coeffs?.tCoeff });
-					setCoefficients({ higher: res.coeffs.hCoeff, lower: res.coeffs.lCoeff });
-				} else {
-					setState({ ...state, card: res?.newCard, totalCoefficient: 1 });
+				if (res?.totalCoeff) {
+					setState({ ...state, card: res.newCardIndex, totalCoefficient: res.totalCoeff });
+					setCoefficients({
+						higher: calcHiloCoeff(res.newCardIndex, 'higher'),
+						lower: calcHiloCoeff(res.newCardIndex, 'lower'),
+					});
+				} else if (res?.newCardIndex) {
+					setState({ ...state, card: res.newCardIndex, totalCoefficient: 1 });
 					setGameState('betting');
 				}
 			})
@@ -58,13 +61,16 @@ export default function Hilow() {
 	};
 
 	const cashOutHandler = () => {
-		playHilow({ playerEmail }).then((res) => {
-			if (res?.status) {
-				updateBalance(res.newBalance);
-				setState({ ...state, status: res.status, totalCoefficient: 1 });
+		playHiloAction({ playerEmail })
+			.then((res) => {
+				if (res?.newBalance && res.gameWinnings) {
+					updateBalance(res.newBalance.toFixed(2));
+					setState({ ...state, status: `+ ${res.gameWinnings.toFixed(2)}$`, totalCoefficient: 1 });
+				}
+			})
+			.finally(() => {
 				setGameState('betting');
-			}
-		});
+			});
 	};
 
 	const checkButtons = (mode: 'higher' | 'lower') => {
@@ -91,11 +97,11 @@ export default function Hilow() {
 			{gameState === 'playing' ? (
 				<>
 					<div>
-						<Button onClick={() => playHandler('low')} disabled={playDisable} width={'160px'}>
+						<Button onClick={() => playHandler('lower')} disabled={playDisable} width={'160px'}>
 							{checkButtons('lower')} <br />
 							{coefficients.lower.toFixed(2)}x <br />
 						</Button>
-						<Button onClick={() => playHandler('high')} disabled={playDisable} width={'160px'}>
+						<Button onClick={() => playHandler('higher')} disabled={playDisable} width={'160px'}>
 							{checkButtons('higher')} <br />
 							{coefficients.higher.toFixed(2)}x <br />
 						</Button>

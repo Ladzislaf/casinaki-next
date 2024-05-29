@@ -1,6 +1,6 @@
 import type { AuthOptions } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
-import { createPlayerAction } from '@/actions/actions';
+import { createPlayerAction } from '@/actions/dataActions';
 
 export const authConfig: AuthOptions = {
 	providers: [

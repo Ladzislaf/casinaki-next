@@ -1,6 +1,6 @@
 import Image from 'next/image';
-import { fetchRanks } from '@/lib/data';
 import styles from './ranks.module.scss';
+import { fetchRanks } from '@/actions/dataActions';
 
 import first from '@/assets/ranks/first.png';
 import second from '@/assets/ranks/second.png';
