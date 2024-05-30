@@ -104,14 +104,14 @@ export function genCardsDeck(game: 'hilo' | 'blackjack') {
 		hilo: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 		blackjack: [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10],
 	};
-	const cards: { index: string; value: number }[] = [];
+	const cards: { index: string; suit: string; value: number }[] = [];
 
 	for (let i = 0; i < ranks.length; i++) {
 		for (let suit of suits) {
-			cards.push({ index: ranks[i] + suit, value: values[game][i] });
+			cards.push({ index: ranks[i], suit: suit, value: values[game][i] });
 		}
 	}
-	cards.push({ index: 'joker', value: 0 });
+	cards.push({ index: 'joker', suit: '', value: 0 });
 
 	return cards;
 }

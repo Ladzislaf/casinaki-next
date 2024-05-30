@@ -1,28 +1,30 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
-import BetMaker from '../../../ui/BetMaker/BetMaker';
 import { useSession } from 'next-auth/react';
+import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
+import styles from './Hilo.module.scss';
+import BetMaker from '../../../ui/BetMaker/BetMaker';
 import Button from '@/ui/Button';
 import Card from '@/ui/Card';
-import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
-import playHiloAction from '@/actions/playHiLowAction';
 import { calcHiloCoeff, genCardsDeck, getRand } from '@/lib/utils';
+import playHiloAction from '@/actions/playHiLowAction';
 
-const cards = genCardsDeck('hilo');
+const cardsDeck = genCardsDeck('hilo');
 
 export default function Hilo() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
 	const { balance, bet, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
-
-	const [state, setState] = useState({ card: 52, status: '', totalCoefficient: 1, currentBet: bet });
-	const [coefficients, setCoefficients] = useState({ higher: 1, lower: 1 });
+	const [activeCardIndex, setActiveCardIndex] = useState(52);
+	const [cardsHistory, setCardsHistory] = useState([-1]);
+	const [coeffs, setCoeffs] = useState({ hi: 1, lo: 1, total: 1 });
+	const [activeBet, setActiveBet] = useState(bet);
+	const [balanceStatus, setBalanceStatus] = useState('');
 	const [gameState, setGameState] = useState('betting');
 	const [playDisable, setPlayDisable] = useState(false);
-	const [startGameDisable, setStartGameDisable] = useState(false);
 
 	useEffect(() => {
-		setState({ ...state, card: getRand(0, 51) });
+		setActiveCardIndex(getRand(0, 51));
 	}, []);
 
 	const startGameHandler = () => {
@@ -30,16 +32,22 @@ export default function Hilo() {
 			alert(`You don't have enough balance!`);
 			return;
 		}
-		setStartGameDisable(true);
-		playHiloAction({ playerEmail, bet, cardIndex: state.card })
+		setPlayDisable(true);
+		playHiloAction({ playerEmail, bet, cardIndex: activeCardIndex })
 			.then((res) => {
-				setCoefficients({ higher: calcHiloCoeff(state.card, 'higher'), lower: calcHiloCoeff(state.card, 'lower') });
-				setState({ ...state, status: `- ${bet}$`, currentBet: bet });
+				setCoeffs({
+					hi: calcHiloCoeff(activeCardIndex, 'higher'),
+					lo: calcHiloCoeff(activeCardIndex, 'lower'),
+					total: 1,
+				});
+				setActiveBet(bet);
 				res?.newBalance && updateBalance(res?.newBalance);
 			})
 			.finally(() => {
 				setGameState('playing');
-				setStartGameDisable(false);
+				setPlayDisable(false);
+				setBalanceStatus('');
+				setCardsHistory([52]);
 			});
 	};
 
@@ -48,14 +56,19 @@ export default function Hilo() {
 		playHiloAction({ playerEmail, choice })
 			.then((res) => {
 				if (res?.totalCoeff) {
-					setState({ ...state, card: res.newCardIndex, totalCoefficient: res.totalCoeff });
-					setCoefficients({
-						higher: calcHiloCoeff(res.newCardIndex, 'higher'),
-						lower: calcHiloCoeff(res.newCardIndex, 'lower'),
+					addCartToHistory(activeCardIndex);
+					setActiveCardIndex(res.newCardIndex);
+					setCoeffs({
+						hi: calcHiloCoeff(res.newCardIndex, 'higher'),
+						lo: calcHiloCoeff(res.newCardIndex, 'lower'),
+						total: res.totalCoeff,
 					});
+					setBalanceStatus('');
 				} else if (res?.newCardIndex) {
-					setState({ ...state, card: res.newCardIndex, totalCoefficient: 1 });
+					addCartToHistory(activeCardIndex);
+					setActiveCardIndex(res.newCardIndex);
 					setGameState('betting');
+					setBalanceStatus(`- ${activeBet}$`);
 				}
 			})
 			.finally(() => {
@@ -68,7 +81,7 @@ export default function Hilo() {
 			.then((res) => {
 				if (res?.newBalance && res.gameWinnings) {
 					updateBalance(res.newBalance);
-					setState({ ...state, status: `+ ${res.gameWinnings.toFixed(2)}$`, totalCoefficient: 1 });
+					setBalanceStatus(`+ ${res.gameWinnings.toFixed(2)}$`);
 				}
 			})
 			.finally(() => {
@@ -76,15 +89,15 @@ export default function Hilo() {
 			});
 	};
 
-	const checkButtons = (mode: 'higher' | 'lower') => {
+	const getButtonLabel = (mode: 'higher' | 'lower') => {
 		switch (mode) {
 			case 'higher':
-				if (cards[state.card].value === 13) return 'same';
-				else if (cards[state.card].value === 1) return 'higher';
+				if (cardsDeck[activeCardIndex].value === 13) return 'same';
+				else if (cardsDeck[activeCardIndex].value === 1) return 'higher';
 				else return 'higher or same';
 			case 'lower':
-				if (cards[state.card].value === 1) return 'same';
-				else if (cards[state.card].value === 13) return 'lower';
+				if (cardsDeck[activeCardIndex].value === 1) return 'same';
+				else if (cardsDeck[activeCardIndex].value === 13) return 'lower';
 				else return 'lower or same';
 			default:
 				console.error('[Hi-Low page] Error: no such mode in checkName function');
@@ -92,12 +105,30 @@ export default function Hilo() {
 		}
 	};
 
+	const addCartToHistory = (cardIndex: number) => {
+		cardsHistory[0] === 52 ? setCardsHistory([cardIndex]) : setCardsHistory([...cardsHistory, cardIndex]);
+	};
+
 	return (
 		<div className='game'>
 			<div className='main'>
 				<h1>HIGHER-LOWER GAME</h1>
-				<Card cardIndex={state.card} />
-				<h2>{state.status}</h2>
+				<div className={styles.cardsField}>
+					<div className={styles.activeCard}>
+						<Card cardIndex={1} cardColor='#222222'>
+							lowest
+						</Card>
+						<Card cardIndex={activeCardIndex} />
+						<Card cardIndex={49} cardColor='#222222'>
+							highest
+						</Card>
+					</div>
+					<div>
+						{cardsHistory.map((el) => {
+							return <Card cardIndex={el} />;
+						})}
+					</div>
+				</div>
 			</div>
 
 			<BetMaker>
@@ -107,26 +138,26 @@ export default function Hilo() {
 							onClick={() => {
 								startGameHandler();
 							}}
-							disabled={!session.data?.user || startGameDisable || bet > Number(balance)}
+							disabled={!session.data?.user || playDisable || bet > Number(balance)}
 						>
 							Start the game
 						</Button>
-						<Button onClick={() => setState({ ...state, card: getRand(0, 51) })}>Skip card</Button>
+						<Button onClick={() => setActiveCardIndex(getRand(0, 51))}>Skip card</Button>
 					</>
 				) : (
 					<>
-						<Button onClick={() => playHandler('lower')} disabled={playDisable}>
-							{coefficients.lower.toFixed(2)}x {checkButtons('lower')}
-						</Button>
 						<Button onClick={() => playHandler('higher')} disabled={playDisable}>
-							{coefficients.higher.toFixed(2)}x {checkButtons('higher')}
+							{coeffs.hi.toFixed(2)}x {getButtonLabel('higher')} ⇈
 						</Button>
-						<Button onClick={() => cashOutHandler()} disabled={state.totalCoefficient === 1}>
-							{state.totalCoefficient.toFixed(2)}x cash out{' '}
-							{(state.currentBet * state.totalCoefficient).toFixed(2)}$
+						<Button onClick={() => playHandler('lower')} disabled={playDisable}>
+							{coeffs.lo.toFixed(2)}x {getButtonLabel('lower')} ⇊
+						</Button>
+						<Button onClick={() => cashOutHandler()} disabled={coeffs.total === 1}>
+							{coeffs.total.toFixed(2)}x cash out {(activeBet * coeffs.total).toFixed(2)}$
 						</Button>
 					</>
 				)}
+				<h2>{balanceStatus}</h2>
 			</BetMaker>
 		</div>
 	);

@@ -4,7 +4,6 @@ import '@/ui/globals.scss';
 import Sidebar from '@/ui/Sidebar/Sidebar';
 import Navbar from '@/ui/Navbar/Navbar';
 import Providers from '@/app/Providers';
-import BetMaker from '@/ui/BetMaker/BetMaker';
 
 const kanit = Kanit({ subsets: ['latin'], weight: ['600'] });
 const oswald = Oswald({ subsets: ['latin'], weight: ['700'] });
