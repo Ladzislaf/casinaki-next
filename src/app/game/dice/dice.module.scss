@@ -1,37 +1,33 @@
-.dice {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-
-	> button {
-		width: 290px;
-	}
-
-	> .gameContainer {
+.diceField {
+	> .gameOptions {
 		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 300px;
+		flex-direction: row;
+		min-width: 40%;
+		min-height: 40%;
 
-		> .gameModeButtons {
+		> div {
 			display: flex;
 			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			margin: 0 0.5rem;
 
 			> button {
-				width: auto;
+				height: 50%;
+				width: 100%;
+				padding: 0 2rem;
+				font-size: 2rem;
+				margin: 0.2rem 0;
 			}
 		}
 
 		.diceValue {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			font-size: 52px;
-			border: 3px solid #f87d09;
-			background: #f87d0960;
-			border-radius: 10px;
-			width: 100%;
-			height: 100%;
+			width: 10rem;
+			font-size: 5rem;
+			border: 0.3rem solid var(--orange);
+			border-radius: 1rem;
+			background: var(--orangeHover);
+			margin: 0.2rem 0;
 		}
 	}
 }

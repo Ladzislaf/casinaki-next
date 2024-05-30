@@ -7,29 +7,25 @@ import Button from '@/ui/Button';
 import { useContext, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
-import { MIN_BET, overDiceCoeffs, underDiceCoeffs } from '@/lib/utils';
+import { overDiceCoeffs, underDiceCoeffs } from '@/lib/utils';
 
 export default function Dice() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
-	const { updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
-
-	const [bet, setBet] = useState(MIN_BET);
-	const [state, setState] = useState({ dice: 0, diceValue: 7, gameResult: '' });
+	const { balance, bet, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const [balanceStatus, setBalanceStatus] = useState('');
 	const [buttons, setButtons] = useState({ over: true, under: false });
 	const [rollButtonDisable, setRollButtonDisable] = useState(false);
+	const [activeDice, setActiveDice] = useState(7);
+	const [resultDice, setResultDice] = useState(0);
 
 	function rollDice() {
 		setRollButtonDisable(true);
-		playDiceAction(bet, state.diceValue, buttons.over ? 'over' : 'under', playerEmail)
+		playDiceAction({ playerEmail, bet, activeDice, gameMode: buttons.over ? 'over' : 'under' })
 			.then((res) => {
-				const gameRes = res?.gameResult as string;
-				setState({
-					...state,
-					dice: res?.diceResult as number,
-					gameResult: gameRes,
-				});
-				updateBalance(res?.newBalance as string);
+				res?.balanceStatus && setBalanceStatus(res?.balanceStatus);
+				res?.diceResult && setResultDice(res?.diceResult);
+				res?.newBalance && updateBalance(res?.newBalance);
 			})
 			.finally(() => {
 				setRollButtonDisable(false);
@@ -38,52 +34,53 @@ export default function Dice() {
 
 	const changeDiceValue = (mode: string) => {
 		if (mode === 'inc') {
-			if (state.diceValue === 11) return;
-			setState({ ...state, diceValue: ++state.diceValue });
+			if (activeDice === 11) return;
+			setActiveDice((prev) => prev + 1);
 		} else if (mode === 'dec') {
-			if (state.diceValue === 3) return;
-			setState({ ...state, diceValue: --state.diceValue });
+			if (activeDice === 3) return;
+			setActiveDice((prev) => prev - 1);
 		}
 	};
 
 	return (
-		<div className={styles.dice}>
-			<h1>Dice game</h1>
-			<BetMaker bet={bet} setBet={setBet} />
-			<Button onClick={() => rollDice()} disabled={rollButtonDisable || !session.data?.user}>
-				Roll
-			</Button>
-			<div className={styles.gameContainer}>
-				<div className={styles.gameModeButtons}>
-					<Button
-						background={clsx(buttons.over && '#00800080')}
-						onClick={() => setButtons({ over: true, under: false })}
-					>
-						over
-					</Button>{' '}
-					<Button
-						background={clsx(buttons.under && '#00800080')}
-						onClick={() => setButtons({ over: false, under: true })}
-					>
-						under
-					</Button>
-				</div>
-				<div className={styles.diceValue}>{state.diceValue}</div>
-				<div>
-					<Button onClick={() => changeDiceValue('inc')}>▲</Button> <br />
-					<Button onClick={() => changeDiceValue('dec')}>▼</Button>
+		<div className='gamePage'>
+			<div className='mainContainer'>
+				<h1>DICE GAME</h1>
+				<div className={'gameContainer ' + styles.diceField}>
+					<div className={styles.gameOptions}>
+						<div>
+							<Button
+								background={clsx(buttons.over && '#00800080')}
+								onClick={() => setButtons({ over: true, under: false })}
+							>
+								over
+							</Button>{' '}
+							<Button
+								background={clsx(buttons.under && '#00800080')}
+								onClick={() => setButtons({ over: false, under: true })}
+							>
+								under
+							</Button>
+						</div>
+						<div className={styles.diceValue}>{activeDice}</div>
+						<div>
+							<Button onClick={() => changeDiceValue('inc')}>▲</Button>
+							<Button onClick={() => changeDiceValue('dec')}>▼</Button>
+						</div>
+					</div>
+					<h2>{`Result: [${resultDice}]`}</h2>
 				</div>
 			</div>
-			<div>
-				Game coefficient:{' '}
-				{buttons.over ? overDiceCoeffs[state.diceValue - 2] : underDiceCoeffs[state.diceValue - 2]} x
-			</div>
-			{state.dice > 0 && (
-				<>
-					<h2>{`Result: ${state.dice}`}</h2>
-					<h2>{state.gameResult}</h2>
-				</>
-			)}
+
+			<BetMaker>
+				<Button
+					onClick={() => rollDice()}
+					disabled={rollButtonDisable || !session.data?.user || bet > Number(balance)}
+				>
+					Roll dice | {buttons.over ? overDiceCoeffs[activeDice - 2] : underDiceCoeffs[activeDice - 2]}x
+				</Button>
+				<h2>{balanceStatus}</h2>
+			</BetMaker>
 		</div>
 	);
 }

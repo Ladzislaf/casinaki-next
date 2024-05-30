@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { MAX_BET, MIN_BET } from '@/lib/utils';
 import styles from './BetMaker.module.scss';
 
-export default function BetMaker({ children }: { children: React.ReactNode }) {
+export default function BetMaker({ children }: { children?: React.ReactNode }) {
 	const [betStep, setBetStep] = useState(MIN_BET);
 
 	const session = useSession();

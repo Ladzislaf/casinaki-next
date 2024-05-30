@@ -6,8 +6,8 @@ import styles from './Hilo.module.scss';
 import BetMaker from '../../../ui/BetMaker/BetMaker';
 import Button from '@/ui/Button';
 import Card from '@/ui/Card';
-import { calcHiloCoeff, genCardsDeck, getRand } from '@/lib/utils';
-import playHiloAction from '@/actions/playHiLowAction';
+import { calcHiloChances, calcHiloCoeff, genCardsDeck, getRand } from '@/lib/utils';
+import playHiloAction from '@/actions/playHiloAction';
 
 const cardsDeck = genCardsDeck('hilo');
 
@@ -18,6 +18,7 @@ export default function Hilo() {
 	const [activeCardIndex, setActiveCardIndex] = useState(52);
 	const [cardsHistory, setCardsHistory] = useState([-1]);
 	const [coeffs, setCoeffs] = useState({ hi: 1, lo: 1, total: 1 });
+	const [chances, setChances] = useState({ hi: '50', lo: '50' });
 	const [activeBet, setActiveBet] = useState(bet);
 	const [balanceStatus, setBalanceStatus] = useState('');
 	const [gameState, setGameState] = useState('betting');
@@ -39,6 +40,10 @@ export default function Hilo() {
 					hi: calcHiloCoeff(activeCardIndex, 'higher'),
 					lo: calcHiloCoeff(activeCardIndex, 'lower'),
 					total: 1,
+				});
+				setChances({
+					hi: calcHiloChances(activeCardIndex, 'higher'),
+					lo: calcHiloChances(activeCardIndex, 'lower'),
 				});
 				setActiveBet(bet);
 				res?.newBalance && updateBalance(res?.newBalance);
@@ -62,6 +67,10 @@ export default function Hilo() {
 						hi: calcHiloCoeff(res.newCardIndex, 'higher'),
 						lo: calcHiloCoeff(res.newCardIndex, 'lower'),
 						total: res.totalCoeff,
+					});
+					setChances({
+						hi: calcHiloChances(res.newCardIndex, 'higher'),
+						lo: calcHiloChances(res.newCardIndex, 'lower'),
 					});
 					setBalanceStatus('');
 				} else if (res?.newCardIndex) {
@@ -110,10 +119,10 @@ export default function Hilo() {
 	};
 
 	return (
-		<div className='game'>
-			<div className='main'>
+		<div className='gamePage'>
+			<div className='mainContainer'>
 				<h1>HIGHER-LOWER GAME</h1>
-				<div className={styles.cardsField}>
+				<div className={'gameContainer ' + styles.hiloField}>
 					<div className={styles.activeCard}>
 						<Card cardIndex={1} cardColor='#222222'>
 							lowest
@@ -147,10 +156,10 @@ export default function Hilo() {
 				) : (
 					<>
 						<Button onClick={() => playHandler('higher')} disabled={playDisable}>
-							{coeffs.hi.toFixed(2)}x {getButtonLabel('higher')} ⇈
+							⇈ {getButtonLabel('higher')} | {chances.hi}% | {coeffs.hi.toFixed(2)}x
 						</Button>
 						<Button onClick={() => playHandler('lower')} disabled={playDisable}>
-							{coeffs.lo.toFixed(2)}x {getButtonLabel('lower')} ⇊
+							⇊ {getButtonLabel('lower')} | {chances.lo}% | {coeffs.lo.toFixed(2)}x
 						</Button>
 						<Button onClick={() => cashOutHandler()} disabled={coeffs.total === 1}>
 							{coeffs.total.toFixed(2)}x cash out {(activeBet * coeffs.total).toFixed(2)}$

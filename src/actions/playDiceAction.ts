@@ -6,57 +6,56 @@ import { addGameLogRecord, updatePlayerBalance } from './dataActions';
 const MIN_DICE = 2;
 const MAX_DICE = 12;
 
-export default async function playDiceAction(
-	bet: number,
-	currentDice: number,
-	gameMode: 'over' | 'under',
-	playerEmail: string
-) {
+export default async function playDiceAction({
+	playerEmail,
+	bet,
+	activeDice,
+	gameMode,
+}: {
+	playerEmail: string;
+	bet: number;
+	activeDice: number;
+	gameMode: 'over' | 'under';
+}) {
 	const player = await prisma.player.findUnique({ where: { email: playerEmail } });
 	if (!player) {
 		console.error(`[PlayDiceAction] player ${playerEmail} not found`);
 		return;
 	}
-	const playerBalance = Number(player.balance);
-	if (playerBalance < bet) {
-		console.error(`[PlayDiceAction] player ${playerEmail} has not enough money`);
+	if (bet && Number(player.balance) < bet) {
+		console.error(`[PlayDiceAction] player ${playerEmail} hasn't enough money`);
 		return;
 	}
-
 	let newDice = getRand(MIN_DICE, MAX_DICE),
-		newBalance = player.balance.toFixed(2),
-		coefficient,
-		gameResult;
-
+		newBalance = player.balance,
+		coeff,
+		balanceStatus;
 	if (gameMode === 'over') {
-		coefficient = overDiceCoeffs[currentDice - 2];
-		if (newDice > currentDice) {
-			gameResult = `+ ${(bet * coefficient - bet).toFixed(2)}$`;
-			newBalance = (playerBalance - bet + bet * coefficient).toFixed(2);
+		coeff = overDiceCoeffs[activeDice - 2];
+		if (newDice > activeDice) {
+			balanceStatus = `+ ${(bet * coeff - bet).toFixed(2)}$`;
+			newBalance = player.balance - bet + bet * coeff;
 		} else {
-			gameResult = `- ${bet}$`;
-			newBalance = (playerBalance - bet).toFixed(2);
+			balanceStatus = `- ${bet}$`;
+			newBalance = player.balance - bet;
 		}
 	} else {
-		coefficient = underDiceCoeffs[currentDice - 2];
-		if (newDice < currentDice) {
-			gameResult = `+ ${(bet * coefficient - bet).toFixed(2)}$`;
-			newBalance = (playerBalance - bet + bet * coefficient).toFixed(2);
+		coeff = underDiceCoeffs[activeDice - 2];
+		if (newDice < activeDice) {
+			balanceStatus = `+ ${(bet * coeff - bet).toFixed(2)}$`;
+			newBalance = player.balance - bet + bet * coeff;
 		} else {
-			gameResult = `- ${bet}$`;
-			newBalance = (playerBalance - bet).toFixed(2);
+			balanceStatus = `- ${bet}$`;
+			newBalance = player.balance - bet;
 		}
 	}
-
-	if (gameResult) {
-		addGameLogRecord(playerEmail, 2, bet, coefficient, gameResult);
+	if (balanceStatus) {
+		addGameLogRecord(playerEmail, 2, bet, coeff, balanceStatus);
 	}
-
-	if (Number(newBalance) > playerBalance) {
-		await updatePlayerBalance(playerEmail, +newBalance, Number(player.winnings) + Number(newBalance) - playerBalance);
+	if (newBalance > player.balance) {
+		await updatePlayerBalance(playerEmail, newBalance, player.winnings + newBalance - player.balance);
 	} else {
-		await updatePlayerBalance(playerEmail, +newBalance);
+		await updatePlayerBalance(playerEmail, newBalance);
 	}
-
-	return { gameResult, diceResult: newDice, newBalance };
+	return { balanceStatus, diceResult: newDice, newBalance };
 }

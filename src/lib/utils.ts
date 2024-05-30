@@ -42,6 +42,17 @@ export function calcHiloCoeff(cardIndex: number, choice: 'higher' | 'lower'): nu
 	}
 }
 
+export function calcHiloChances(cardIndex: number, choice: 'higher' | 'lower'): string {
+	const cardValue = getCardValue(cardIndex);
+	let result: number;
+	if (choice === 'higher') {
+		cardValue === 1 ? (result = (13 - cardValue) / 13) : (result = (14 - cardValue) / 13);
+	} else {
+		cardValue === 13 ? (result = (cardValue - 1) / 13) : (result = cardValue / 13);
+	}
+	return (result * 100).toFixed(2);
+}
+
 export function isHiloPlayerWon(activeCardIndex: number, newCardIndex: number, choice: 'higher' | 'lower') {
 	const activeCardValue = getCardValue(activeCardIndex);
 	const newCardValue = getCardValue(newCardIndex);
