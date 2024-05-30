@@ -19,6 +19,10 @@ export function calcCoeff(a: number, b: number): number {
 	return 0.98 / (a / b);
 }
 
+export function calcChances(a: number, b: number): string {
+	return ((a / b) * 100).toFixed(2);
+}
+
 export function generateNewCard(except?: number | number[]) {
 	let newCardIndex = getRand(0, 51);
 	if (typeof except === 'number') {
@@ -99,9 +103,9 @@ export function isHiloPlayerWon(activeCardIndex: number, newCardIndex: number, c
 export function genMinerBombs(bombsCount: number) {
 	let bombsArr: number[] = [];
 	while (bombsCount !== 0) {
-		const bomb = getRand(1, 25);
-		if (!bombsArr.includes(bomb)) {
-			bombsArr.push(bomb);
+		const bombIndex = getRand(0, 24);
+		if (!bombsArr.includes(bombIndex)) {
+			bombsArr.push(bombIndex);
 			bombsCount--;
 		}
 	}

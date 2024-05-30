@@ -45,12 +45,13 @@ export default async function playHiloAction({
 				return { newCardIndex };
 			}
 		} else {
-			await kv.del(`hilo:${playerEmail}`);
+			// * cash out
 			const newBalance = player.balance + activeGame.bet * activeGame.coeff;
 			const gameWinnings = activeGame.bet * activeGame.coeff - activeGame.bet;
 			const newWinnings = player.winnings + gameWinnings;
 			await updatePlayerBalance(playerEmail, newBalance, newWinnings);
 			await addGameLogRecord(playerEmail, 1, activeGame.bet, activeGame.coeff, `+ ${gameWinnings.toFixed(2)}$`);
+			await kv.del(`hilo:${playerEmail}`);
 			return { newBalance, gameWinnings };
 		}
 	}

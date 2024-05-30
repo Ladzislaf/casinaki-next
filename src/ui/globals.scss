@@ -2,6 +2,7 @@
 	--foreground: #1b1b1e;
 	--background: #dbdbe7;
 	--orange: #ff8c00;
+	--orangeDark: #ab5e00;
 	--orangeHover: #ff8c0050;
 	--grey: #2d2d2d;
 	--greyBorder: #595959;
@@ -77,17 +78,26 @@ body {
 					height: 100%;
 					width: 100%;
 					display: flex;
-					flex-direction: column;
 					justify-content: center;
 					align-items: center;
+					padding: 1rem;
 					border: 0.1rem solid var(--orange);
 					border-radius: 1rem;
+					overflow-y: scroll;
 				}
 			}
 		}
 
 		> .signin {
-			margin: auto;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+
+			> button {
+				margin: 0.2rem;
+				min-width: 30%;
+			}
 		}
 
 		.card {

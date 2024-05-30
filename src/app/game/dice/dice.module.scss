@@ -1,4 +1,6 @@
 .diceField {
+	flex-direction: column;
+
 	> .gameOptions {
 		display: flex;
 		flex-direction: row;

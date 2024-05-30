@@ -21,7 +21,6 @@ export default function ProfileButton() {
 		if (session.status === 'authenticated' && session.data) {
 			fetchBalance();
 		}
-		console.log(session);
 	}, [session.status]);
 
 	return (

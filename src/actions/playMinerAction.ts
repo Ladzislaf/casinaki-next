@@ -2,147 +2,84 @@
 import prisma from '@/lib/prisma';
 import { calcCoeff, genMinerBombs } from '@/lib/utils';
 import { kv } from '@vercel/kv';
-import { addGameLogRecord } from './dataActions';
+import { addGameLogRecord, updatePlayerBalance } from './dataActions';
 
-export default async function playMinerAction(
-	playerEmail: string,
-	bet?: number,
-	bombsCount?: number,
-	cellNumber?: number
-) {
+export default async function playMinerAction({
+	playerEmail,
+	bet,
+	bombsCount,
+	cellIndex,
+}: {
+	playerEmail: string;
+	bet?: number;
+	bombsCount?: number;
+	cellIndex?: number;
+}) {
 	const player = await prisma.player.findUnique({ where: { email: playerEmail } });
 	if (!player) {
 		console.error(`[PlayMinerAction] player ${playerEmail} not found`);
 		return;
 	}
-	const playerBalance = Number(player.balance);
-	if (bet && playerBalance < bet) {
-		console.error(`[PlayMinerAction] player ${playerEmail} has not enough money`);
+	if (bet && Number(player.balance) < bet) {
+		console.error(`[PlayMinerAction] player ${playerEmail} hasn't enough money`);
 		return;
 	}
-
 	let activeGame: { bet: number; coeff: number; bombs: number[]; picked: number[] } | null = await kv.get(
 		`miner:${playerEmail}`
 	);
-	let newBalance = player.balance.toFixed(2);
-	let gameResult = null;
-
 	if (bet && bombsCount) {
-		newBalance = (player.balance - bet).toFixed(2);
-		await prisma.player.update({
-			where: {
-				email: player.email,
-			},
-			data: {
-				balance: +newBalance,
-			},
-		});
-
 		const bombsArray = genMinerBombs(bombsCount);
-		if (activeGame) {
-			await kv.del(`miner:${playerEmail}`);
-		}
+		console.log(bombsArray);
 		activeGame = { bet, coeff: 1, bombs: bombsArray, picked: [] };
-
 		kv.setex(`miner:${playerEmail}`, 1800, activeGame);
-
-		let nextCoefficient = calcCoeff(25 - activeGame.bombs.length, 25);
-
-		gameResult = {
-			nextCoefficient: activeGame.coeff * nextCoefficient,
-		};
-	} else if (cellNumber && activeGame) {
-		if (activeGame.picked.includes(cellNumber)) {
-			console.error(`[PlayMinerAction] player ${playerEmail} already picked cell number ${cellNumber}`);
+		await updatePlayerBalance(playerEmail, player.balance - bet);
+		return { newBalance: player.balance - bet };
+	} else if (activeGame && cellIndex !== undefined) {
+		if (activeGame.picked.includes(cellIndex)) {
+			console.error(`[PlayMinerAction] player ${playerEmail} has already picked cell ${cellIndex}`);
+			return;
 		}
-		activeGame.picked.push(cellNumber);
-
-		if (activeGame.bombs.includes(cellNumber)) {
-			gameResult = {
-				status: 'boom',
-				bombs: activeGame.bombs,
-				picked: activeGame.picked,
-			};
-
-			await prisma.gameLog.create({
-				data: {
-					bet: `${activeGame.bet}$`,
-					coefficient: `${activeGame.coeff} x`,
-					winnings: `- ${activeGame.bet}$`,
-					playerEmail: playerEmail,
-					gameId: 3,
-				},
-			});
-
-			await kv.del(`miner:${playerEmail}`);
-		} else {
-			let coefficient = calcCoeff(
-				26 - activeGame.picked.length - activeGame.bombs.length,
-				26 - activeGame.picked.length
-			);
-
-			activeGame.coeff *= coefficient;
-
+		activeGame.picked.push(cellIndex);
+		if (!activeGame.bombs.includes(cellIndex)) {
+			// * player won
 			if (activeGame.bombs.length + activeGame.picked.length >= 25) {
-				gameResult = {
-					winnings: `+ ${(activeGame.bet * (activeGame.coeff - 1)).toFixed(2)}$`,
-					bombs: activeGame.bombs,
-					picked: activeGame.picked,
-				};
-
-				newBalance = (player.balance + activeGame.bet * activeGame.coeff).toFixed(2);
-
-				await prisma.player.update({
-					where: {
-						email: player.email,
-					},
-					data: {
-						balance: +newBalance,
-					},
-				});
-
-				addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, gameResult.winnings);
-
+				// * all cells opened
+				const newBalance = player.balance + activeGame.bet * activeGame.coeff;
+				const gameWinnings = activeGame.bet * activeGame.coeff - activeGame.bet;
+				const newWinnings = player.winnings + gameWinnings;
+				updatePlayerBalance(playerEmail, newBalance, newWinnings);
+				addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, `+ ${gameWinnings.toFixed(2)}$`);
 				await kv.del(`miner:${playerEmail}`);
+				return { newBalance, gameWinnings };
 			} else {
-				let nextCoefficient = calcCoeff(
-					25 - activeGame.picked.length - activeGame.bombs.length,
-					25 - activeGame.picked.length
+				// * right opened cell
+				activeGame.coeff *= calcCoeff(
+					26 - activeGame.picked.length - activeGame.bombs.length,
+					26 - activeGame.picked.length
 				);
-
-				gameResult = {
-					status: 'luck',
-					currentCoefficient: activeGame.coeff,
-					nextCoefficient: activeGame.coeff * nextCoefficient,
-				};
-
 				kv.setex(`miner:${playerEmail}`, 1800, activeGame);
+				return {
+					activeCoeff: activeGame.coeff,
+					nextCoeff:
+						activeGame.coeff *
+						calcCoeff(25 - activeGame.picked.length - activeGame.bombs.length, 25 - activeGame.picked.length),
+				};
 			}
+		} else {
+			// * player lost
+			addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, `- ${activeGame.bet}$`);
+			await kv.del(`miner:${playerEmail}`);
+			return { picked: activeGame.picked, bombs: activeGame.bombs };
 		}
 	} else if (activeGame) {
-		// cash out
-		gameResult = {
-			winnings: `+ ${(activeGame.bet * (activeGame.coeff - 1)).toFixed(2)}$`,
-			bombs: activeGame.bombs,
-			picked: activeGame.picked,
-		};
-
-		newBalance = (player.balance + activeGame.bet * activeGame.coeff).toFixed(2);
-
-		await prisma.player.update({
-			where: {
-				email: player.email,
-			},
-			data: {
-				balance: +newBalance,
-				winnings: Number(player.winnings) + Number(newBalance) - Number(player.balance) - activeGame.bet,
-			},
-		});
-
-		addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, gameResult.winnings);
-
+		// * cash out
+		const newBalance = player.balance + activeGame.bet * activeGame.coeff;
+		const gameWinnings = activeGame.bet * activeGame.coeff - activeGame.bet;
+		const newWinnings = player.winnings + gameWinnings;
+		updatePlayerBalance(playerEmail, newBalance, newWinnings);
+		addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, `+ ${gameWinnings.toFixed(2)}$`);
 		await kv.del(`miner:${playerEmail}`);
+		// * active game: bombs || picked?
+		return { newBalance, gameWinnings, bombs: activeGame.bombs, picked: activeGame.picked };
 	}
-
-	return { newBalance, gameResult };
 }

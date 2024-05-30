@@ -50,13 +50,13 @@ export default function Dice() {
 					<div className={styles.gameOptions}>
 						<div>
 							<Button
-								background={clsx(buttons.over && '#00800080')}
+								background={clsx({ '#00800080': buttons.over })}
 								onClick={() => setButtons({ over: true, under: false })}
 							>
 								over
 							</Button>{' '}
 							<Button
-								background={clsx(buttons.under && '#00800080')}
+								background={clsx({ '#00800080': buttons.under })}
 								onClick={() => setButtons({ over: false, under: true })}
 							>
 								under

@@ -101,13 +101,13 @@ export default function Hilo() {
 	const getButtonLabel = (mode: 'higher' | 'lower') => {
 		switch (mode) {
 			case 'higher':
-				if (cardsDeck[activeCardIndex].value === 13) return 'same';
-				else if (cardsDeck[activeCardIndex].value === 1) return 'higher';
-				else return 'higher or same';
+				if (cardsDeck[activeCardIndex].value === 13) return 'Same';
+				else if (cardsDeck[activeCardIndex].value === 1) return 'Higher';
+				else return 'Higher or same';
 			case 'lower':
-				if (cardsDeck[activeCardIndex].value === 1) return 'same';
-				else if (cardsDeck[activeCardIndex].value === 13) return 'lower';
-				else return 'lower or same';
+				if (cardsDeck[activeCardIndex].value === 1) return 'Same';
+				else if (cardsDeck[activeCardIndex].value === 13) return 'Lower';
+				else return 'Lower or same';
 			default:
 				console.error('[Hi-Low page] Error: no such mode in checkName function');
 				return '';
@@ -133,8 +133,8 @@ export default function Hilo() {
 						</Card>
 					</div>
 					<div>
-						{cardsHistory.map((el) => {
-							return <Card cardIndex={el} />;
+						{cardsHistory.map((el, i) => {
+							return <Card cardIndex={el} key={i} />;
 						})}
 					</div>
 				</div>
@@ -162,7 +162,7 @@ export default function Hilo() {
 							⇊ {getButtonLabel('lower')} | {chances.lo}% | {coeffs.lo.toFixed(2)}x
 						</Button>
 						<Button onClick={() => cashOutHandler()} disabled={coeffs.total === 1}>
-							{coeffs.total.toFixed(2)}x cash out {(activeBet * coeffs.total).toFixed(2)}$
+							{coeffs.total.toFixed(2)}x Cash out {(activeBet * coeffs.total).toFixed(2)}$
 						</Button>
 					</>
 				)}

@@ -1,4 +1,6 @@
 .hiloField {
+	flex-direction: column;
+
 	> div {
 		width: 90%;
 		display: flex;
