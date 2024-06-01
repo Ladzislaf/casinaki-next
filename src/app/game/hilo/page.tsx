@@ -8,6 +8,7 @@ import Button from '@/ui/Button';
 import Card from '@/ui/Card';
 import { calcHiloChances, calcHiloCoeff, genCardsDeck, getRand } from '@/lib/utils';
 import playHiloAction from '@/actions/playHiloAction';
+import clsx from 'clsx';
 
 const cardsDeck = genCardsDeck('hilo');
 
@@ -15,7 +16,7 @@ export default function Hilo() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
 	const { balance, bet, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
-	const [activeCardIndex, setActiveCardIndex] = useState(52);
+	const [activeCardIndex, setActiveCardIndex] = useState(-1);
 	const [cardsHistory, setCardsHistory] = useState([-1]);
 	const [coeffs, setCoeffs] = useState({ hi: 1, lo: 1, total: 1 });
 	const [chances, setChances] = useState({ hi: '50', lo: '50' });
@@ -29,10 +30,6 @@ export default function Hilo() {
 	}, []);
 
 	const startGameHandler = () => {
-		if (bet > Number(balance)) {
-			alert(`You don't have enough balance!`);
-			return;
-		}
 		setPlayDisable(true);
 		playHiloAction({ playerEmail, bet, cardIndex: activeCardIndex })
 			.then((res) => {
@@ -77,7 +74,7 @@ export default function Hilo() {
 					addCartToHistory(activeCardIndex);
 					setActiveCardIndex(res.newCardIndex);
 					setGameState('betting');
-					setBalanceStatus(`- ${activeBet}$`);
+					setBalanceStatus(`- ${activeBet.toFixed(2)}$`);
 				}
 			})
 			.finally(() => {
@@ -122,7 +119,7 @@ export default function Hilo() {
 		<div className='gamePage'>
 			<div className='mainContainer'>
 				<h1>HIGHER-LOWER GAME</h1>
-				<div className={'gameContainer ' + styles.hiloField}>
+				<div className={clsx('gameContainer', styles.hiloField)}>
 					<div className={styles.activeCard}>
 						<Card cardIndex={1} cardColor='#222222'>
 							lowest

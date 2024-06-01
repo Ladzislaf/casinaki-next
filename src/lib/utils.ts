@@ -7,12 +7,22 @@ export const MAX_CARD = 51;
 export const overDiceCoeffs = [1.07, 1.19, 1.33, 1.52, 1.79, 2.13, 2.67, 3.56, 5.36, 10.67, 0];
 export const underDiceCoeffs = [0, 10.67, 5.36, 3.56, 2.67, 2.13, 1.79, 1.52, 1.33, 1.19, 1.07];
 
-export function getRand(min: number, max: number) {
+export function getRand(min: number, max: number): number {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export function getCardValue(cardIndex: number) {
+export function getCardValue(cardIndex: number): number {
 	return Math.floor(cardIndex / 4) + 1;
+}
+
+export function getJackCardValue(cardIndex: number): number {
+	if (cardIndex < 4) {
+		return 11;
+	} else if (cardIndex > 39) {
+		return 10;
+	} else {
+		return Math.floor(cardIndex / 4) + 1;
+	}
 }
 
 export function calcCoeff(a: number, b: number): number {
@@ -23,7 +33,23 @@ export function calcChances(a: number, b: number): string {
 	return ((a / b) * 100).toFixed(2);
 }
 
-export function generateNewCard(except?: number | number[]) {
+export function calcCardsSum(cards: number[]): number {
+	let sum = 0;
+	const cardValues: number[] = [];
+	cards.forEach((el) => {
+		const cardValue = getJackCardValue(el);
+		sum += cardValue;
+		cardValues.push(cardValue);
+	});
+	cardValues.forEach(el => {
+		if (el === 11 && sum > 21) {
+			sum -= 10;
+		}
+	})
+	return sum;
+}
+
+export function generateNewCard(except?: number | number[]): number {
 	let newCardIndex = getRand(0, 51);
 	if (typeof except === 'number') {
 		while (newCardIndex === except) {
@@ -35,6 +61,14 @@ export function generateNewCard(except?: number | number[]) {
 		}
 	}
 	return newCardIndex;
+}
+
+export function generateUniqueCards(cardsCount: number): number[] {
+	let generatedCards: number[] = [];
+	for (let i = 0; i < cardsCount; i++) {
+		generatedCards.push(generateNewCard(generatedCards));
+	}
+	return generatedCards;
 }
 
 export function calcHiloCoeff(cardIndex: number, choice: 'higher' | 'lower'): number {
@@ -57,7 +91,7 @@ export function calcHiloChances(cardIndex: number, choice: 'higher' | 'lower'): 
 	return (result * 100).toFixed(2);
 }
 
-export function isHiloPlayerWon(activeCardIndex: number, newCardIndex: number, choice: 'higher' | 'lower') {
+export function isHiloPlayerWon(activeCardIndex: number, newCardIndex: number, choice: 'higher' | 'lower'): boolean {
 	const activeCardValue = getCardValue(activeCardIndex);
 	const newCardValue = getCardValue(newCardIndex);
 
@@ -69,7 +103,7 @@ export function isHiloPlayerWon(activeCardIndex: number, newCardIndex: number, c
 		} else {
 			return newCardValue >= activeCardValue;
 		}
-	} else if (choice === 'lower') {
+	} else {
 		if (activeCardValue === 1) {
 			return newCardValue === activeCardValue;
 		} else if (activeCardValue === 13) {
@@ -100,7 +134,7 @@ export function isHiloPlayerWon(activeCardIndex: number, newCardIndex: number, c
 // 	return cards[cardIndex];
 // }
 
-export function genMinerBombs(bombsCount: number) {
+export function genMinerBombs(bombsCount: number): number[] {
 	let bombsArr: number[] = [];
 	while (bombsCount !== 0) {
 		const bombIndex = getRand(0, 24);
@@ -112,7 +146,7 @@ export function genMinerBombs(bombsCount: number) {
 	return bombsArr;
 }
 
-export function genCardsDeck(game: 'hilo' | 'blackjack') {
+export function genCardsDeck(game: 'hilo' | 'blackjack'): { index: string; suit: string; value: number }[] {
 	const suits = ['♠', '♥', '♦', '♣'];
 	const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 	const values = {

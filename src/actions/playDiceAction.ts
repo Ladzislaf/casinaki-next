@@ -36,7 +36,7 @@ export default async function playDiceAction({
 			balanceStatus = `+ ${(bet * coeff - bet).toFixed(2)}$`;
 			newBalance = player.balance - bet + bet * coeff;
 		} else {
-			balanceStatus = `- ${bet}$`;
+			balanceStatus = `- ${bet.toFixed(2)}$`;
 			newBalance = player.balance - bet;
 		}
 	} else {
@@ -45,7 +45,7 @@ export default async function playDiceAction({
 			balanceStatus = `+ ${(bet * coeff - bet).toFixed(2)}$`;
 			newBalance = player.balance - bet + bet * coeff;
 		} else {
-			balanceStatus = `- ${bet}$`;
+			balanceStatus = `- ${bet.toFixed(2)}$`;
 			newBalance = player.balance - bet;
 		}
 	}

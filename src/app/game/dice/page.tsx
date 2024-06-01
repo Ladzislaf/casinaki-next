@@ -1,7 +1,7 @@
 'use client';
 import clsx from 'clsx';
 import BetMaker from '@/ui/BetMaker/BetMaker';
-import styles from './dice.module.scss';
+import styles from './Dice.module.scss';
 import playDiceAction from '@/actions/playDiceAction';
 import Button from '@/ui/Button';
 import { useContext, useState } from 'react';
@@ -46,7 +46,7 @@ export default function Dice() {
 		<div className='gamePage'>
 			<div className='mainContainer'>
 				<h1>DICE GAME</h1>
-				<div className={'gameContainer ' + styles.diceField}>
+				<div className={clsx('gameContainer', styles.diceField)}>
 					<div className={styles.gameOptions}>
 						<div>
 							<Button
@@ -73,10 +73,7 @@ export default function Dice() {
 			</div>
 
 			<BetMaker>
-				<Button
-					onClick={() => rollDice()}
-					disabled={rollButtonDisable || !session.data?.user || bet > Number(balance)}
-				>
+				<Button onClick={() => rollDice()} disabled={rollButtonDisable || !session.data?.user || bet > Number(balance)}>
 					Roll dice | {buttons.over ? overDiceCoeffs[activeDice - 2] : underDiceCoeffs[activeDice - 2]}x
 				</Button>
 				<h2>{balanceStatus}</h2>

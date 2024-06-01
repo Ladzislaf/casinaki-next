@@ -29,7 +29,6 @@ export default async function playMinerAction({
 	);
 	if (bet && bombsCount) {
 		const bombsArray = genMinerBombs(bombsCount);
-		console.log(bombsArray);
 		activeGame = { bet, coeff: 1, bombs: bombsArray, picked: [] };
 		kv.setex(`miner:${playerEmail}`, 1800, activeGame);
 		await updatePlayerBalance(playerEmail, player.balance - bet);
@@ -67,7 +66,7 @@ export default async function playMinerAction({
 			}
 		} else {
 			// * player lost
-			addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, `- ${activeGame.bet}$`);
+			addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, `- ${activeGame.bet.toFixed(2)}$`);
 			await kv.del(`miner:${playerEmail}`);
 			return { picked: activeGame.picked, bombs: activeGame.bombs };
 		}

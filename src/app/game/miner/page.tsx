@@ -120,7 +120,7 @@ export default function MinerGame() {
 		<div className='gamePage'>
 			<div className='mainContainer'>
 				<h1>MINER GAME</h1>
-				<div className={'gameContainer ' + styles.minerField}>
+				<div className={clsx('gameContainer', styles.minerField)}>
 					<div className={styles.bombsPicker}>
 						<Button
 							onClick={() => {
