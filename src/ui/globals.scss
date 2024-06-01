@@ -78,8 +78,8 @@ body {
 					height: 100%;
 					width: 100%;
 					display: flex;
-					justify-content: center;
-					align-items: center;
+					align-items: safe center;
+					justify-content: safe center;
 					padding: 1rem;
 					border: 0.1rem solid var(--orange);
 					border-radius: 1rem;

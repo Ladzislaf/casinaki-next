@@ -1,0 +1,38 @@
+.pokerField {
+	flex-direction: column;
+
+	> .playerHand {
+		display: flex;
+		
+		> div {
+			cursor: pointer;
+
+			&:hover {
+				margin-top: -0.5rem;
+			}
+		}
+
+		> .hold {
+			border: 0.4rem solid green;
+		}
+	}
+
+	> table {
+		background: var(--orangeHover);
+		border: 0.1rem solid var(--orange);
+		min-width: 60%;
+		border-radius: 1rem;
+		padding: 0 3rem;
+
+		> tbody > tr {
+			> td:first-child {
+				text-align: start;
+			}
+
+			> td:last-child {
+				width: 30%;
+				text-align: end;
+			}
+		}
+	}
+}

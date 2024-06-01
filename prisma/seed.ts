@@ -8,6 +8,7 @@ async function main() {
 		{ id: 2, name: 'dice' },
 		{ id: 3, name: 'miner' },
 		{ id: 4, name: 'blackjack' },
+		{ id: 5, name: 'poker' },
 	];
 
 	const casinakiRanks = [

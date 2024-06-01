@@ -41,11 +41,11 @@ export function calcCardsSum(cards: number[]): number {
 		sum += cardValue;
 		cardValues.push(cardValue);
 	});
-	cardValues.forEach(el => {
+	cardValues.forEach((el) => {
 		if (el === 11 && sum > 21) {
 			sum -= 10;
 		}
-	})
+	});
 	return sum;
 }
 
@@ -63,10 +63,14 @@ export function generateNewCard(except?: number | number[]): number {
 	return newCardIndex;
 }
 
-export function generateUniqueCards(cardsCount: number): number[] {
+export function generateUniqueCards(cardsCount: number, except?: number[]): number[] {
 	let generatedCards: number[] = [];
 	for (let i = 0; i < cardsCount; i++) {
-		generatedCards.push(generateNewCard(generatedCards));
+		if (except) {
+			generatedCards.push(generateNewCard([...generatedCards, ...except]));
+		} else {
+			generatedCards.push(generateNewCard(generatedCards));
+		}
 	}
 	return generatedCards;
 }
@@ -114,26 +118,6 @@ export function isHiloPlayerWon(activeCardIndex: number, newCardIndex: number, c
 	}
 }
 
-// export async function updateRank(profile) {
-// 	const ranks = await Rank.findAll();
-// 	let rankId = 1;
-// 	for (let i = 0; i < ranks.length; i++) {
-// 		if (profile.winnings_sum >= ranks[i].dataValues.value_to_achieve) rankId = i + 1;
-// 	}
-// 	if (profile.rankId !== rankId) await profile.update({ rankId: rankId });
-// }
-
-// export function getBlackJackCardValue(cardIndex) {
-// 	const values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11];
-// 	let cards = Array(52);
-
-// 	for (let i = 0; i < cards.length; i++) {
-// 		cards[i] = values[Math.floor(i / 4)];
-// 	}
-
-// 	return cards[cardIndex];
-// }
-
 export function genMinerBombs(bombsCount: number): number[] {
 	let bombsArr: number[] = [];
 	while (bombsCount !== 0) {
@@ -164,3 +148,126 @@ export function genCardsDeck(game: 'hilo' | 'blackjack'): { index: string; suit:
 
 	return cards;
 }
+
+// *** POKER ***
+
+export function getCardSuit(cardIndex: number): 'clubs' | 'diamonds' | 'hearts' | 'spades' {
+	if (cardIndex % 4 === 0) return 'spades';
+	else if (cardIndex % 4 === 1) return 'hearts';
+	else if (cardIndex % 4 === 2) return 'diamonds';
+	else return 'clubs';
+}
+
+export function isFlush(cards: number[]): boolean {
+	const suit = getCardSuit(cards[0]);
+	for (let i = 1; i < cards.length; i++) {
+		if (getCardSuit(cards[i]) !== suit) return false;
+	}
+	return true;
+}
+
+export function isStraight(sortedCardValues: number[]): boolean {
+	if (sortedCardValues[0] === 1) {
+		const straight1: boolean =
+			sortedCardValues[1] === 2 && sortedCardValues[2] === 3 && sortedCardValues[3] === 4 && sortedCardValues[4] === 5;
+		const straight2: boolean =
+			sortedCardValues[1] === 10 &&
+			sortedCardValues[2] === 11 &&
+			sortedCardValues[3] === 12 &&
+			sortedCardValues[4] === 13;
+		return straight1 || straight2;
+	} else {
+		let currValue = sortedCardValues[0];
+		for (let i = 1; i < sortedCardValues.length; i++) {
+			if (sortedCardValues[i] !== currValue + 1) return false;
+			currValue = sortedCardValues[i];
+		}
+		return true;
+	}
+}
+
+export function isFour(sortedCardValues: number[]): boolean {
+	const four1: boolean =
+		sortedCardValues[0] === sortedCardValues[1] &&
+		sortedCardValues[1] === sortedCardValues[2] &&
+		sortedCardValues[2] === sortedCardValues[3];
+	const four2: boolean =
+		sortedCardValues[1] === sortedCardValues[2] &&
+		sortedCardValues[2] === sortedCardValues[3] &&
+		sortedCardValues[3] === sortedCardValues[4];
+	return four1 || four2;
+}
+
+export function isFullHouse(sortedCardValues: number[]): boolean {
+	const fullHouse1: boolean =
+		sortedCardValues[0] === sortedCardValues[1] &&
+		sortedCardValues[2] === sortedCardValues[3] &&
+		sortedCardValues[3] === sortedCardValues[4];
+	const fullHouse2: boolean =
+		sortedCardValues[0] === sortedCardValues[1] &&
+		sortedCardValues[1] === sortedCardValues[2] &&
+		sortedCardValues[3] === sortedCardValues[4];
+	return fullHouse1 || fullHouse2;
+}
+
+export function isThree(sortedCardValues: number[]): boolean {
+	const three1: boolean = sortedCardValues[0] === sortedCardValues[1] && sortedCardValues[1] === sortedCardValues[2];
+	const three2: boolean = sortedCardValues[1] === sortedCardValues[2] && sortedCardValues[2] === sortedCardValues[3];
+	const three3: boolean = sortedCardValues[2] === sortedCardValues[3] && sortedCardValues[3] === sortedCardValues[4];
+	return three1 || three2 || three3;
+}
+
+export function isTwoPairs(sortedCardValues: number[]): boolean {
+	const twoPairs1: boolean = sortedCardValues[0] === sortedCardValues[1] && sortedCardValues[2] === sortedCardValues[3];
+	const twoPairs2: boolean = sortedCardValues[1] === sortedCardValues[2] && sortedCardValues[3] === sortedCardValues[4];
+	const twoPairs3: boolean = sortedCardValues[0] === sortedCardValues[1] && sortedCardValues[3] === sortedCardValues[4];
+	return twoPairs1 || twoPairs2 || twoPairs3;
+}
+
+export function isPair(sortedCardValues: number[]): boolean {
+	const pair1: boolean = sortedCardValues[0] === sortedCardValues[1];
+	const pair2: boolean = sortedCardValues[1] === sortedCardValues[2];
+	const pair3: boolean = sortedCardValues[2] === sortedCardValues[3];
+	const pair4: boolean = sortedCardValues[3] === sortedCardValues[4];
+	return pair1 || pair2 || pair3 || pair4;
+}
+
+type pokerResults =
+	| 'royalFlush'
+	| 'straightFlush'
+	| 'four'
+	| 'fullHouse'
+	| 'flush'
+	| 'straight'
+	| 'three'
+	| 'twoPair'
+	| 'pair'
+	| 'nothing';
+
+export function checkPokerGame(cards: number[]): pokerResults {
+	if (cards.length !== 5) return 'nothing';
+	const cardValues: number[] = [];
+	cards.forEach((el) => {
+		cardValues.push(getCardValue(el));
+	});
+	cardValues.sort((a, b) => a - b);
+	if (isFlush(cards) && isStraight(cardValues) && cardValues[0] === 1 && cardValues[4] === 13) return 'royalFlush';
+	else if (isFlush(cards) && isStraight(cardValues)) return 'straightFlush';
+	else if (isFour(cardValues)) return 'four';
+	else if (isFullHouse(cardValues)) return 'fullHouse';
+	else if (isFlush(cards)) return 'flush';
+	else if (isStraight(cardValues)) return 'straight';
+	else if (isThree(cardValues)) return 'three';
+	else if (isTwoPairs(cardValues)) return 'twoPair';
+	else if (isPair(cardValues)) return 'pair';
+	else return 'nothing';
+}
+
+// export async function updateRank(profile) {
+// 	const ranks = await Rank.findAll();
+// 	let rankId = 1;
+// 	for (let i = 0; i < ranks.length; i++) {
+// 		if (profile.winnings_sum >= ranks[i].dataValues.value_to_achieve) rankId = i + 1;
+// 	}
+// 	if (profile.rankId !== rankId) await profile.update({ rankId: rankId });
+// }

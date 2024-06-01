@@ -1,17 +1,22 @@
 'use client';
 import React from 'react';
 import { genCardsDeck } from '@/lib/utils';
+import clsx from 'clsx';
 
 const cardsDeck = genCardsDeck('hilo');
 
 export default function Card({
 	cardIndex,
+	className,
+	onClick,
 	cardWidth,
 	cardHeigth,
 	cardColor,
 	children,
 }: {
 	cardIndex: number;
+	className?: string;
+	onClick?: () => void;
 	cardWidth?: string;
 	cardHeigth?: string;
 	cardColor?: string;
@@ -30,12 +35,16 @@ export default function Card({
 	}
 
 	return cardIndex === 52 ? (
-		<div className='card' style={{ background: cardBg, width: cardWidth, height: cardHeigth }}>
+		<div
+			className={'card'}
+			style={{ background: cardBg, width: cardWidth, height: cardHeigth }}
+		>
 			*
 		</div>
 	) : (
 		<div
-			className='card'
+			className={clsx('card', className)}
+			onClick={onClick}
 			style={{
 				background: cardColor ? cardColor : cardBg,
 				width: cardWidth,
