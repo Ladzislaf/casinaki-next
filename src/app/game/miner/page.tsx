@@ -76,6 +76,7 @@ export default function MinerGame() {
 						})
 					);
 					setBalanceStatus(`+ ${res.gameWinnings.toFixed(2)}$`);
+					alert('Congratulations! You are the absolute miner champion!');
 				} else if (res?.picked && res.bombs) {
 					// * lost
 					setCellClasses(
@@ -125,7 +126,7 @@ export default function MinerGame() {
 							onClick={() => {
 								bombsCount < 24 && setBombsCount(bombsCount + 1);
 							}}
-							disable={gameState === 'playing'}
+							disabled={gameState !== 'betting'}
 						>
 							+
 						</Button>
@@ -134,7 +135,7 @@ export default function MinerGame() {
 							onClick={() => {
 								bombsCount > 1 && setBombsCount(bombsCount - 1);
 							}}
-							disable={gameState === 'playing'}
+							disabled={gameState !== 'betting'}
 						>
 							-
 						</Button>
@@ -151,10 +152,8 @@ export default function MinerGame() {
 													[styles.picked]: cellClasses[cellIndex] === 'picked',
 													[styles.bomb]: cellClasses[cellIndex] === 'bomb',
 													[styles.wasPicked]: cellClasses[cellIndex] === 'wasPicked',
-													[`${styles.picked} ${styles.wasPicked}`]:
-														cellClasses[cellIndex] === 'picked wasPicked',
-													[`${styles.bomb} ${styles.wasPicked}`]:
-														cellClasses[cellIndex] === 'bomb wasPicked',
+													[`${styles.picked} ${styles.wasPicked}`]: cellClasses[cellIndex] === 'picked wasPicked',
+													[`${styles.bomb} ${styles.wasPicked}`]: cellClasses[cellIndex] === 'bomb wasPicked',
 												})}
 												key={cellIndex}
 												onClick={() => openCell(cellIndex)}
@@ -172,10 +171,7 @@ export default function MinerGame() {
 			<BetMaker>
 				{gameState === 'betting' ? (
 					<>
-						<Button
-							onClick={() => startGameHandler()}
-							disabled={!playerEmail || playDisable || Number(balance) < bet}
-						>
+						<Button onClick={() => startGameHandler()} disabled={!playerEmail || playDisable || Number(balance) < bet}>
 							Start the game | {calcChances(25 - bombsCount, 25)}% | {coeffs.nextCoeff.toFixed(2)}x
 						</Button>
 					</>
@@ -185,7 +181,6 @@ export default function MinerGame() {
 							Cash out | {(coeffs.activeCoeff * activeBet).toFixed(2)}$ | ({coeffs.activeCoeff.toFixed(2)}x)
 						</Button>
 						<h3>Nextcoeff: {coeffs.nextCoeff.toFixed(2)}x</h3>
-						{/* ... calculate next changes */}
 					</>
 				)}
 				<h2>{balanceStatus}</h2>

@@ -151,7 +151,9 @@ export default function Hilo() {
 						>
 							Start the game
 						</Button>
-						<Button onClick={() => setActiveCardIndex(getRand(0, 51))}>Skip card</Button>
+						<Button disabled={playDisable} onClick={() => setActiveCardIndex(getRand(0, 51))}>
+							Skip card
+						</Button>
 					</>
 				) : (
 					<>

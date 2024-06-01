@@ -42,6 +42,10 @@ export default async function playMinerAction({
 		activeGame.picked.push(cellIndex);
 		if (!activeGame.bombs.includes(cellIndex)) {
 			// * player won
+			activeGame.coeff *= calcCoeff(
+				26 - activeGame.picked.length - activeGame.bombs.length,
+				26 - activeGame.picked.length
+			);
 			if (activeGame.bombs.length + activeGame.picked.length >= 25) {
 				// * all cells opened
 				const newBalance = player.balance + activeGame.bet * activeGame.coeff;
@@ -53,10 +57,6 @@ export default async function playMinerAction({
 				return { newBalance, gameWinnings };
 			} else {
 				// * right opened cell
-				activeGame.coeff *= calcCoeff(
-					26 - activeGame.picked.length - activeGame.bombs.length,
-					26 - activeGame.picked.length
-				);
 				kv.setex(`miner:${playerEmail}`, 1800, activeGame);
 				return {
 					activeCoeff: activeGame.coeff,
@@ -79,7 +79,6 @@ export default async function playMinerAction({
 		updatePlayerBalance(playerEmail, newBalance, newWinnings);
 		addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, `+ ${gameWinnings.toFixed(2)}$`);
 		await kv.del(`miner:${playerEmail}`);
-		// * active game: bombs || picked?
 		return { newBalance, gameWinnings, bombs: activeGame.bombs, picked: activeGame.picked };
 	}
 }
