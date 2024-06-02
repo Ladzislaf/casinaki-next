@@ -77,7 +77,7 @@ export default function PokerGame() {
 						<tbody>
 							{pokerCombitanions.map((el, i) => {
 								return (
-									<tr>
+									<tr key={i}>
 										<td>{el.name}</td>
 										<td>{el.coeff}x</td>
 										<td>{(el.coeff * bet).toFixed(2)}$</td>
