@@ -21,7 +21,7 @@ export default function Hilo() {
 	const [coeffs, setCoeffs] = useState({ hi: 1, lo: 1, total: 1 });
 	const [chances, setChances] = useState({ hi: '50', lo: '50' });
 	const [activeBet, setActiveBet] = useState(bet);
-	const [balanceStatus, setBalanceStatus] = useState('');
+	const [payout, setPayout] = useState('');
 	const [gameState, setGameState] = useState('betting');
 	const [playDisable, setPlayDisable] = useState(false);
 
@@ -31,6 +31,9 @@ export default function Hilo() {
 
 	const startGameHandler = () => {
 		setPlayDisable(true);
+		setCardsHistory([52]);
+		setPayout('');
+
 		playHiloAction({ playerEmail, bet, cardIndex: activeCardIndex })
 			.then((res) => {
 				setCoeffs({
@@ -48,8 +51,6 @@ export default function Hilo() {
 			.finally(() => {
 				setGameState('playing');
 				setPlayDisable(false);
-				setBalanceStatus('');
-				setCardsHistory([52]);
 			});
 	};
 
@@ -69,12 +70,11 @@ export default function Hilo() {
 						hi: calcHiloChances(res.newCardIndex, 'higher'),
 						lo: calcHiloChances(res.newCardIndex, 'lower'),
 					});
-					setBalanceStatus('');
-				} else if (res?.newCardIndex) {
+				} else if (res?.newCardIndex && res.payout) {
 					addCartToHistory(activeCardIndex);
 					setActiveCardIndex(res.newCardIndex);
 					setGameState('betting');
-					setBalanceStatus(`- ${activeBet.toFixed(2)}$`);
+					setPayout(res.payout);
 				}
 			})
 			.finally(() => {
@@ -85,9 +85,9 @@ export default function Hilo() {
 	const cashOutHandler = () => {
 		playHiloAction({ playerEmail })
 			.then((res) => {
-				if (res?.newBalance && res.gameWinnings) {
+				if (res?.newBalance && res.payout) {
 					updateBalance(res.newBalance);
-					setBalanceStatus(`+ ${res.gameWinnings.toFixed(2)}$`);
+					setPayout(res.payout);
 				}
 			})
 			.finally(() => {
@@ -165,7 +165,7 @@ export default function Hilo() {
 						</Button>
 					</>
 				)}
-				<h2>{balanceStatus}</h2>
+				<h2>{payout}</h2>
 			</BetMaker>
 		</div>
 	);

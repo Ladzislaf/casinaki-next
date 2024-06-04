@@ -262,12 +262,3 @@ export function checkPokerGame(cards: number[]): pokerResults {
 	else if (isPair(cardValues)) return 'pair';
 	else return 'nothing';
 }
-
-// export async function updateRank(profile) {
-// 	const ranks = await Rank.findAll();
-// 	let rankId = 1;
-// 	for (let i = 0; i < ranks.length; i++) {
-// 		if (profile.winnings_sum >= ranks[i].dataValues.value_to_achieve) rankId = i + 1;
-// 	}
-// 	if (profile.rankId !== rankId) await profile.update({ rankId: rankId });
-// }

@@ -13,7 +13,7 @@ export default function Dice() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
 	const { balance, bet, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
-	const [balanceStatus, setBalanceStatus] = useState('');
+	const [payout, setPayout] = useState('');
 	const [buttons, setButtons] = useState({ over: true, under: false });
 	const [rollButtonDisable, setRollButtonDisable] = useState(false);
 	const [activeDice, setActiveDice] = useState(7);
@@ -23,7 +23,7 @@ export default function Dice() {
 		setRollButtonDisable(true);
 		playDiceAction({ playerEmail, bet, activeDice, gameMode: buttons.over ? 'over' : 'under' })
 			.then((res) => {
-				res?.balanceStatus && setBalanceStatus(res?.balanceStatus);
+				res?.payout && setPayout(res?.payout);
 				res?.diceResult && setResultDice(res?.diceResult);
 				res?.newBalance && updateBalance(res?.newBalance);
 			})
@@ -76,7 +76,7 @@ export default function Dice() {
 				<Button onClick={() => rollDice()} disabled={rollButtonDisable || !session.data?.user || bet > Number(balance)}>
 					Roll dice | {buttons.over ? overDiceCoeffs[activeDice - 2] : underDiceCoeffs[activeDice - 2]}x
 				</Button>
-				<h2>{balanceStatus}</h2>
+				<h2>{payout}</h2>
 			</BetMaker>
 		</div>
 	);

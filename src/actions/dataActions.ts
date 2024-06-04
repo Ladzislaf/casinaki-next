@@ -18,17 +18,15 @@ export async function createPlayerAction(playerEmail: string) {
 	}
 }
 
-export async function updatePlayerBalance(playerEmail: string, newBalance: number, newWinnings?: number) {
-	let newData: { balance: number; winnings?: number } = { balance: newBalance };
-	if (newWinnings) {
-		newData.winnings = newWinnings;
-	}
+export async function updatePlayerBalance(playerEmail: string, newBalance: number) {
 	try {
 		await prisma.player.update({
 			where: {
 				email: playerEmail,
 			},
-			data: newData,
+			data: {
+				balance: newBalance,
+			},
 		});
 	} catch (error) {
 		console.error('[UpdatePlayerBalance Error]', error);
@@ -53,15 +51,15 @@ export async function addGameLogRecord(
 	gameId: number,
 	bet: number,
 	coefficient: number,
-	winnings: string
+	payout: string
 ) {
 	await prisma.gameLog.create({
 		data: {
 			bet: `${bet.toFixed(2)}$`,
 			coefficient: `${coefficient.toFixed(2)} x`,
-			winnings: winnings,
-			playerEmail: playerEmail,
-			gameId: gameId,
+			payout,
+			playerEmail,
+			gameId,
 		},
 	});
 	revalidatePath('/');
@@ -78,11 +76,6 @@ export async function fetchHistory() {
 			player: {
 				select: {
 					email: true,
-					rank: {
-						select: {
-							id: true,
-						},
-					},
 				},
 			},
 		},
@@ -90,12 +83,4 @@ export async function fetchHistory() {
 			id: 'desc',
 		},
 	});
-}
-
-export async function fetchRanks() {
-	try {
-		return prisma.rank.findMany();
-	} catch (error) {
-		console.error('[FetchRanks Error]', error);
-	}
 }

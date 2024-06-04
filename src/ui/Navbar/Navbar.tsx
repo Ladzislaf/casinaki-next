@@ -12,7 +12,6 @@ export default function Navbar() {
 				<Image src={logo} alt='project logo' />
 			</Link>
 			<div>
-				<Link href='/ranks'>RANKS</Link>
 				<Link href='/reviews'>REVIEWS</Link>
 				<ProfileButton />
 			</div>

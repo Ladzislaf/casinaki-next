@@ -24,7 +24,7 @@ export default function MinerGame() {
 	const [cellClasses, setCellClasses] = useState(Array(25).fill(''));
 	const [activeBet, setActiveBet] = useState(bet);
 	const [gameState, setGameState] = useState('betting');
-	const [balanceStatus, setBalanceStatus] = useState('');
+	const [payout, setPayout] = useState('');
 	const [bombsCount, setBombsCount] = useState(5);
 	const [coeffs, setCoeffs] = useState({ activeCoeff: 1, nextCoeff: calcCoeff(25 - bombsCount, 25) });
 	const [cellsDisable, setCellsDisable] = useState(true);
@@ -39,13 +39,13 @@ export default function MinerGame() {
 		setCellsDisable(false);
 		setActiveBet(bet);
 		setCellClasses(Array(25).fill(''));
+		setPayout('');
 
 		playMinerAction({ playerEmail, bet, bombsCount })
 			.then((res) => {
 				res?.newBalance && updateBalance(res.newBalance);
 			})
 			.finally(() => {
-				setBalanceStatus(`- ${bet.toFixed(2)}$`);
 				setGameState('playing');
 				setPlayDisable(false);
 			});
@@ -63,11 +63,9 @@ export default function MinerGame() {
 				);
 				setCoeffs({ activeCoeff: res.activeCoeff, nextCoeff: res.nextCoeff });
 				setCellsDisable(false);
-				setBalanceStatus('');
-			} else {
-				if (res?.newBalance && res.gameWinnings) {
+			} else if (res?.payout) {
+				if (res?.newBalance) {
 					// * all cells opened
-					updateBalance(res.newBalance);
 					setCellClasses(
 						cellClasses.map((el, i) => {
 							if (i === cellIndex) return 'picked';
@@ -75,7 +73,7 @@ export default function MinerGame() {
 							else return 'bomb';
 						})
 					);
-					setBalanceStatus(`+ ${res.gameWinnings.toFixed(2)}$`);
+					updateBalance(res.newBalance);
 					alert('Congratulations! You are the absolute miner champion!');
 				} else if (res?.picked && res.bombs) {
 					// * lost
@@ -88,6 +86,7 @@ export default function MinerGame() {
 						})
 					);
 				}
+				setPayout(res.payout);
 				setCoeffs({ activeCoeff: 1, nextCoeff: calcCoeff(25 - bombsCount, 25) });
 				setGameState('betting');
 			}
@@ -98,9 +97,9 @@ export default function MinerGame() {
 		setCellsDisable(true);
 		playMinerAction({ playerEmail })
 			.then((res) => {
-				if (res?.newBalance && res.gameWinnings && res.bombs && res.picked) {
+				if (res?.newBalance && res.payout && res.bombs && res.picked) {
 					res.newBalance && updateBalance(res.newBalance);
-					setBalanceStatus(`+ ${res.gameWinnings.toFixed(2)}$`);
+					setPayout(res.payout);
 					setCellClasses(
 						cellClasses.map((el, i) => {
 							if (res.bombs.includes(i)) return 'bomb';
@@ -183,7 +182,7 @@ export default function MinerGame() {
 						<h3>Nextcoeff: {coeffs.nextCoeff.toFixed(2)}x</h3>
 					</>
 				)}
-				<h2>{balanceStatus}</h2>
+				<h2>{payout}</h2>
 			</BetMaker>
 		</div>
 	);

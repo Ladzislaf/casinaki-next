@@ -11,15 +11,6 @@ async function main() {
 		{ id: 5, name: 'poker' },
 	];
 
-	const casinakiRanks = [
-		{ id: 1, name: 'noob', valueToAchieve: 0 },
-		{ id: 2, name: 'lover', valueToAchieve: 10 },
-		{ id: 3, name: 'gamer', valueToAchieve: 50 },
-		{ id: 4, name: 'wolf', valueToAchieve: 100 },
-		{ id: 5, name: 'boss', valueToAchieve: 500 },
-		{ id: 6, name: 'sheikh', valueToAchieve: 1000 },
-	];
-
 	casinakiGames.forEach(async (el) => {
 		await prisma.game.upsert({
 			where: {
@@ -28,20 +19,6 @@ async function main() {
 			create: {
 				id: el.id,
 				name: el.name,
-			},
-			update: {},
-		});
-	});
-
-	casinakiRanks.forEach(async (el) => {
-		await prisma.rank.upsert({
-			where: {
-				id: el.id,
-			},
-			create: {
-				id: el.id,
-				name: el.name,
-				valueToAchieve: el.valueToAchieve,
 			},
 			update: {},
 		});

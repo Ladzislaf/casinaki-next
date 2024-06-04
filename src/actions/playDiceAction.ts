@@ -29,33 +29,29 @@ export default async function playDiceAction({
 	let newDice = getRand(MIN_DICE, MAX_DICE),
 		newBalance = player.balance,
 		coeff,
-		balanceStatus;
+		payout;
 	if (gameMode === 'over') {
 		coeff = overDiceCoeffs[activeDice - 2];
 		if (newDice > activeDice) {
-			balanceStatus = `+ ${(bet * coeff - bet).toFixed(2)}$`;
+			payout = `+ ${(bet * coeff - bet).toFixed(2)}$`;
 			newBalance = player.balance - bet + bet * coeff;
 		} else {
-			balanceStatus = `- ${bet.toFixed(2)}$`;
+			payout = `- ${bet.toFixed(2)}$`;
 			newBalance = player.balance - bet;
 		}
 	} else {
 		coeff = underDiceCoeffs[activeDice - 2];
 		if (newDice < activeDice) {
-			balanceStatus = `+ ${(bet * coeff - bet).toFixed(2)}$`;
+			payout = `+ ${(bet * coeff - bet).toFixed(2)}$`;
 			newBalance = player.balance - bet + bet * coeff;
 		} else {
-			balanceStatus = `- ${bet.toFixed(2)}$`;
+			payout = `- ${bet.toFixed(2)}$`;
 			newBalance = player.balance - bet;
 		}
 	}
-	if (balanceStatus) {
-		addGameLogRecord(playerEmail, 2, bet, coeff, balanceStatus);
+	if (payout) {
+		addGameLogRecord(playerEmail, 2, bet, coeff, payout);
 	}
-	if (newBalance > player.balance) {
-		await updatePlayerBalance(playerEmail, newBalance, player.winnings + newBalance - player.balance);
-	} else {
-		await updatePlayerBalance(playerEmail, newBalance);
-	}
-	return { balanceStatus, diceResult: newDice, newBalance };
+	await updatePlayerBalance(playerEmail, newBalance);
+	return { newBalance, payout, diceResult: newDice };
 }

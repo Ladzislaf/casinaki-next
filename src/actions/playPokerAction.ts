@@ -71,13 +71,14 @@ export default async function playPokerAction({
 		}
 		if (coeff > 0) {
 			const newBalance = player.balance + activeGame.bet * coeff;
-			const winnings = `+ ${(activeGame.bet * coeff - activeGame.bet).toFixed(2)}$`;
+			const payout = `+ ${(activeGame.bet * coeff - activeGame.bet).toFixed(2)}$`;
 			await updatePlayerBalance(playerEmail, newBalance);
-			await addGameLogRecord(playerEmail, 5, activeGame.bet, coeff, winnings);
-			return { newBalance, playerHand: activeGame.playerCards, balanceStatus: winnings };
+			await addGameLogRecord(playerEmail, 5, activeGame.bet, coeff, payout);
+			return { newBalance, payout, playerHand: activeGame.playerCards };
 		} else {
-			await addGameLogRecord(playerEmail, 5, activeGame.bet, 1, `- ${activeGame.bet.toFixed(2)}$`);
-			return { playerHand: activeGame.playerCards, balanceStatus: `- ${activeGame.bet.toFixed(2)}$` };
+			const payout = `- ${activeGame.bet.toFixed(2)}$`;
+			await addGameLogRecord(playerEmail, 5, activeGame.bet, 1, payout);
+			return { payout, playerHand: activeGame.playerCards };
 		}
 	}
 }

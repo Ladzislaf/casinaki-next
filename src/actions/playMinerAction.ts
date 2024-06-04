@@ -48,12 +48,11 @@ export default async function playMinerAction({
 			if (activeGame.bombs.length + activeGame.picked.length >= 25) {
 				// * all cells opened
 				const newBalance = player.balance + activeGame.bet * activeGame.coeff;
-				const gameWinnings = activeGame.bet * activeGame.coeff - activeGame.bet;
-				const newWinnings = player.winnings + gameWinnings;
-				updatePlayerBalance(playerEmail, newBalance, newWinnings);
-				addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, `+ ${gameWinnings.toFixed(2)}$`);
+				const payout = `+ ${(activeGame.bet * activeGame.coeff - activeGame.bet).toFixed(2)}$`;
+				updatePlayerBalance(playerEmail, newBalance);
+				addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, payout);
 				await kv.del(`miner:${playerEmail}`);
-				return { newBalance, gameWinnings };
+				return { newBalance, payout };
 			} else {
 				// * right opened cell
 				kv.setex(`miner:${playerEmail}`, 1800, activeGame);
@@ -66,18 +65,18 @@ export default async function playMinerAction({
 			}
 		} else {
 			// * player lost
-			addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, `- ${activeGame.bet.toFixed(2)}$`);
+			const payout = `- ${activeGame.bet.toFixed(2)}$`;
+			addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, payout);
 			await kv.del(`miner:${playerEmail}`);
-			return { picked: activeGame.picked, bombs: activeGame.bombs };
+			return { payout, picked: activeGame.picked, bombs: activeGame.bombs };
 		}
 	} else if (activeGame) {
 		// * cash out
+		const payout = `+ ${(activeGame.bet * activeGame.coeff - activeGame.bet).toFixed(2)}$`;
 		const newBalance = player.balance + activeGame.bet * activeGame.coeff;
-		const gameWinnings = activeGame.bet * activeGame.coeff - activeGame.bet;
-		const newWinnings = player.winnings + gameWinnings;
-		updatePlayerBalance(playerEmail, newBalance, newWinnings);
-		addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, `+ ${gameWinnings.toFixed(2)}$`);
+		updatePlayerBalance(playerEmail, newBalance);
+		addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, payout);
 		await kv.del(`miner:${playerEmail}`);
-		return { newBalance, gameWinnings, bombs: activeGame.bombs, picked: activeGame.picked };
+		return { newBalance, payout, bombs: activeGame.bombs, picked: activeGame.picked };
 	}
 }

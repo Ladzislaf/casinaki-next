@@ -25,7 +25,7 @@ export default function PokerGame() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
 	const { bet, balance, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
-	const [balanceStatus, setBalanceStatus] = useState('');
+	const [payout, setPayout] = useState('');
 	const [gameStatus, setGameStatus] = useState('betting');
 	const [playDisable, setPlayDisable] = useState(false);
 	const [playerHand, setPlayerHand] = useState([1, 49, 45, 41, 37]);
@@ -33,7 +33,7 @@ export default function PokerGame() {
 
 	const startGame = () => {
 		setPlayDisable(true);
-		setBalanceStatus('');
+		setPayout('');
 		playPokerAction({ playerEmail, bet })
 			.then((res) => {
 				res?.newBalance && updateBalance(res.newBalance);
@@ -52,7 +52,7 @@ export default function PokerGame() {
 			.then((res) => {
 				res?.playerHand && setPlayerHand(res.playerHand);
 				res?.newBalance && updateBalance(res.newBalance);
-				res?.balanceStatus && setBalanceStatus(res.balanceStatus);
+				res?.payout && setPayout(res.payout);
 			})
 			.finally(() => {
 				setGameStatus('betting');
@@ -112,7 +112,7 @@ export default function PokerGame() {
 						</Button>
 					</>
 				)}
-				<h2>{balanceStatus}</h2>
+				<h2>{payout}</h2>
 			</BetMaker>
 		</div>
 	);

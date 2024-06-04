@@ -18,13 +18,11 @@ model Player {
   password           String?
   role               Role                 @default(PLAYER)
   balance            Float                @default(5)
-  winnings           Float                @default(0)
   rankId             Int                  @default(1)
   bonus              DateTime?            @db.Date
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   review             Review?
-  rank               Rank                 @relation(fields: [rankId], references: [id])
   gameLog            GameLog[]
   activatedPromocode ActivatedPromocode[]
 }
@@ -63,20 +61,13 @@ model Game {
   gameLog GameLog[]
 }
 
-model Rank {
-  id             Int      @id @default(autoincrement())
-  name           String   @unique
-  valueToAchieve Int
-  Player         Player[]
-}
-
 model GameLog {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   bet         String
   coefficient String
-  winnings    String
+  payout      String
   playerEmail String
   gameId      Int
   player      Player   @relation(fields: [playerEmail], references: [email])

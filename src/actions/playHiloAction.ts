@@ -39,20 +39,20 @@ export default async function playHiloAction({
 				kv.setex(`hilo:${playerEmail}`, 1800, activeGame);
 				return { newCardIndex, totalCoeff: activeGame.coeff };
 			} else {
+				const payout = `- ${activeGame.bet.toFixed(2)}$`;
 				activeGame.coeff = activeGame.coeff * calcHiloCoeff(activeGame.cardIndex, choice);
-				await addGameLogRecord(playerEmail, 1, activeGame.bet, activeGame.coeff, `- ${activeGame.bet.toFixed(2)}$`);
+				await addGameLogRecord(playerEmail, 1, activeGame.bet, activeGame.coeff, payout);
 				await kv.del(`hilo:${playerEmail}`);
-				return { newCardIndex };
+				return { payout, newCardIndex };
 			}
 		} else {
 			// * cash out
 			const newBalance = player.balance + activeGame.bet * activeGame.coeff;
-			const gameWinnings = activeGame.bet * activeGame.coeff - activeGame.bet;
-			const newWinnings = player.winnings + gameWinnings;
-			await updatePlayerBalance(playerEmail, newBalance, newWinnings);
-			await addGameLogRecord(playerEmail, 1, activeGame.bet, activeGame.coeff, `+ ${gameWinnings.toFixed(2)}$`);
+			const payout = `+ ${(activeGame.bet * activeGame.coeff - activeGame.bet).toFixed(2)}$`;
+			await updatePlayerBalance(playerEmail, newBalance);
+			await addGameLogRecord(playerEmail, 1, activeGame.bet, activeGame.coeff, payout);
 			await kv.del(`hilo:${playerEmail}`);
-			return { newBalance, gameWinnings };
+			return { newBalance, payout };
 		}
 	}
 }

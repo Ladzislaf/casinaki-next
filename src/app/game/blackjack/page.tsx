@@ -13,7 +13,7 @@ export default function BlackjackGame() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
 	const { bet, balance, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
-	const [balanceStatus, setBalanceStatus] = useState('');
+	const [payout, setPayout] = useState('');
 	const [gameStatus, setGameStatus] = useState('betting');
 	const [playDisable, setPlayDisable] = useState(false);
 	const [dealerHand, setDealerHand] = useState({ cards: [-1, -1], sum: 0 });
@@ -21,7 +21,8 @@ export default function BlackjackGame() {
 
 	const startGame = () => {
 		setPlayDisable(true);
-		setBalanceStatus('');
+		setPayout('');
+
 		playBlackjackAction({ playerEmail, bet })
 			.then((res) => {
 				res?.newBalance && updateBalance(res.newBalance);
@@ -39,10 +40,10 @@ export default function BlackjackGame() {
 		playBlackjackAction({ playerEmail, choice: 'more' })
 			.then((res) => {
 				res?.playerHand && setPlayerHand(res.playerHand);
-				if (res?.dealerHand && res.balanceStatus) {
+				if (res?.dealerHand && res.payout) {
 					// * player lost
 					setDealerHand(res.dealerHand);
-					setBalanceStatus(res.balanceStatus);
+					setPayout(res.payout);
 					setGameStatus('betting');
 				}
 			})
@@ -57,7 +58,7 @@ export default function BlackjackGame() {
 			.then((res) => {
 				res?.dealerHand && setDealerHand(res.dealerHand);
 				res?.newBalance && updateBalance(res.newBalance);
-				res?.balanceStatus && setBalanceStatus(res.balanceStatus);
+				res?.payout && setPayout(res.payout);
 			})
 			.finally(() => {
 				setGameStatus('betting');
@@ -104,7 +105,7 @@ export default function BlackjackGame() {
 						</Button>
 					</>
 				)}
-				<h2>{balanceStatus}</h2>
+				<h2>{payout}</h2>
 			</BetMaker>
 		</div>
 	);
