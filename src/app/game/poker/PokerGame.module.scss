@@ -3,7 +3,7 @@
 
 	> .playerHand {
 		display: flex;
-		
+
 		> div {
 			cursor: pointer;
 
@@ -25,6 +25,10 @@
 		padding: 0 3rem;
 
 		> tbody > tr {
+			&.active {
+				color: var(--orange);
+			}
+
 			> td:first-child {
 				text-align: start;
 			}

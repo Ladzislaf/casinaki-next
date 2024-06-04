@@ -11,8 +11,8 @@ export default async function BetHistory() {
 			<table className={styles.tbl}>
 				<thead>
 					<tr>
-						<td>player</td>
 						<td>game</td>
+						<td>player</td>
 						<td>bet</td>
 						<td>coefficient</td>
 						<td>payout</td>
@@ -23,10 +23,10 @@ export default async function BetHistory() {
 					{history.slice(0, 100).map((el) => {
 						return (
 							<tr key={el.id}>
-								<td>{el.player.email.substring(0, el.player.email.indexOf('@'))}</td>
 								<td>
 									<Link href={`/game/${el.game.name}`}>{el.game.name}</Link>
 								</td>
+								<td>{el.player.email.substring(0, el.player.email.indexOf('@'))}</td>
 								<td>{el.bet}</td>
 								<td>{el.coefficient}</td>
 								<td>{el.payout}</td>

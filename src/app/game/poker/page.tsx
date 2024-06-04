@@ -30,10 +30,13 @@ export default function PokerGame() {
 	const [playDisable, setPlayDisable] = useState(false);
 	const [playerHand, setPlayerHand] = useState([1, 49, 45, 41, 37]);
 	const [holdCards, setHoldCards] = useState<number[]>([]);
+	const [activeCombination, setActiveCombination] = useState(0);
 
 	const startGame = () => {
 		setPlayDisable(true);
 		setPayout('');
+		setActiveCombination(0);
+
 		playPokerAction({ playerEmail, bet })
 			.then((res) => {
 				res?.newBalance && updateBalance(res.newBalance);
@@ -53,6 +56,7 @@ export default function PokerGame() {
 				res?.playerHand && setPlayerHand(res.playerHand);
 				res?.newBalance && updateBalance(res.newBalance);
 				res?.payout && setPayout(res.payout);
+				res?.combination && setActiveCombination(res.combination);
 			})
 			.finally(() => {
 				setGameStatus('betting');
@@ -77,7 +81,7 @@ export default function PokerGame() {
 						<tbody>
 							{pokerCombitanions.map((el, i) => {
 								return (
-									<tr key={i}>
+									<tr key={i} className={clsx({ [styles.active]: activeCombination - 1 === i })}>
 										<td>{el.name}</td>
 										<td>{el.coeff}x</td>
 										<td>{(el.coeff * bet).toFixed(2)}$</td>

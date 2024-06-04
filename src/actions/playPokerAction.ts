@@ -40,41 +40,51 @@ export default async function playPokerAction({
 		});
 		const gameResult = checkPokerGame(activeGame.playerCards);
 		let coeff: number = 0;
+		let combination: number = 0;
 		switch (gameResult) {
 			case 'royalFlush':
 				coeff = 800;
+				combination = 1;
 				break;
 			case 'straightFlush':
 				coeff = 60;
+				combination = 2;
 				break;
 			case 'four':
 				coeff = 22;
+				combination = 3;
 				break;
 			case 'fullHouse':
 				coeff = 9;
+				combination = 4;
 				break;
 			case 'flush':
 				coeff = 6;
+				combination = 5;
 				break;
 			case 'straight':
 				coeff = 4;
+				combination = 6;
 				break;
 			case 'three':
 				coeff = 3;
+				combination = 7;
 				break;
 			case 'twoPair':
 				coeff = 2;
+				combination = 8;
 				break;
 			case 'pair':
 				coeff = 1;
+				combination = 9;
 				break;
 		}
-		if (coeff > 0) {
+		if (coeff > 0 && combination) {
 			const newBalance = player.balance + activeGame.bet * coeff;
 			const payout = `+ ${(activeGame.bet * coeff - activeGame.bet).toFixed(2)}$`;
 			await updatePlayerBalance(playerEmail, newBalance);
 			await addGameLogRecord(playerEmail, 5, activeGame.bet, coeff, payout);
-			return { newBalance, payout, playerHand: activeGame.playerCards };
+			return { newBalance, payout, playerHand: activeGame.playerCards, combination };
 		} else {
 			const payout = `- ${activeGame.bet.toFixed(2)}$`;
 			await addGameLogRecord(playerEmail, 5, activeGame.bet, 1, payout);

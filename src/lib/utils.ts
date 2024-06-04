@@ -225,10 +225,12 @@ export function isTwoPairs(sortedCardValues: number[]): boolean {
 }
 
 export function isPair(sortedCardValues: number[]): boolean {
-	const pair1: boolean = sortedCardValues[0] === sortedCardValues[1];
-	const pair2: boolean = sortedCardValues[1] === sortedCardValues[2];
-	const pair3: boolean = sortedCardValues[2] === sortedCardValues[3];
-	const pair4: boolean = sortedCardValues[3] === sortedCardValues[4];
+	// * availablePairs: Ace, Jack, Queen, King
+	const availablePairs = [1, 11, 12, 13];
+	const pair1: boolean = sortedCardValues[0] === sortedCardValues[1] && availablePairs.includes(sortedCardValues[0]);
+	const pair2: boolean = sortedCardValues[1] === sortedCardValues[2] && availablePairs.includes(sortedCardValues[1]);
+	const pair3: boolean = sortedCardValues[2] === sortedCardValues[3] && availablePairs.includes(sortedCardValues[2]);
+	const pair4: boolean = sortedCardValues[3] === sortedCardValues[4] && availablePairs.includes(sortedCardValues[3]);
 	return pair1 || pair2 || pair3 || pair4;
 }
 
