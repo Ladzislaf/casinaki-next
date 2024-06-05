@@ -11,7 +11,7 @@ export default function Navbar() {
 			<Link href='/'>
 				<Image src={logo} alt='project logo' />
 			</Link>
-			<div>
+			<div className={styles.links}>
 				<Link href='/reviews'>REVIEWS</Link>
 				<ProfileButton />
 			</div>

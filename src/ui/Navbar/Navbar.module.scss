@@ -10,13 +10,13 @@
 	border-radius: 1rem;
 	border: 0.1rem solid var(--greyBorder);
 
-	a {
+	> a {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		border-radius: 1rem;
 
-		img {
+		> img {
 			height: 80%;
 			width: auto;
 		}
@@ -27,12 +27,15 @@
 		}
 	}
 
-	div {
+	> .links {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 
-		a {
+		> * {
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			padding: 0 1rem;
 			height: 100%;
 			border-radius: 1rem;
@@ -43,13 +46,44 @@
 			}
 		}
 
-		.player {
+		> .player {
+			position: relative;
 			color: var(--orange);
+			cursor: pointer;
 
-			img {
+			> img {
 				border-radius: 50%;
-				border: 0.1rem solid white;
+				border: 0.1rem solid var(--foreground);
 				margin-right: 1rem;
+				height: 80%;
+				width: auto;
+			}
+
+			> .profile {
+				cursor: default;
+				position: absolute;
+				top: 100%;
+				width: max-content;
+				max-width: 300%;
+				margin: 1rem;
+				display: flex;
+				flex-direction: column;
+
+				border: 0.1rem solid var(--orange);
+				border-radius: 1rem;
+				background-color: var(--orangeDark);
+
+				> * {
+					text-align: center;
+					overflow: scroll;
+					padding: 0.1rem 1rem;
+					color: var(--foreground);
+					width: 100%;
+				}
+
+				> a:hover {
+					color: var(--orange);
+				}
 			}
 		}
 	}
