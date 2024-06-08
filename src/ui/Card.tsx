@@ -35,14 +35,12 @@ export default function Card({
 	}
 
 	return cardIndex === 52 ? (
-		<div
-			className={'card'}
-			style={{ background: cardBg, width: cardWidth, height: cardHeigth }}
-		>
-			*
+		<div className={'card'} style={{ background: cardBg, width: cardWidth, height: cardHeigth }}>
+			<div>*</div>
 		</div>
 	) : (
 		<div
+			key={cardIndex}
 			className={clsx('card', className)}
 			onClick={onClick}
 			style={{
@@ -51,8 +49,10 @@ export default function Card({
 				height: cardHeigth,
 			}}
 		>
-			{currentCard.index + currentCard.suit}
-			<p style={{ fontSize: '1.5rem' }}>{children}</p>
+			<div>
+				{currentCard.index + currentCard.suit}
+				<p style={{ fontSize: '1.5rem' }}>{children}</p>
+			</div>
 		</div>
 	);
 }

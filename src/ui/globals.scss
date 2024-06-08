@@ -102,11 +102,26 @@ body {
 		.card {
 			border: 0.2rem var(--orange) solid;
 			border-radius: 1rem;
-			width: 8rem;
+			min-width: 8rem;
 			height: 12rem;
 			font-size: 3rem;
 			text-align: center;
-			margin: 0.5rem -1rem;
+			margin: 0.5rem 0.1rem;
+			transform-style: preserve-3d;
+			animation: rollout 0.5s;
+
+			> div {
+				backface-visibility: hidden;
+			}
+
+			@keyframes rollout {
+				0% {
+					transform: rotateY(180deg);
+				}
+				100% {
+					transform: rotateY(0);
+				}
+			}
 		}
 	}
 }

@@ -3,10 +3,11 @@
 
 	> .playerHand {
 		display: flex;
-
+		
 		> div {
 			cursor: pointer;
-
+			transition-duration: 0.3s;
+			
 			&:hover {
 				margin-top: -0.5rem;
 			}
