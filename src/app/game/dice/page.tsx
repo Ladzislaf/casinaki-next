@@ -50,13 +50,13 @@ export default function Dice() {
 					<div className={styles.gameOptions}>
 						<div>
 							<Button
-								background={clsx({ '#00800080': buttons.over })}
+								style={{ background: clsx({ '#00800080': buttons.over }) }}
 								onClick={() => setButtons({ over: true, under: false })}
 							>
 								over
 							</Button>{' '}
 							<Button
-								background={clsx({ '#00800080': buttons.under })}
+								style={{ background: clsx({ '#00800080': buttons.under }) }}
 								onClick={() => setButtons({ over: false, under: true })}
 							>
 								under
@@ -73,7 +73,7 @@ export default function Dice() {
 			</div>
 
 			<BetMaker>
-				<Button onClick={() => rollDice()} disabled={rollButtonDisable || !session.data?.user || bet > Number(balance)}>
+				<Button onClick={rollDice} disabled={rollButtonDisable || !session.data?.user || bet > Number(balance)}>
 					Roll dice | {buttons.over ? overDiceCoeffs[activeDice - 2] : underDiceCoeffs[activeDice - 2]}x
 				</Button>
 				<h2>{payout}</h2>

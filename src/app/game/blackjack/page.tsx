@@ -92,15 +92,15 @@ export default function BlackjackGame() {
 			</div>
 			<BetMaker>
 				{gameStatus === 'betting' ? (
-					<Button onClick={() => startGame()} disabled={!session.data?.user || playDisable || bet > Number(balance)}>
+					<Button onClick={startGame} disabled={!session.data?.user || playDisable || bet > Number(balance)}>
 						Start the game
 					</Button>
 				) : (
 					<>
-						<Button onClick={() => getAnotherCard()} disabled={playDisable}>
+						<Button onClick={getAnotherCard} disabled={playDisable}>
 							Take another card
 						</Button>
-						<Button onClick={() => checkResults()} disabled={playDisable}>
+						<Button onClick={checkResults} disabled={playDisable}>
 							Enough
 						</Button>
 					</>

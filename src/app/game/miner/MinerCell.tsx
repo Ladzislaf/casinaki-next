@@ -4,12 +4,10 @@ import styles from './MinerGame.module.scss';
 
 export default function Cell({
 	cellClass,
-	cellIndex,
 	onClick,
 	disabled,
 }: {
 	cellClass: string;
-	cellIndex: number;
 	onClick: () => void;
 	disabled?: boolean;
 }) {
@@ -22,7 +20,6 @@ export default function Cell({
 				[`${styles.picked} ${styles.wasPicked}`]: cellClass === 'picked wasPicked',
 				[`${styles.bomb} ${styles.wasPicked}`]: cellClass === 'bomb wasPicked',
 			})}
-			key={cellIndex}
 			onClick={onClick}
 			disabled={disabled || cellClass === 'picked'}
 		></button>

@@ -7,7 +7,7 @@ export default async function BetHistory() {
 
 	return (
 		<div className={styles.container}>
-			<h2>bets history</h2>
+			<h2>Bets history</h2>
 			<table className={styles.tbl}>
 				<thead>
 					<tr>

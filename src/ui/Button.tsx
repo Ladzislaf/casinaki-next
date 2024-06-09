@@ -1,17 +1,14 @@
-import '@/ui/globals.scss';
 import { ReactNode } from 'react';
 
 export default function Button({
 	children,
-	onClick,
-	disabled,
-	...rest
+	...properties
 }: {
 	children: string | ReactNode;
-	[rest: string]: any;
+	[properties: string]: any;
 }) {
 	return (
-		<button className='btn' onClick={onClick} disabled={disabled} style={{ ...rest }}>
+		<button className='btn' {...properties}>
 			{children}
 		</button>
 	);

@@ -40,9 +40,7 @@ export default function ProfileButton() {
 						{isProfileOpen && (
 							<div className={styles.profile}>
 								<div>{session.data.user?.email}</div>
-								<Link href='/'>
-									promocodes soon...
-								</Link>
+								<Link href='/promo'>promocodes</Link>
 								<Link href='/' onClick={() => signOut()}>
 									LOG OUT
 								</Link>

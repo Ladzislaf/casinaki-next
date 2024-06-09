@@ -32,7 +32,7 @@ export default function MinerGame() {
 	const [playDisable, setPlayDisable] = useState(false);
 
 	useEffect(() => {
-		setCoeffs({ ...coeffs, nextCoeff: calcCoeff(25 - bombsCount, 25) });
+		setCoeffs((coeffs) => ({ ...coeffs, nextCoeff: calcCoeff(25 - bombsCount, 25) }));
 	}, [bombsCount]);
 
 	const startGameHandler = () => {
@@ -148,8 +148,8 @@ export default function MinerGame() {
 									{row.map((cellIndex) => {
 										return (
 											<Cell
+												key={cellIndex}
 												cellClass={cellClasses[cellIndex]}
-												cellIndex={cellIndex}
 												onClick={() => openCell(cellIndex)}
 												disabled={cellsDisable}
 											/>
@@ -165,13 +165,13 @@ export default function MinerGame() {
 			<BetMaker>
 				{gameState === 'betting' ? (
 					<>
-						<Button onClick={() => startGameHandler()} disabled={!playerEmail || playDisable || Number(balance) < bet}>
+						<Button onClick={startGameHandler} disabled={!playerEmail || playDisable || Number(balance) < bet}>
 							Start the game | {calcChances(25 - bombsCount, 25)}% | {coeffs.nextCoeff.toFixed(2)}x
 						</Button>
 					</>
 				) : (
 					<>
-						<Button onClick={() => cashOutHandler()} disabled={coeffs.activeCoeff === 1}>
+						<Button onClick={cashOutHandler} disabled={coeffs.activeCoeff === 1}>
 							Cash out | {(coeffs.activeCoeff * activeBet).toFixed(2)}$ | ({coeffs.activeCoeff.toFixed(2)}x)
 						</Button>
 						<h3>Nextcoeff: {coeffs.nextCoeff.toFixed(2)}x</h3>

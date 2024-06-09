@@ -140,12 +140,7 @@ export default function Hilo() {
 			<BetMaker>
 				{gameState === 'betting' ? (
 					<>
-						<Button
-							onClick={() => {
-								startGameHandler();
-							}}
-							disabled={!session.data?.user || playDisable || bet > Number(balance)}
-						>
+						<Button onClick={startGameHandler} disabled={!session.data?.user || playDisable || bet > Number(balance)}>
 							Start the game
 						</Button>
 						<Button disabled={playDisable} onClick={() => setActiveCardIndex(getRand(0, 51))}>
@@ -160,7 +155,7 @@ export default function Hilo() {
 						<Button onClick={() => playHandler('lower')} disabled={playDisable}>
 							⇊ {getButtonLabel('lower')} | {chances.lo}% | {coeffs.lo.toFixed(2)}x
 						</Button>
-						<Button onClick={() => cashOutHandler()} disabled={coeffs.total === 1}>
+						<Button onClick={cashOutHandler} disabled={coeffs.total === 1}>
 							{coeffs.total.toFixed(2)}x Cash out {(activeBet * coeffs.total).toFixed(2)}$
 						</Button>
 					</>
