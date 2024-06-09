@@ -8,6 +8,7 @@ import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
 import playMinerAction from '@/actions/playMinerAction';
 import { calcChances, calcCoeff } from '@/lib/utils';
 import clsx from 'clsx';
+import Cell from './MinerCell';
 
 const minerCells = [
 	[0, 1, 2, 3, 4],
@@ -21,7 +22,7 @@ export default function MinerGame() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
 	const { bet, balance, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
-	const [cellClasses, setCellClasses] = useState(Array(25).fill(''));
+	const [cellClasses, setCellClasses] = useState<string[]>(new Array(25));
 	const [activeBet, setActiveBet] = useState(bet);
 	const [gameState, setGameState] = useState('betting');
 	const [payout, setPayout] = useState('');
@@ -146,18 +147,12 @@ export default function MinerGame() {
 								<div className={styles.row} key={index}>
 									{row.map((cellIndex) => {
 										return (
-											<button
-												className={clsx(styles.cell, {
-													[styles.picked]: cellClasses[cellIndex] === 'picked',
-													[styles.bomb]: cellClasses[cellIndex] === 'bomb',
-													[styles.wasPicked]: cellClasses[cellIndex] === 'wasPicked',
-													[`${styles.picked} ${styles.wasPicked}`]: cellClasses[cellIndex] === 'picked wasPicked',
-													[`${styles.bomb} ${styles.wasPicked}`]: cellClasses[cellIndex] === 'bomb wasPicked',
-												})}
-												key={cellIndex}
+											<Cell
+												cellClass={cellClasses[cellIndex]}
+												cellIndex={cellIndex}
 												onClick={() => openCell(cellIndex)}
-												disabled={cellsDisable || cellClasses[cellIndex] === 'picked'}
-											></button>
+												disabled={cellsDisable}
+											/>
 										);
 									})}
 								</div>
