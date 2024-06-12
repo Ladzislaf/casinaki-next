@@ -1,7 +1,7 @@
 'use server';
-import prisma from '@/lib/prisma';
+import prisma from '@/utils/prisma';
 import { kv } from '@vercel/kv';
-import { calcHiloCoeff, generateNewCard, isHiloPlayerWon } from '@/lib/utils';
+import { calcHiloCoeff, generateNewCard, isHiloPlayerWon } from '@/utils/utils';
 import { addGameLogRecord, updatePlayerBalance } from './dataActions';
 
 export default async function playHiloAction({

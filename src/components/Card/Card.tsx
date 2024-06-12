@@ -1,7 +1,8 @@
 'use client';
 import React from 'react';
-import { genCardsDeck } from '@/lib/utils';
+import { genCardsDeck } from '@/utils/utils';
 import clsx from 'clsx';
+import styles from './Card.module.scss';
 
 const cardsDeck = genCardsDeck('hilo');
 
@@ -35,13 +36,13 @@ export default function Card({
 	}
 
 	return cardIndex === 52 ? (
-		<div className={'card'} style={{ background: cardBg, width: cardWidth, height: cardHeigth }}>
+		<div className={styles.card} style={{ background: cardBg, width: cardWidth, height: cardHeigth }}>
 			<div>*</div>
 		</div>
 	) : (
 		<div
 			key={cardIndex}
-			className={clsx('card', className)}
+			className={clsx(styles.card, className)}
 			onClick={onClick}
 			style={{
 				background: cardColor ? cardColor : cardBg,

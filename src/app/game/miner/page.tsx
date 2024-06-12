@@ -1,12 +1,12 @@
 'use client';
 import { useContext, useEffect, useState } from 'react';
-import styles from './MinerGame.module.scss';
-import Button from '@/ui/Button';
-import BetMaker from '@/ui/BetMaker/BetMaker';
+import styles from './miner.module.scss';
+import Button from '@/components/Button/Button';
+import BetMaker from '@/components/BetMaker/BetMaker';
 import { useSession } from 'next-auth/react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
 import playMinerAction from '@/actions/playMinerAction';
-import { calcChances, calcCoeff } from '@/lib/utils';
+import { calcChances, calcCoeff } from '@/utils/utils';
 import clsx from 'clsx';
 import Cell from './MinerCell';
 

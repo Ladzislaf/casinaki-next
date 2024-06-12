@@ -1,5 +1,5 @@
 'use server';
-import prisma from '@/lib/prisma';
+import prisma from '@/utils/prisma';
 import { kv } from '@vercel/kv';
 import { updatePlayerBalance } from './dataActions';
 

@@ -1,5 +1,5 @@
 'use client';
-import { MIN_BET } from '@/lib/utils';
+import { MIN_BET } from '@/utils/utils';
 import { SessionProvider } from 'next-auth/react';
 import React, { createContext, useState } from 'react';
 

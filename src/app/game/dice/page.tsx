@@ -1,13 +1,13 @@
 'use client';
 import clsx from 'clsx';
-import BetMaker from '@/ui/BetMaker/BetMaker';
-import styles from './Dice.module.scss';
+import BetMaker from '@/components/BetMaker/BetMaker';
+import styles from './dice.module.scss';
 import playDiceAction from '@/actions/playDiceAction';
-import Button from '@/ui/Button';
+import Button from '@/components/Button/Button';
 import { useContext, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
-import { overDiceCoeffs, underDiceCoeffs } from '@/lib/utils';
+import { overDiceCoeffs, underDiceCoeffs } from '@/utils/utils';
 
 export default function Dice() {
 	const session = useSession();

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import styes from './Button.module.scss';
 
 export default function Button({
 	children,
@@ -8,7 +9,7 @@ export default function Button({
 	[properties: string]: any;
 }) {
 	return (
-		<button className='btn' {...properties}>
+		<button className={styes.btn} {...properties}>
 			{children}
 		</button>
 	);

@@ -2,11 +2,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
-import styles from './Hilo.module.scss';
-import BetMaker from '../../../ui/BetMaker/BetMaker';
-import Button from '@/ui/Button';
-import Card from '@/ui/Card';
-import { calcHiloChances, calcHiloCoeff, genCardsDeck, getRand } from '@/lib/utils';
+import styles from './hilo.module.scss';
+import BetMaker from '../../../components/BetMaker/BetMaker';
+import Button from '@/components/Button/Button';
+import Card from '@/components/Card/Card';
+import { calcHiloChances, calcHiloCoeff, genCardsDeck, getRand } from '@/utils/utils';
 import playHiloAction from '@/actions/playHiloAction';
 import clsx from 'clsx';
 

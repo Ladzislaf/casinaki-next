@@ -1,5 +1,5 @@
 'use server';
-import prisma from '@/lib/prisma';
+import prisma from '@/utils/prisma';
 import { revalidatePath } from 'next/cache';
 
 export async function createPlayerAction(playerEmail: string) {

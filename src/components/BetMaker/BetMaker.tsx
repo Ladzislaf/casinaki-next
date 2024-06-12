@@ -1,9 +1,9 @@
 'use client';
 import { useContext, useEffect, useState } from 'react';
-import Button from '../Button';
+import Button from '../Button/Button';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
 import { useSession } from 'next-auth/react';
-import { MAX_BET, MIN_BET } from '@/lib/utils';
+import { MAX_BET, MIN_BET } from '@/utils/utils';
 import styles from './BetMaker.module.scss';
 
 export default function BetMaker({ children }: { children?: React.ReactNode }) {

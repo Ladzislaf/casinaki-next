@@ -1,12 +1,12 @@
 'use client';
-import BetMaker from '@/ui/BetMaker/BetMaker';
-import styles from './PokerGame.module.scss';
+import BetMaker from '@/components/BetMaker/BetMaker';
+import styles from './poker.module.scss';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import { useContext, useState } from 'react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
-import Button from '@/ui/Button';
-import Card from '@/ui/Card';
+import Button from '@/components/Button/Button';
+import Card from '@/components/Card/Card';
 import playPokerAction from '@/actions/playPokerAction';
 
 const pokerCombitanions: { name: string; coeff: number }[] = [

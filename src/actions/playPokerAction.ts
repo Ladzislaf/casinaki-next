@@ -1,6 +1,6 @@
 'use server';
-import prisma from '@/lib/prisma';
-import { checkPokerGame, generateUniqueCards } from '@/lib/utils';
+import prisma from '@/utils/prisma';
+import { checkPokerGame, generateUniqueCards } from '@/utils/utils';
 import { kv } from '@vercel/kv';
 import { addGameLogRecord, updatePlayerBalance } from './dataActions';
 

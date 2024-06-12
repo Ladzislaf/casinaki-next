@@ -1,6 +1,6 @@
 'use client';
 import clsx from 'clsx';
-import styles from './MinerGame.module.scss';
+import styles from './miner.module.scss';
 
 export default function Cell({
 	cellClass,

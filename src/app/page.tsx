@@ -1,4 +1,4 @@
-import BetHistory from '@/ui/BetHistory/BetHistory';
+import BetHistory from '@/components/BetHistory/BetHistory';
 
 export default function Home() {
 	return (

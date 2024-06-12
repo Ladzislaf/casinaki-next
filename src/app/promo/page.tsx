@@ -1,10 +1,10 @@
 'use client';
 import { activateDailyBonus, activatePromo } from '@/actions/playerAction';
-import Button from '@/ui/Button';
+import Button from '@/components/Button/Button';
 import { useSession } from 'next-auth/react';
 import { useContext, useState } from 'react';
 import { CurrentPlayerContext, PlayerContextType } from '../Providers';
-import Input from '@/ui/Input';
+import Input from '@/components/Input/Input';
 
 export default function Promo() {
 	const session = useSession();

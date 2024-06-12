@@ -1,6 +1,6 @@
 'use server';
-import prisma from '@/lib/prisma';
-import { calcCoeff, genMinerBombs } from '@/lib/utils';
+import prisma from '@/utils/prisma';
+import { calcCoeff, genMinerBombs } from '@/utils/utils';
 import { kv } from '@vercel/kv';
 import { addGameLogRecord, updatePlayerBalance } from './dataActions';
 

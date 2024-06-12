@@ -1,6 +1,6 @@
 'use server';
-import prisma from '@/lib/prisma';
-import { getRand, overDiceCoeffs, underDiceCoeffs } from '@/lib/utils';
+import prisma from '@/utils/prisma';
+import { getRand, overDiceCoeffs, underDiceCoeffs } from '@/utils/utils';
 import { addGameLogRecord, updatePlayerBalance } from './dataActions';
 
 const MIN_DICE = 2;

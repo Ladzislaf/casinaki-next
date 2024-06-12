@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Kanit, Oswald } from 'next/font/google';
-import '@/ui/globals.scss';
-import Sidebar from '@/ui/Sidebar/Sidebar';
-import Navbar from '@/ui/Navbar/Navbar';
+import '@/app/globals.scss';
 import Providers from '@/app/Providers';
+import Navbar from '@/components/Navbar/Navbar';
+import Sidebar from '@/components/Sidebar/Sidebar';
 
 const kanit = Kanit({ subsets: ['latin'], weight: ['600'] });
 const oswald = Oswald({ subsets: ['latin'], weight: ['700'] });

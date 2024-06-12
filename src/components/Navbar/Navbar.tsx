@@ -12,7 +12,7 @@ export default function Navbar() {
 				<Image src={logo} alt='project logo' />
 			</Link>
 			<div className={styles.links}>
-				<Link href='/reviews'>REVIEWS</Link>
+				{/* <Link href='/'>demo</Link> */}
 				<ProfileButton />
 			</div>
 		</nav>
