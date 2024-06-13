@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import styles from './Navbar.module.scss';
+import styles from './Header.module.scss';
 
 import logo from '@/assets/logo.png';
 import ProfileButton from './ProfileButton';
 
-export default function Navbar() {
+export default function Header() {
 	return (
-		<nav className={styles.nav}>
+		<header className={styles.header}>
 			<Link href='/'>
 				<Image src={logo} alt='project logo' />
 			</Link>
@@ -15,6 +15,6 @@ export default function Navbar() {
 				{/* <Link href='/'>demo</Link> */}
 				<ProfileButton />
 			</div>
-		</nav>
+		</header>
 	);
 }

@@ -1,5 +1,8 @@
 .minerField {
+	display: flex;
 	flex-direction: row;
+	align-items: center;
+	justify-content: space-evenly;
 
 	> div {
 		margin: 0 1rem;
@@ -20,19 +23,19 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		width: 80%;
-		height: 100%;
+		justify-content: center;
+		width: auto;
 
 		> .row {
 			display: flex;
-			height: 20%;
+			height: 5rem;
 			width: 100%;
 
 			> .cell {
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				width: 20%;
+				width: 5rem;
 				border-radius: 0.5rem;
 				border: 0.2rem solid var(--orangeDark);
 				background-color: var(--orange);

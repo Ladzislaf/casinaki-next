@@ -1,14 +1,7 @@
-.nav {
+.header {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	width: 70%;
-	height: 4rem;
-	background: var(--grey);
-	margin: auto;
-	margin-top: 1rem;
-	border-radius: 1rem;
-	border: 0.1rem solid var(--greyBorder);
 
 	> a {
 		display: flex;
@@ -65,7 +58,7 @@
 				top: 100%;
 				width: max-content;
 				max-width: 300%;
-				margin: 1rem;
+				margin: 0.5rem;
 				display: flex;
 				flex-direction: column;
 

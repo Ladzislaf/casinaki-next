@@ -1,15 +1,8 @@
-.hiloField {
-	flex-direction: column;
-
+.cardsContainer {
 	> div {
-		width: 90%;
 		display: flex;
 		flex-direction: row;
 		justify-content: safe center;
 		overflow-x: scroll;
-	}
-
-	> .activeCard > div {
-		margin: 0 2rem;
 	}
 }

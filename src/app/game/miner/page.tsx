@@ -7,7 +7,6 @@ import { useSession } from 'next-auth/react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
 import playMinerAction from '@/actions/playMinerAction';
 import { calcChances, calcCoeff } from '@/utils/utils';
-import clsx from 'clsx';
 import Cell from './MinerCell';
 
 const minerCells = [
@@ -118,9 +117,10 @@ export default function MinerGame() {
 
 	return (
 		<div className='gamePage'>
-			<div className='mainContainer'>
+			<div>
 				<h1>MINER GAME</h1>
-				<div className={clsx('gameContainer', styles.minerField)}>
+
+				<div className={styles.minerField}>
 					<div className={styles.bombsPicker}>
 						<Button
 							onClick={() => {

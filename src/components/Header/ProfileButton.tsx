@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import Image from 'next/image';
-import styles from './Navbar.module.scss';
+import styles from './Header.module.scss';
 import { useSession, signOut } from 'next-auth/react';
 import { useContext, useEffect, useState } from 'react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';

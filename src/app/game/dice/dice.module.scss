@@ -1,5 +1,7 @@
 .diceField {
+	display: flex;
 	flex-direction: column;
+	align-items: center;
 
 	> .gameOptions {
 		display: flex;
@@ -18,14 +20,13 @@
 				height: 50%;
 				width: 100%;
 				padding: 0 2rem;
-				font-size: 2rem;
 				margin: 0.2rem 0;
 			}
 		}
 
 		.diceValue {
 			width: 10rem;
-			font-size: 5rem;
+			font-size: 4rem;
 			border: 0.3rem solid var(--orange);
 			border-radius: 1rem;
 			background: var(--orangeHover);

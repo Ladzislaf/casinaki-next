@@ -44,9 +44,10 @@ export default function Dice() {
 
 	return (
 		<div className='gamePage'>
-			<div className='mainContainer'>
+			<div>
 				<h1>DICE GAME</h1>
-				<div className={clsx('gameContainer', styles.diceField)}>
+
+				<div className={styles.diceField}>
 					<div className={styles.gameOptions}>
 						<div>
 							<Button
@@ -62,12 +63,15 @@ export default function Dice() {
 								under
 							</Button>
 						</div>
+
 						<div className={styles.diceValue}>{activeDice}</div>
+
 						<div>
 							<Button onClick={() => changeDiceValue('inc')}>▲</Button>
 							<Button onClick={() => changeDiceValue('dec')}>▼</Button>
 						</div>
 					</div>
+
 					<h2>{`Result: [${resultDice}]`}</h2>
 				</div>
 			</div>

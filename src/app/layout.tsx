@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Kanit, Oswald } from 'next/font/google';
 import '@/app/globals.scss';
 import Providers from '@/app/Providers';
-import Navbar from '@/components/Navbar/Navbar';
+import Header from '@/components/Header/Header';
 import Sidebar from '@/components/Sidebar/Sidebar';
 
 const kanit = Kanit({ subsets: ['latin'], weight: ['600'] });
@@ -22,10 +22,13 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={oswald.className}>
 				<Providers>
-					<Navbar />
+					<Header />
 					<div>
 						<Sidebar />
-						<main>{children}</main>
+						<div>
+							<main>{children}</main>
+							<footer>FOOTER</footer>
+						</div>
 					</div>
 				</Providers>
 			</body>

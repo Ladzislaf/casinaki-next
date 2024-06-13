@@ -1,7 +1,6 @@
 'use client';
 import BetMaker from '@/components/BetMaker/BetMaker';
 import styles from './blackjack.module.scss';
-import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import { useContext, useState } from 'react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
@@ -68,9 +67,10 @@ export default function BlackjackGame() {
 
 	return (
 		<div className='gamePage'>
-			<div className='mainContainer'>
+			<div>
 				<h1>BLACKJACK GAME</h1>
-				<div className={clsx('gameContainer', styles.jackField)}>
+
+				<div className={styles.jackField}>
 					<div>
 						<h3>Dealer ({dealerHand.sum})</h3>
 						<div>
@@ -90,6 +90,7 @@ export default function BlackjackGame() {
 					</div>
 				</div>
 			</div>
+
 			<BetMaker>
 				{gameStatus === 'betting' ? (
 					<Button onClick={startGame} disabled={!session.data?.user || playDisable || bet > Number(balance)}>

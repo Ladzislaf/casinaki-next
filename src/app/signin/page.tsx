@@ -4,11 +4,11 @@ import { signIn } from 'next-auth/react';
 
 export default function SignIn() {
 	return (
-		<div className='signin'>
-			<Button onClick={() => signIn('google', { callbackUrl: '/' })} disabled={false}>
+		<div className='page' style={{ margin: 'auto' }}>
+			<Button onClick={() => signIn('google', { callbackUrl: '/' })} disabled={false} style={{ margin: '0.1rem' }}>
 				Sign in with Google
 			</Button>
-			<Button onClick={() => signIn('github', { callbackUrl: '/' })} disabled={false}>
+			<Button onClick={() => signIn('github', { callbackUrl: '/' })} disabled={false} style={{ margin: '0.1rem' }}>
 				Sign in with GitHub
 			</Button>
 		</div>

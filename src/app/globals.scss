@@ -31,74 +31,87 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
+html {
+	font-size: 20px;
+}
+
 body {
-	max-width: 100vw;
-	max-height: 100vh;
+	width: 100vw;
+	height: 100vh;
 	color: var(--foreground);
 	background: var(--background);
-	font-size: 1.2rem;
-	display: flex;
-	flex-direction: column;
+	padding: 0.5rem;
+
+	> header {
+		width: 70%;
+		height: 3rem;
+		background: var(--grey);
+		border: 0.1rem solid var(--greyBorder);
+		border-radius: 1rem;
+		margin: auto;
+	}
 
 	> div {
+		height: calc(100% - 3rem);
 		display: flex;
-		justify-content: space-between;
-		height: calc(100vh - 7rem);
-		margin: 1rem;
-	}
+		flex-direction: row;
 
-	main {
-		display: flex;
-		overflow-y: scroll;
-		background: var(--grey);
-		width: 100%;
-		margin-left: 1rem;
-		padding: 1rem;
-		border-radius: 1rem;
-		border: 0.1rem solid var(--greyBorder);
+		> nav.sidenav {
+			width: 4rem;
+
+			background: var(--grey);
+			border: 0.1rem solid var(--greyBorder);
+			border-radius: 1rem;
+			margin: auto;
+		}
 
 		> div {
+			margin: 0.5rem 0 0 0.5rem;
 			width: 100%;
-			text-align: center;
-		}
+			border-radius: 1rem;
+			overflow-x: scroll;
 
-		> .gamePage {
-			display: flex;
-			flex-direction: row;
-
-			> .mainContainer {
-				width: 70%;
-				height: 100%;
+			> main {
 				display: flex;
-				flex-direction: column;
-				align-items: center;
-
-				.gameContainer {
-					height: 100%;
-					width: 100%;
-					display: flex;
-					align-items: safe center;
-					justify-content: safe center;
-					padding: 1rem;
-					border: 0.1rem solid var(--orange);
-					border-radius: 1rem;
-					overflow-y: scroll;
-				}
+				min-height: 100%;
+				margin-bottom: 0.5rem;
+				text-align: center;
 			}
-		}
 
-		> .signin {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-
-			> button {
-				margin: 0.2rem;
-				min-width: 30%;
+			> main,
+			footer {
+				padding: 0.5rem;
+				background: var(--grey);
+				border: 0.1rem solid var(--greyBorder);
+				border-radius: 1rem;
 			}
 		}
 	}
+}
+
+.gamePage {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	min-height: 100%;
+
+	> div:first-child {
+		margin-right: 0.5rem;
+		width: 75%;
+		overflow: scroll;
+	}
+
+	> div:last-child {
+		width: 25%;
+	}
+}
+
+.page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	min-height: 100%;
 }
 
 a {

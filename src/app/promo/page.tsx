@@ -40,7 +40,7 @@ export default function Promo() {
 	};
 
 	return (
-		<div>
+		<div className='page'>
 			<h1>Promo page</h1>
 			<h2>Daily bonus</h2>
 			<Button onClick={getDailyBonus} disabled={!session.data?.user || disabled}>
@@ -48,7 +48,7 @@ export default function Promo() {
 			</Button>
 			<h2>Enter promocode</h2>
 			<h3>kitstart gives 10$ for new players</h3>
-			<Input placeholder={'promocode'} onChange={onChangeHandler} /> <br />
+			<Input placeholder={'promocode'} onChange={onChangeHandler} />
 			<Button onClick={getPromo} disabled={!session.data?.user || disabled || promo.length < 5 || promo.length > 20}>
 				Activate
 			</Button>

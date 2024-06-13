@@ -8,7 +8,6 @@ import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import { calcHiloChances, calcHiloCoeff, genCardsDeck, getRand } from '@/utils/utils';
 import playHiloAction from '@/actions/playHiloAction';
-import clsx from 'clsx';
 
 const cardsDeck = genCardsDeck('hilo');
 
@@ -116,11 +115,11 @@ export default function Hilo() {
 	};
 
 	return (
-		<div className='gamePage'>
-			<div className='mainContainer'>
+		<div className={'gamePage'}>
+			<div>
 				<h1>HIGHER-LOWER GAME</h1>
-				<div className={clsx('gameContainer', styles.hiloField)}>
-					<div className={styles.activeCard}>
+				<div className={styles.cardsContainer}>
+					<div>
 						<Card cardIndex={1} cardColor='#222222'>
 							lowest
 						</Card>

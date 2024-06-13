@@ -1,10 +1,8 @@
 .container {
-	width: calc(100% - 10px);
 	text-align: center;
 
 	> table {
-		width: calc(100% - 40px);
-		margin: 1rem;
+		padding: 0.5rem;
 		border-collapse: separate;
 		border-radius: 1rem;
 		background: var(--greyBorder);
@@ -16,7 +14,7 @@
 		}
 
 		td {
-			padding: 0.1rem;
+			padding: 0.2rem 1rem;
 		}
 
 		a:hover {

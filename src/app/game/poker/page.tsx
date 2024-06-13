@@ -74,36 +74,37 @@ export default function PokerGame() {
 
 	return (
 		<div className='gamePage'>
-			<div className='mainContainer'>
+			<div>
 				<h1>POKER GAME</h1>
-				<div className={clsx('gameContainer', styles.pokerField)}>
-					<table>
-						<tbody>
-							{pokerCombitanions.map((el, i) => {
-								return (
-									<tr key={i} className={clsx({ [styles.active]: activeCombination - 1 === i })}>
-										<td>{el.name}</td>
-										<td>{el.coeff}x</td>
-										<td>{(el.coeff * bet).toFixed(2)}$</td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</table>
-					<div className={styles.playerHand}>
-						{playerHand.map((cardIndex, i) => {
+
+				<table className={styles.combinationTable}>
+					<tbody>
+						{pokerCombitanions.map((el, i) => {
 							return (
-								<Card
-									className={clsx({ [styles.hold]: holdCards.includes(cardIndex) })}
-									onClick={() => clickCardHandler(cardIndex)}
-									key={i}
-									cardIndex={cardIndex}
-								/>
+								<tr key={i} className={clsx({ [styles.active]: activeCombination - 1 === i })}>
+									<td>{el.name}</td>
+									<td>{el.coeff}x</td>
+									<td>{(el.coeff * bet).toFixed(2)}$</td>
+								</tr>
 							);
 						})}
-					</div>
+					</tbody>
+				</table>
+
+				<div className={styles.playerHand}>
+					{playerHand.map((cardIndex, i) => {
+						return (
+							<Card
+								className={clsx({ [styles.hold]: holdCards.includes(cardIndex) })}
+								onClick={() => clickCardHandler(cardIndex)}
+								key={i}
+								cardIndex={cardIndex}
+							/>
+						);
+					})}
 				</div>
 			</div>
+
 			<BetMaker>
 				{gameStatus === 'betting' ? (
 					<Button onClick={startGame} disabled={!session.data?.user || playDisable || bet > Number(balance)}>
