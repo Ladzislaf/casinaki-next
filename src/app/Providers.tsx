@@ -19,6 +19,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
 	const updateBalance = (newBalance: number) => {
 		setBalance(newBalance.toFixed(2));
+		sessionStorage.setItem('playerBalance', newBalance.toString());
 	};
 
 	return (

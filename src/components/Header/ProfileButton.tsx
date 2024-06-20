@@ -14,18 +14,28 @@ export default function ProfileButton() {
 
 	useEffect(() => {
 		async function fetchBalance() {
-			const playerBalance = await getBalanceAction(session?.data?.user?.email as string);
-			if (playerBalance !== undefined) {
-				updateBalance(playerBalance);
+			const sessionPlayerBalance = sessionStorage.getItem('playerBalance');
+			const playerEmail = session?.data?.user?.email;
+
+			if (sessionPlayerBalance) {
+				updateBalance(Number(sessionPlayerBalance));
+			} else {
+				const playerBalance = await getBalanceAction(playerEmail as string);
+				playerBalance && updateBalance(playerBalance);
+				playerBalance && sessionStorage.setItem('playerBalance', playerBalance.toString());
 			}
 		}
-		if (session.status === 'authenticated' && session.data) {
-			fetchBalance();
-		}
-	}, [session.status]);
+
+		session.status === 'authenticated' && fetchBalance();
+	}, [session]);
 
 	const handleProfileClick = () => {
 		setIsProfileOpen(!isProfileOpen);
+	};
+
+	const logoutHandler = () => {
+		signOut();
+		sessionStorage.removeItem('playerBalance');
 	};
 
 	return (
@@ -41,7 +51,7 @@ export default function ProfileButton() {
 							<div className={styles.profile}>
 								<div>{session.data.user?.email}</div>
 								<Link href='/promo'>promocodes</Link>
-								<Link href='/' onClick={() => signOut()}>
+								<Link href='/' onClick={logoutHandler}>
 									LOG OUT
 								</Link>
 							</div>
