@@ -4,6 +4,7 @@ import '@/app/globals.scss';
 import Providers from '@/app/Providers';
 import Header from '@/components/Header/Header';
 import Sidebar from '@/components/Sidebar/Sidebar';
+import Footer from '@/components/Footer/Footer';
 
 const kanit = Kanit({ subsets: ['latin'], weight: ['600'] });
 const oswald = Oswald({ subsets: ['latin'], weight: ['700'] });
@@ -27,7 +28,7 @@ export default function RootLayout({
 						<Sidebar />
 						<div>
 							<main>{children}</main>
-							<footer>FOOTER</footer>
+							<Footer />
 						</div>
 					</div>
 				</Providers>
