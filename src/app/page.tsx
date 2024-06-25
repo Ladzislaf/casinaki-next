@@ -1,4 +1,3 @@
-'use server';
 import { fetchBetsHistory } from '@/actions/dataActions';
 import BetsTable from '@/components/BetsTable/BetsTable';
 

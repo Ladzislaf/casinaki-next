@@ -25,7 +25,7 @@ export async function updatePlayerBalance(playerEmail: string, newBalance: numbe
 				email: playerEmail,
 			},
 			data: {
-				balance: newBalance,
+				balance: Number(newBalance.toFixed(2)),
 			},
 		});
 	} catch (error) {
@@ -58,15 +58,15 @@ export async function addGameLogRecord(
 	await prisma.gameLog.create({
 		data: {
 			bet,
-			coefficient: coefficient,
-			payout,
+			coefficient: Number(coefficient.toFixed(2)),
+			payout: Number(payout.toFixed(2)),
 			isWon,
 			playerEmail,
 			gameId,
 		},
 	});
-	revalidatePath('/');
-	revalidatePath('/best-players/[slug]');
+	revalidatePath('/', 'page');
+	revalidatePath('/best-players', 'layout');
 }
 
 export async function fetchBetsHistory() {
@@ -104,9 +104,7 @@ export async function fetchBiggestBets() {
 				},
 			},
 		},
-		orderBy: {
-			bet: 'desc',
-		},
+		orderBy: [{ bet: 'desc' }, { coefficient: 'desc' }],
 		take: 10,
 	});
 }
@@ -128,9 +126,7 @@ export async function fetchBiggestWins() {
 				},
 			},
 		},
-		orderBy: {
-			payout: 'desc',
-		},
+		orderBy: [{ payout: 'desc' }, { coefficient: 'desc' }],
 		take: 10,
 	});
 }
@@ -152,9 +148,7 @@ export async function fetchBiggestLosses() {
 				},
 			},
 		},
-		orderBy: {
-			payout: 'desc',
-		},
+		orderBy: [{ payout: 'desc' }, { coefficient: 'desc' }],
 		take: 10,
 	});
 }

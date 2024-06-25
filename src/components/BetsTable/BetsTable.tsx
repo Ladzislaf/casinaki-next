@@ -1,6 +1,6 @@
-'use server';
 import styles from './BetsTable.module.scss';
 import Link from 'next/link';
+import DateCell from './DateCell';
 
 type betRow = {
 	id: number;
@@ -20,7 +20,7 @@ type betRow = {
 	};
 };
 
-export default async function BetsTable({ betsList }: { betsList: betRow[] }) {
+export default function BetsTable({ betsList }: { betsList: betRow[] }) {
 	return (
 		<div className={styles.container}>
 			<table className={styles.tbl}>
@@ -42,10 +42,10 @@ export default async function BetsTable({ betsList }: { betsList: betRow[] }) {
 									<Link href={`/game/${el.game.name}`}>{el.game.name}</Link>
 								</td>
 								<td>{el.player.email.substring(0, el.player.email.indexOf('@'))}</td>
-								<td>${el.bet.toFixed(2)}</td>
-								<td>{el.coefficient.toFixed(2)}x</td>
-								<td>{el.isWon ? `+ $${el.payout.toFixed(2)}` : `- $${el.payout.toFixed(2)}`}</td>
-								<td>{new Date(el.createdAt).toLocaleString()}</td>
+								<td>${el.bet}</td>
+								<td>{el.coefficient}x</td>
+								<td>{el.isWon ? `+ $${el.payout}` : `- $${el.payout}`}</td>
+								<DateCell createdAt={el.createdAt} />
 							</tr>
 						);
 					})}

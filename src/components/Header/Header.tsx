@@ -1,4 +1,3 @@
-'use server';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Header.module.scss';
@@ -6,7 +5,7 @@ import styles from './Header.module.scss';
 import logo from '@/assets/logo.png';
 import ProfileButton from './ProfileButton';
 
-export default async function Header() {
+export default function Header() {
 	return (
 		<header className={styles.header}>
 			<Link href='/'>

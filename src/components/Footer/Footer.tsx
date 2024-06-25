@@ -1,4 +1,3 @@
-'use server';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -7,7 +6,7 @@ import telegramLogo from '@/assets/footer/telegram-logo.svg';
 import linkedinLogo from '@/assets/footer/linkedin-logo.svg';
 import gmailLogo from '@/assets/footer/gmail-logo.svg';
 
-export default async function Footer() {
+export default function Footer() {
 	return (
 		<footer>
 			<h3>Made by Ladzislaf</h3>

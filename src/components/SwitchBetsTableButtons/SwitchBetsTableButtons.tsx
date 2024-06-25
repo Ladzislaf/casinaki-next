@@ -1,8 +1,7 @@
-'use server';
 import Link from 'next/link';
 import styles from './SwitchBetsTableButtons.module.scss';
 
-export default async function BetHistory() {
+export default function BetHistory() {
 	return (
 		<div className={styles.container}>
 			<Link href='/best-players/biggest-bets'>Bets</Link>
