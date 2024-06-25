@@ -81,14 +81,14 @@ export default async function playPokerAction({
 		}
 		if (coeff > 0 && combination) {
 			const newBalance = player.balance + activeGame.bet * coeff;
-			const payout = `+ ${(activeGame.bet * coeff - activeGame.bet).toFixed(2)}$`;
+			const gameResult = `+ $${(activeGame.bet * coeff - activeGame.bet).toFixed(2)}`;
 			await updatePlayerBalance(playerEmail, newBalance);
-			await addGameLogRecord(playerEmail, 5, activeGame.bet, coeff, payout);
-			return { newBalance, payout, playerHand: activeGame.playerCards, combination };
+			await addGameLogRecord(playerEmail, 5, activeGame.bet, coeff, true);
+			return { newBalance, gameResult, playerHand: activeGame.playerCards, combination };
 		} else {
-			const payout = `- ${activeGame.bet.toFixed(2)}$`;
-			await addGameLogRecord(playerEmail, 5, activeGame.bet, 1, payout);
-			return { payout, playerHand: activeGame.playerCards };
+			const gameResult = `- $${activeGame.bet.toFixed(2)}`;
+			await addGameLogRecord(playerEmail, 5, activeGame.bet, 1, false);
+			return { gameResult, playerHand: activeGame.playerCards };
 		}
 	}
 }

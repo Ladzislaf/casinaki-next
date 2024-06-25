@@ -39,10 +39,10 @@ export default function BlackjackGame() {
 		playBlackjackAction({ playerEmail, choice: 'more' })
 			.then((res) => {
 				res?.playerHand && setPlayerHand(res.playerHand);
-				if (res?.dealerHand && res.payout) {
+				if (res?.dealerHand && res.gameResult) {
 					// * player lost
 					setDealerHand(res.dealerHand);
-					setPayout(res.payout);
+					setPayout(res.gameResult);
 					setGameStatus('betting');
 				}
 			})
@@ -57,7 +57,7 @@ export default function BlackjackGame() {
 			.then((res) => {
 				res?.dealerHand && setDealerHand(res.dealerHand);
 				res?.newBalance && updateBalance(res.newBalance);
-				res?.payout && setPayout(res.payout);
+				res?.gameResult && setPayout(res.gameResult);
 			})
 			.finally(() => {
 				setGameStatus('betting');

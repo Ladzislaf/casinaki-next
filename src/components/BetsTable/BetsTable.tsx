@@ -1,13 +1,28 @@
-import styles from './BetHistory.module.scss';
-import { fetchHistory } from '@/actions/dataActions';
+'use server';
+import styles from './BetsTable.module.scss';
 import Link from 'next/link';
 
-export default async function BetHistory() {
-	const history = await fetchHistory();
+type betRow = {
+	id: number;
+	createdAt: Date;
+	updatedAt: Date;
+	bet: number;
+	coefficient: number;
+	isWon: boolean;
+	payout: number;
+	playerEmail: string;
+	gameId: number;
+	player: {
+		email: string;
+	};
+	game: {
+		name: string;
+	};
+};
 
+export default async function BetsTable({ betsList }: { betsList: betRow[] }) {
 	return (
 		<div className={styles.container}>
-			<h2>Bets history</h2>
 			<table className={styles.tbl}>
 				<thead>
 					<tr>
@@ -20,16 +35,16 @@ export default async function BetHistory() {
 					</tr>
 				</thead>
 				<tbody>
-					{history.slice(0, 100).map((el) => {
+					{betsList.map((el) => {
 						return (
 							<tr key={el.id}>
 								<td>
 									<Link href={`/game/${el.game.name}`}>{el.game.name}</Link>
 								</td>
 								<td>{el.player.email.substring(0, el.player.email.indexOf('@'))}</td>
-								<td>{el.bet}</td>
-								<td>{el.coefficient}</td>
-								<td>{el.payout}</td>
+								<td>${el.bet.toFixed(2)}</td>
+								<td>{el.coefficient.toFixed(2)}x</td>
+								<td>{el.isWon ? `+ $${el.payout.toFixed(2)}` : `- $${el.payout.toFixed(2)}`}</td>
 								<td>{new Date(el.createdAt).toLocaleString()}</td>
 							</tr>
 						);

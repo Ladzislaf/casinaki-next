@@ -36,7 +36,7 @@ export default function BetMaker({ children }: { children?: React.ReactNode }) {
 			<>
 				<div className={styles.bet}>
 					<Button onClick={() => changeBet(bet - betStep)}>-</Button>
-					<h2>BET: {bet.toFixed(2)}$</h2>
+					<h2>BET: ${bet.toFixed(2)}</h2>
 					<Button onClick={() => changeBet(bet + betStep)}>+</Button>
 				</div>
 

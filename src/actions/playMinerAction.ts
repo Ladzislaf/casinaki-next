@@ -48,11 +48,11 @@ export default async function playMinerAction({
 			if (activeGame.bombs.length + activeGame.picked.length >= 25) {
 				// * all cells opened
 				const newBalance = player.balance + activeGame.bet * activeGame.coeff;
-				const payout = `+ ${(activeGame.bet * activeGame.coeff - activeGame.bet).toFixed(2)}$`;
+				const gameResult = `+ $${(activeGame.bet * activeGame.coeff - activeGame.bet).toFixed(2)}`;
 				updatePlayerBalance(playerEmail, newBalance);
-				addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, payout);
+				addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, true);
 				await kv.del(`miner:${playerEmail}`);
-				return { newBalance, payout };
+				return { newBalance, gameResult };
 			} else {
 				// * right opened cell
 				kv.setex(`miner:${playerEmail}`, 1800, activeGame);
@@ -65,18 +65,18 @@ export default async function playMinerAction({
 			}
 		} else {
 			// * player lost
-			const payout = `- ${activeGame.bet.toFixed(2)}$`;
-			addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, payout);
+			const gameResult = `- $${activeGame.bet.toFixed(2)}`;
+			addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, false);
 			await kv.del(`miner:${playerEmail}`);
-			return { payout, picked: activeGame.picked, bombs: activeGame.bombs };
+			return { gameResult, picked: activeGame.picked, bombs: activeGame.bombs };
 		}
 	} else if (activeGame) {
 		// * cash out
-		const payout = `+ ${(activeGame.bet * activeGame.coeff - activeGame.bet).toFixed(2)}$`;
+		const gameResult = `+ $${(activeGame.bet * activeGame.coeff - activeGame.bet).toFixed(2)}`;
 		const newBalance = player.balance + activeGame.bet * activeGame.coeff;
 		updatePlayerBalance(playerEmail, newBalance);
-		addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, payout);
+		addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, true);
 		await kv.del(`miner:${playerEmail}`);
-		return { newBalance, payout, bombs: activeGame.bombs, picked: activeGame.picked };
+		return { newBalance, gameResult, bombs: activeGame.bombs, picked: activeGame.picked };
 	}
 }

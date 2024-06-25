@@ -1,3 +1,4 @@
+'use server';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Header.module.scss';
@@ -5,14 +6,14 @@ import styles from './Header.module.scss';
 import logo from '@/assets/logo.png';
 import ProfileButton from './ProfileButton';
 
-export default function Header() {
+export default async function Header() {
 	return (
 		<header className={styles.header}>
 			<Link href='/'>
 				<Image src={logo} alt='project logo' />
 			</Link>
 			<div className={styles.links}>
-				{/* <Link href='/'>demo</Link> */}
+				<Link href='/best-players/biggest-wins'>Best players</Link>
 				<ProfileButton />
 			</div>
 		</header>

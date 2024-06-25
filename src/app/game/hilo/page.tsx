@@ -69,11 +69,11 @@ export default function Hilo() {
 						hi: calcHiloChances(res.newCardIndex, 'higher'),
 						lo: calcHiloChances(res.newCardIndex, 'lower'),
 					});
-				} else if (res?.newCardIndex && res.payout) {
+				} else if (res?.newCardIndex && res.gameResult) {
 					addCartToHistory(activeCardIndex);
 					setActiveCardIndex(res.newCardIndex);
 					setGameState('betting');
-					setPayout(res.payout);
+					setPayout(res.gameResult);
 				}
 			})
 			.finally(() => {
@@ -84,9 +84,9 @@ export default function Hilo() {
 	const cashOutHandler = () => {
 		playHiloAction({ playerEmail })
 			.then((res) => {
-				if (res?.newBalance && res.payout) {
+				if (res?.newBalance && res.gameResult) {
 					updateBalance(res.newBalance);
-					setPayout(res.payout);
+					setPayout(res.gameResult);
 				}
 			})
 			.finally(() => {
@@ -155,7 +155,7 @@ export default function Hilo() {
 							⇊ {getButtonLabel('lower')} | {chances.lo}% | {coeffs.lo.toFixed(2)}x
 						</Button>
 						<Button onClick={cashOutHandler} disabled={coeffs.total === 1}>
-							{coeffs.total.toFixed(2)}x Cash out {(activeBet * coeffs.total).toFixed(2)}$
+							{coeffs.total.toFixed(2)}x Cash out ${(activeBet * coeffs.total).toFixed(2)}
 						</Button>
 					</>
 				)}

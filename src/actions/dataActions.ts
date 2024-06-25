@@ -51,21 +51,25 @@ export async function addGameLogRecord(
 	gameId: number,
 	bet: number,
 	coefficient: number,
-	payout: string
+	isWon: boolean
 ) {
+	const payout = isWon ? bet * coefficient - bet : bet;
+
 	await prisma.gameLog.create({
 		data: {
-			bet: `${bet.toFixed(2)}$`,
-			coefficient: `${coefficient.toFixed(2)} x`,
+			bet,
+			coefficient: coefficient,
 			payout,
+			isWon,
 			playerEmail,
 			gameId,
 		},
 	});
 	revalidatePath('/');
+	revalidatePath('/best-players/[slug]');
 }
 
-export async function fetchHistory() {
+export async function fetchBetsHistory() {
 	return await prisma.gameLog.findMany({
 		include: {
 			game: {
@@ -82,5 +86,75 @@ export async function fetchHistory() {
 		orderBy: {
 			id: 'desc',
 		},
+		take: 30,
+	});
+}
+
+export async function fetchBiggestBets() {
+	return await prisma.gameLog.findMany({
+		include: {
+			game: {
+				select: {
+					name: true,
+				},
+			},
+			player: {
+				select: {
+					email: true,
+				},
+			},
+		},
+		orderBy: {
+			bet: 'desc',
+		},
+		take: 10,
+	});
+}
+
+export async function fetchBiggestWins() {
+	return await prisma.gameLog.findMany({
+		where: {
+			isWon: true,
+		},
+		include: {
+			game: {
+				select: {
+					name: true,
+				},
+			},
+			player: {
+				select: {
+					email: true,
+				},
+			},
+		},
+		orderBy: {
+			payout: 'desc',
+		},
+		take: 10,
+	});
+}
+
+export async function fetchBiggestLosses() {
+	return await prisma.gameLog.findMany({
+		where: {
+			isWon: false,
+		},
+		include: {
+			game: {
+				select: {
+					name: true,
+				},
+			},
+			player: {
+				select: {
+					email: true,
+				},
+			},
+		},
+		orderBy: {
+			payout: 'desc',
+		},
+		take: 10,
 	});
 }

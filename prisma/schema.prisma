@@ -65,9 +65,10 @@ model GameLog {
   id          Int      @id @default(autoincrement())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  bet         String
-  coefficient String
-  payout      String
+  bet         Float
+  coefficient Float
+  isWon       Boolean
+  payout      Float
   playerEmail String
   gameId      Int
   player      Player   @relation(fields: [playerEmail], references: [email])

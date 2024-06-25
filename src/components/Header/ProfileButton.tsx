@@ -46,11 +46,11 @@ export default function ProfileButton() {
 						{session?.data?.user?.image && (
 							<Image src={session.data.user.image} alt='user image' width={128} height={128} />
 						)}
-						{balance}$
+						${balance}
 						{isProfileOpen && (
 							<div className={styles.profile}>
 								<div>{session.data.user?.email}</div>
-								<Link href='/promo'>promocodes</Link>
+								<Link href='/balance'>My balance</Link>
 								<Link href='/' onClick={logoutHandler}>
 									LOG OUT
 								</Link>

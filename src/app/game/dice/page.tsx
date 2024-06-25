@@ -23,7 +23,7 @@ export default function Dice() {
 		setRollButtonDisable(true);
 		playDiceAction({ playerEmail, bet, activeDice, gameMode: buttons.over ? 'over' : 'under' })
 			.then((res) => {
-				res?.payout && setPayout(res?.payout);
+				res?.gameResult && setPayout(res?.gameResult);
 				res?.diceResult && setResultDice(res?.diceResult);
 				res?.newBalance && updateBalance(res?.newBalance);
 			})

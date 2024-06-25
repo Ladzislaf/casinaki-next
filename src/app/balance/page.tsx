@@ -6,10 +6,10 @@ import { useContext, useState } from 'react';
 import { CurrentPlayerContext, PlayerContextType } from '../Providers';
 import Input from '@/components/Input/Input';
 
-export default function Promo() {
+export default function Balance() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
-	const { updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { balance, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
 	const [disabled, setDisabled] = useState(false);
 	const [promo, setPromo] = useState('');
 
@@ -41,10 +41,12 @@ export default function Promo() {
 
 	return (
 		<div className='page'>
-			<h1>Promo page</h1>
+			<h2>
+				{playerEmail && playerEmail.substring(0, playerEmail.indexOf('@'))}, your balance: ${balance}
+			</h2>
 			<h2>Daily bonus</h2>
 			<Button onClick={getDailyBonus} disabled={!session.data?.user || disabled}>
-				Get daily 1$
+				Get daily $1
 			</Button>
 			<h2>Enter promocode</h2>
 			<h3>kitstart gives 10$ for new players</h3>

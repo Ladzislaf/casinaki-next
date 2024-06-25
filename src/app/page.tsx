@@ -1,10 +1,15 @@
-import BetHistory from '@/components/BetHistory/BetHistory';
+'use server';
+import { fetchBetsHistory } from '@/actions/dataActions';
+import BetsTable from '@/components/BetsTable/BetsTable';
 
-export default function Home() {
+export default async function Home() {
+	const betsHistory = await fetchBetsHistory();
+
 	return (
 		<div className='page'>
 			<h1>Home page</h1>
-			<BetHistory />
+			<h2>Last bets</h2>
+			<BetsTable betsList={betsHistory} />
 		</div>
 	);
 }

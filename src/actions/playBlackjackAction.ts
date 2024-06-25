@@ -44,11 +44,11 @@ export default async function playBlackjackAction({
 		if (playerCardsSum > 21) {
 			// * player lost
 			kv.del(`jack:${playerEmail}`);
-			const payout = `- ${activeGame.bet.toFixed(2)}$`;
+			const gameResult = `- $${activeGame.bet.toFixed(2)}`;
 			const dealerCardsSum = calcCardsSum(activeGame.dealerCards);
 			const dealerHand = { cards: activeGame.dealerCards, sum: dealerCardsSum };
-			addGameLogRecord(playerEmail, 4, activeGame.bet, 2, payout);
-			return { payout, playerHand, dealerHand };
+			addGameLogRecord(playerEmail, 4, activeGame.bet, 2, false);
+			return { gameResult, playerHand, dealerHand };
 		} else {
 			// * continue game
 			kv.setex(`jack:${playerEmail}`, 1800, activeGame);
@@ -67,15 +67,15 @@ export default async function playBlackjackAction({
 		if (dealerSum > 21 || dealerSum < playerSum) {
 			// * player won
 			const newBalance = player.balance + activeGame.bet * 2;
-			const payout = `+ ${activeGame.bet.toFixed(2)}$`;
+			const gameResult = `+ $${activeGame.bet.toFixed(2)}`;
 			await updatePlayerBalance(playerEmail, newBalance);
-			addGameLogRecord(playerEmail, 4, activeGame.bet, 2, payout);
-			return { newBalance, payout, dealerHand };
+			addGameLogRecord(playerEmail, 4, activeGame.bet, 2, true);
+			return { newBalance, gameResult, dealerHand };
 		} else {
 			// * player lost
-			const payout = `- ${activeGame.bet.toFixed(2)}$`;
-			addGameLogRecord(playerEmail, 4, activeGame.bet, 2, payout);
-			return { payout, dealerHand };
+			const gameResult = `- ${activeGame.bet.toFixed(2)}$`;
+			addGameLogRecord(playerEmail, 4, activeGame.bet, 2, false);
+			return { gameResult, dealerHand };
 		}
 	}
 }

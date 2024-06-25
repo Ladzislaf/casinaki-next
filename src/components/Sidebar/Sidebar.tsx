@@ -1,3 +1,4 @@
+'use server';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Sidebar.module.scss';
@@ -9,7 +10,7 @@ import minerLogo from '@/assets/sidebar/miner.svg';
 import blackjackLogo from '@/assets/sidebar/blackjack.svg';
 import pokerLogo from '@/assets/sidebar/poker.svg';
 
-export default function Sidebar() {
+export default async function Sidebar() {
 	return (
 		<nav className={clsx('sidenav', styles.sidebar)}>
 			<Link href='/game/hilo'>

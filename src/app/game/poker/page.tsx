@@ -55,7 +55,7 @@ export default function PokerGame() {
 			.then((res) => {
 				res?.playerHand && setPlayerHand(res.playerHand);
 				res?.newBalance && updateBalance(res.newBalance);
-				res?.payout && setPayout(res.payout);
+				res?.gameResult && setPayout(res.gameResult);
 				res?.combination && setActiveCombination(res.combination);
 			})
 			.finally(() => {

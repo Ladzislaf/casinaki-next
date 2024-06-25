@@ -63,7 +63,7 @@ export default function MinerGame() {
 				);
 				setCoeffs({ activeCoeff: res.activeCoeff, nextCoeff: res.nextCoeff });
 				setCellsDisable(false);
-			} else if (res?.payout) {
+			} else if (res?.gameResult) {
 				if (res?.newBalance) {
 					// * all cells opened
 					setCellClasses(
@@ -86,7 +86,7 @@ export default function MinerGame() {
 						})
 					);
 				}
-				setPayout(res.payout);
+				setPayout(res.gameResult);
 				setCoeffs({ activeCoeff: 1, nextCoeff: calcCoeff(25 - bombsCount, 25) });
 				setGameState('betting');
 			}
@@ -97,9 +97,9 @@ export default function MinerGame() {
 		setCellsDisable(true);
 		playMinerAction({ playerEmail })
 			.then((res) => {
-				if (res?.newBalance && res.payout && res.bombs && res.picked) {
+				if (res?.newBalance && res.gameResult && res.bombs && res.picked) {
 					res.newBalance && updateBalance(res.newBalance);
-					setPayout(res.payout);
+					setPayout(res.gameResult);
 					setCellClasses(
 						cellClasses.map((el, i) => {
 							if (res.bombs.includes(i)) return 'bomb';
@@ -172,7 +172,7 @@ export default function MinerGame() {
 				) : (
 					<>
 						<Button onClick={cashOutHandler} disabled={coeffs.activeCoeff === 1}>
-							Cash out | {(coeffs.activeCoeff * activeBet).toFixed(2)}$ | ({coeffs.activeCoeff.toFixed(2)}x)
+							Cash out | ${(coeffs.activeCoeff * activeBet).toFixed(2)} | ({coeffs.activeCoeff.toFixed(2)}x)
 						</Button>
 						<h3>Nextcoeff: {coeffs.nextCoeff.toFixed(2)}x</h3>
 					</>
