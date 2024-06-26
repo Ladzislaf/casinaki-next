@@ -1,4 +1,9 @@
-import SwitchBetsTableButtons from '@/components/SwitchBetsTableButtons/SwitchBetsTableButtons';
+import Link from 'next/link';
+
+const linkStyles = {
+	width: '4rem',
+	margin: '0 0.5rem',
+};
 
 export default function BestPlayersLayout({
 	children,
@@ -7,7 +12,17 @@ export default function BestPlayersLayout({
 }>) {
 	return (
 		<div className='page'>
-			<SwitchBetsTableButtons />
+			<div>
+				<Link className='linkBtn' href='/best-players/biggest-bets' style={linkStyles}>
+					Bets
+				</Link>
+				<Link className='linkBtn' href='/best-players/biggest-wins' style={linkStyles}>
+					Wins
+				</Link>
+				<Link className='linkBtn' href='/best-players/biggest-losses' style={linkStyles}>
+					Losses
+				</Link>
+			</div>
 			{children}
 		</div>
 	);

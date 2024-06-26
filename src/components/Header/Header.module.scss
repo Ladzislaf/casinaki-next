@@ -42,7 +42,12 @@
 		> .player {
 			position: relative;
 			color: var(--orange);
-			cursor: pointer;
+
+			&:hover {
+				.profile {
+					visibility: visible;
+				}
+			}
 
 			> img {
 				border-radius: 50%;
@@ -53,12 +58,11 @@
 			}
 
 			> .profile {
-				cursor: default;
+				visibility: hidden;
 				position: absolute;
 				top: 100%;
 				width: max-content;
 				max-width: 300%;
-				margin: 0.5rem;
 				display: flex;
 				flex-direction: column;
 

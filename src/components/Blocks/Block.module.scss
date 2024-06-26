@@ -1,0 +1,25 @@
+.block {
+	border: 0.1rem solid var(--orange);
+	border-radius: 1rem;
+	padding: 0.5rem;
+	margin: 0.5rem;
+	width: calc(100% - 1rem);
+
+	display: flex;
+	align-items: start;
+	flex-direction: column;
+	justify-content: center;
+	flex: content;
+
+	text-align: left;
+
+	span {
+		color: var(--orange);
+	}
+}
+
+.horizontal {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}

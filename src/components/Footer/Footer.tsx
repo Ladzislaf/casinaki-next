@@ -25,6 +25,8 @@ export default function Footer() {
 					<Image src={gmailLogo} alt='gmail logo' />
 				</Link>
 			</nav>
+
+			<p>If you found a bug or an issue, please contact me via socials</p>
 		</footer>
 	);
 }

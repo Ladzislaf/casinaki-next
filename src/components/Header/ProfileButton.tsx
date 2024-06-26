@@ -10,7 +10,6 @@ import { getBalanceAction } from '@/actions/dataActions';
 export default function ProfileButton() {
 	const session = useSession();
 	const { balance, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
-	const [isProfileOpen, setIsProfileOpen] = useState(false);
 
 	useEffect(() => {
 		async function fetchBalance() {
@@ -29,10 +28,6 @@ export default function ProfileButton() {
 		session.status === 'authenticated' && fetchBalance();
 	}, [session]);
 
-	const handleProfileClick = () => {
-		setIsProfileOpen(!isProfileOpen);
-	};
-
 	const logoutHandler = () => {
 		signOut();
 		sessionStorage.removeItem('playerBalance');
@@ -42,20 +37,18 @@ export default function ProfileButton() {
 		<>
 			{session?.data ? (
 				<>
-					<div className={styles.player} onClick={handleProfileClick}>
+					<div className={styles.player}>
 						{session?.data?.user?.image && (
 							<Image src={session.data.user.image} alt='user image' width={128} height={128} />
 						)}
 						${balance}
-						{isProfileOpen && (
-							<div className={styles.profile}>
-								<div>{session.data.user?.email}</div>
-								<Link href='/balance'>My balance</Link>
-								<Link href='/' onClick={logoutHandler}>
-									LOG OUT
-								</Link>
-							</div>
-						)}
+						<div className={styles.profile}>
+							<div>{session.data.user?.email}</div>
+							<Link href='/balance'>My balance</Link>
+							<Link href='/' onClick={logoutHandler}>
+								LOG OUT
+							</Link>
+						</div>
 					</div>
 				</>
 			) : (

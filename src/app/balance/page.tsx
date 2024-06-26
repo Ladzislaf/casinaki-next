@@ -41,9 +41,7 @@ export default function Balance() {
 
 	return (
 		<div className='page'>
-			<h2>
-				{playerEmail && playerEmail.substring(0, playerEmail.indexOf('@'))}, your balance: ${balance}
-			</h2>
+			<h2>{playerEmail && `${playerEmail.substring(0, playerEmail.indexOf('@'))}, your balance: $${balance}`}</h2>
 			<h2>Daily bonus</h2>
 			<Button onClick={getDailyBonus} disabled={!session.data?.user || disabled}>
 				Get daily $1
