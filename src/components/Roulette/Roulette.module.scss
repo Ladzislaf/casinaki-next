@@ -1,0 +1,49 @@
+.wrapper {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	margin: 0 auto;
+	overflow: hidden;
+
+	> .selector {
+		position: absolute;
+		width: 0.1rem;
+		background: grey;
+		left: 50%;
+		height: 100%;
+		transform: translate(-50%, 0%);
+		z-index: 2;
+	}
+
+	> .wheel {
+		display: flex;
+
+		> .row {
+			display: flex;
+
+			> .cell {
+				height: 75px;
+				width: 75px;
+				margin: 3px;
+				border-radius: 0.2rem;
+				border-bottom: 0.2rem solid rgba(0, 0, 0, 0.4);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+		}
+	}
+}
+
+.red {
+	background: #f95146;
+}
+
+.black {
+	background: #2d3035;
+}
+
+.green {
+	background: #00c74d;
+}
