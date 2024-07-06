@@ -8,10 +8,14 @@ import diceLogo from '@/assets/sidebar/dice.svg';
 import minerLogo from '@/assets/sidebar/miner.svg';
 import blackjackLogo from '@/assets/sidebar/blackjack.svg';
 import pokerLogo from '@/assets/sidebar/poker.svg';
+import rouletteLogo from '@/assets/sidebar/roulette.svg';
 
 export default function Sidebar() {
 	return (
 		<nav className={clsx('sidenav', styles.sidebar)}>
+			<Link href='/game/roulette'>
+				<Image src={rouletteLogo} alt='roulette game logo' />
+			</Link>
 			<Link href='/game/hilo'>
 				<Image src={hiLowLogo} alt='higher-lower game logo' />
 			</Link>
