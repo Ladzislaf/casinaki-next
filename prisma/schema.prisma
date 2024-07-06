@@ -15,6 +15,7 @@ enum Role {
 
 model Player {
   email              String               @id
+  name               String?
   password           String?
   role               Role                 @default(PLAYER)
   balance            Float                @default(5)

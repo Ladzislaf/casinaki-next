@@ -12,10 +12,10 @@ export default async function Home() {
 			<HorizontalBlockLine>
 				<Block>
 					<h2>
-						All new users have bonus balance <span>$5</span>
+						All new users have a <span>$5</span> bonus balance
 					</h2>
 					<h2>
-						Promocode <span>kitstart</span> gives you additional <span>$10</span>
+						The <span>kitstart</span> promo code gives you an additional <span>$10</span>
 					</h2>
 					<Link className='linkBtn' href='/balance'>
 						Enter promocode
@@ -38,9 +38,10 @@ export default async function Home() {
 					<span>New game!</span>
 				</h2>
 				<p>
-					Video Poker is a game where you need to collect a poker combination. You&apos;ll have 5 starting cards. Then, you
-					can choose the cards that you want to hold. When you are ready, press &apos;Deal&apos; button and you&apos;ll get the
-					remaining cards. Finally, your winnings will depend on the collected combination. Good luck!
+					Video Poker is a game where you need to collect a poker combination. You&apos;ll have 5 starting cards. Then,
+					you can choose the cards that you want to hold. When you are ready, press &apos;Deal&apos; button and
+					you&apos;ll get the remaining cards. Finally, your winnings will depend on the collected combination. Good
+					luck!
 				</p>
 				<Link className='linkBtn' href='/game/poker'>
 					Try now
