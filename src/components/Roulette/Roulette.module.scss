@@ -37,13 +37,13 @@
 }
 
 .red {
-	background: #f95146;
+	background-color: var(--rouletteRed);
 }
 
 .black {
-	background: #2d3035;
+	background-color: var(--rouletteBlack);
 }
 
 .green {
-	background: #00c74d;
+	background-color: var(--rouletteGreen);
 }

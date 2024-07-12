@@ -1,0 +1,28 @@
+.lastSpins {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: center;
+
+	> div {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		margin: 0.5rem;
+		border: 0.1rem solid var(--greyBorder);
+		border-radius: 50%;
+		width: 3rem;
+		height: 3rem;
+	}
+
+	> .red {
+		background-color: var(--rouletteRed);
+	}
+
+	> .black {
+		background-color: var(--rouletteBlack);
+	}
+
+	> .green {
+		background-color: var(--rouletteGreen);
+	}
+}
