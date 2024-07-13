@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Header.module.scss';
 import { useSession, signOut } from 'next-auth/react';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
 import { getBalanceAction } from '@/actions/dataActions';
 
@@ -13,6 +13,9 @@ export default function ProfileButton() {
 
 	useEffect(() => {
 		async function fetchBalance() {
+			// const playerEmail = session?.data?.user?.email;
+			// const playerBalance = await getBalanceAction(playerEmail as string);
+			// playerBalance && updateBalance(playerBalance);
 			const sessionPlayerBalance = sessionStorage.getItem('playerBalance');
 			const playerEmail = session?.data?.user?.email;
 
@@ -26,7 +29,7 @@ export default function ProfileButton() {
 		}
 
 		session.status === 'authenticated' && fetchBalance();
-	}, [session]);
+	}, [session, updateBalance]);
 
 	const logoutHandler = () => {
 		signOut();
