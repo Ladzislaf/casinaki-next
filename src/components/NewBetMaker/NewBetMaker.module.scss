@@ -1,0 +1,27 @@
+.container {
+	background: var(--grey);
+	border: 0.1rem solid var(--orange);
+	border-radius: 1rem;
+	padding: 1rem;
+	text-align: center;
+
+	> .bet {
+		display: flex;
+		align-items: center;
+		justify-content: space-evenly;
+	}
+
+	> .betOptions {
+		font-size: 0.8rem;
+
+		button {
+			width: 20%;
+			margin: 0.3rem 0.2rem;
+		}
+	}
+
+	> button {
+		width: 100%;
+		margin: 0.3rem 0;
+	}
+}

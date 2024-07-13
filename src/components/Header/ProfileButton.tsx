@@ -13,9 +13,6 @@ export default function ProfileButton() {
 
 	useEffect(() => {
 		async function fetchBalance() {
-			// const playerEmail = session?.data?.user?.email;
-			// const playerBalance = await getBalanceAction(playerEmail as string);
-			// playerBalance && updateBalance(playerBalance);
 			const sessionPlayerBalance = sessionStorage.getItem('playerBalance');
 			const playerEmail = session?.data?.user?.email;
 

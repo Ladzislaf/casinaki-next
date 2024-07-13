@@ -33,7 +33,7 @@ export default function Countdown() {
 	return (
 		<div>
 			<p>{seconds > 0 || miliSeconds > 0 ? `Time remaining: ${seconds}.${miliSeconds}` : 'spinning'}</p>
-			<progress max={10} value={seconds + miliSeconds / 10} />
+			<progress max={20} value={seconds + miliSeconds / 10} />
 		</div>
 	);
 }

@@ -12,6 +12,16 @@ export default async function Home() {
 			<HorizontalBlockLine>
 				<Block>
 					<h2>
+						<span>New game!</span>
+					</h2>
+					<p>Roulette game beta released! You can try it now, but it still may have some bugs and issues.</p>
+					<Link className='linkBtn' href='/game/roulette'>
+						Try now
+					</Link>
+				</Block>
+
+				<Block>
+					<h2>
 						All new users have a <span>$5</span> bonus balance
 					</h2>
 					<h2>

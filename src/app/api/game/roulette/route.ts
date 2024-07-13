@@ -2,16 +2,16 @@ import playRouletteAction from '@/actions/playRouletteAction';
 
 export async function POST(request: Request) {
 	// TODO validation
-	const res = await request.json();
+	const req = await request.json();
 
-	if (res.playerEmail && res.bet && res.isWon && res.isZeroBet) {
+	if (req.playerEmail && req.bet) {
 		await playRouletteAction({
-			playerEmail: res.playerEmail,
-			bet: res.bet,
-			isWon: res.isWon,
-			isZeroBet: res.isZeroBet,
+			playerEmail: req.playerEmail,
+			bet: req.bet,
+			isWon: req.isWon,
+			isZeroBet: req.isZeroBet,
 		});
 	}
 
-	return Response.json(res);
+	return Response.json(req);
 }

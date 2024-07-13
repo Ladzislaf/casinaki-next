@@ -16,8 +16,7 @@ export default async function playRouletteAction({ playerEmail, bet, isWon, isZe
 		console.error(`[playRouletteAction] player ${playerEmail} not found`);
 		return;
 	}
-	// todo refactor this behavior
-	if (bet && Number(player.balance) < bet) {
+	if (Number(player.balance) < bet) {
 		console.error(`[playRouletteAction] player ${playerEmail} hasn't enough money`);
 		return;
 	}
