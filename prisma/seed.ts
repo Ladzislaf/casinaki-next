@@ -9,6 +9,7 @@ async function main() {
 		{ id: 3, name: 'miner' },
 		{ id: 4, name: 'blackjack' },
 		{ id: 5, name: 'poker' },
+		{ id: 6, name: 'roulette' },
 	];
 
 	casinakiGames.forEach(async (el) => {
