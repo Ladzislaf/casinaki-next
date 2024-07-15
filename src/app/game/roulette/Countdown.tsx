@@ -1,39 +1,39 @@
 'use client';
-import { socket } from '@/utils/socket';
 import { useEffect, useState } from 'react';
+// import styles from './roulette.module.scss';
 
-export default function Countdown() {
-	const [startedAt, setStartedAt] = useState(Date.now());
-	const [countdown, setCountdown] = useState(startedAt - Date.now());
-
-	useEffect(() => {
-		function onRouletteCountdown(countdown: number) {
-			setStartedAt(countdown);
-		}
-
-		socket.on('rouletteCountdown', onRouletteCountdown);
-		return () => {
-			socket.off('rouletteCountdown', onRouletteCountdown);
-		};
-	}, []);
+export default function Countdown({ initialCountdown }: { initialCountdown: number }) {
+	const [progress, setProgress] = useState(0);
 
 	useEffect(() => {
-		const timer = setInterval(() => {
-			if (startedAt - Date.now() > 0) setCountdown(startedAt - Date.now());
+		setProgress(initialCountdown);
+
+		const timeout = setTimeout(() => {
+			setProgress(0);
 		}, 100);
 
-		return () => {
-			clearInterval(timer);
-		};
-	}, [startedAt]);
-
-	const seconds = Math.floor((countdown % (1000 * 60)) / 1000);
-	const miliSeconds = Math.floor((countdown % 1000) / 100);
+		return () => clearTimeout(timeout);
+	}, [initialCountdown]);
 
 	return (
-		<div>
-			<p>{seconds > 0 || miliSeconds > 0 ? `Time remaining: ${seconds}.${miliSeconds}` : 'spinning'}</p>
-			<progress max={20} value={seconds + miliSeconds / 10} />
+		<div
+			style={{
+				width: '100%',
+				margin: '0.3rem 0',
+				backgroundColor: '#e0e0df',
+				borderRadius: '0.5rem',
+				overflow: 'hidden',
+			}}
+		>
+			<div
+				style={{
+					width: `${progress * 4}%`,
+					height: '1rem',
+					backgroundColor: '#76c7c0',
+					borderRadius: '0.5rem',
+					transition: `width ${progress > 0 ? 0.05 : initialCountdown}s linear`,
+				}}
+			/>
 		</div>
 	);
 }

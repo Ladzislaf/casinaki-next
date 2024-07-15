@@ -21,5 +21,45 @@
 		cursor: not-allowed;
 		border: 0.1rem solid #f87d0987;
 		color: #f87d0987;
+		background-color: #0000001d;
+	}
+}
+
+.red,
+.green,
+.black {
+	width: 100%;
+	color: var(--foreground);
+	border-color: var(--foreground);
+
+	&:hover {
+		color: #ffffff6a;
+		border-color: #ffffff6a;
+	}
+
+	&:disabled {
+		color: #ffffff50;
+		border-color: #ffffff50;
+	}
+}
+
+.red {
+	background-color: var(--rouletteRed);
+	&:hover {
+		background-color: var(--rouletteRed);
+	}
+}
+
+.black {
+	background-color: var(--rouletteBlack);
+	&:hover {
+		background-color: var(--rouletteBlack);
+	}
+}
+
+.green {
+	background-color: var(--rouletteGreen);
+	&:hover {
+		background-color: var(--rouletteGreen);
 	}
 }
