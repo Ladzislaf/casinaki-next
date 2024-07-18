@@ -41,7 +41,7 @@ export default function ProfileButton() {
 						{session?.data?.user?.image && (
 							<Image src={session.data.user.image} alt='user image' width={128} height={128} />
 						)}
-						${balance}
+						${balance === -1 ? '**.**' : balance.toFixed(2)}
 						<div className={styles.profile}>
 							<div>{session.data.user?.email}</div>
 							<Link href='/balance'>My balance</Link>
