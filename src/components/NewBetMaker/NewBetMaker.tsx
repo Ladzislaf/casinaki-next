@@ -11,7 +11,7 @@ type BetMakerProps = {
 	setBet: any;
 };
 
-export default function BetMaker({ bet, setBet, children }: PropsWithChildren<BetMakerProps>) {
+export default function NewBetMaker({ bet, setBet, children }: PropsWithChildren<BetMakerProps>) {
 	const [betStep, setBetStep] = useState(MIN_BET);
 
 	const session = useSession();

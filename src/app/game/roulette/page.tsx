@@ -2,14 +2,17 @@
 import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useState } from 'react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
-import Button from '@/components/Button/Button';
 import Roulette from '@/components/Roulette/Roulette';
 import { socket } from '@/utils/socket';
 import Countdown from './Countdown';
 import styles from './roulette.module.scss';
 import clsx from 'clsx';
-import NewBetMaker from '@/components/NewBetMaker/NewBetMaker';
+import Button from '@/components/Button/Button';
 import Input from '@/components/Input/Input';
+import BetsList from './BetsList';
+import LastSpins from './LastSpins';
+
+import NewBetMaker from '@/components/NewBetMaker/NewBetMaker';
 
 type ActiveBet = {
 	playerEmail: string;
@@ -22,7 +25,7 @@ type ActiveBet = {
 export default function RouletteGame() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
-	const { balance, addBalance, substractBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { balance, fetchBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
 
 	const [isConnected, setIsConnected] = useState(false);
 	const [transport, setTransport] = useState('N/A');
@@ -35,7 +38,7 @@ export default function RouletteGame() {
 	const [activeBets, setActiveBets] = useState<Array<ActiveBet>>([]);
 	const [lastSpins, setLastSpins] = useState<Array<{ id: number; value: number }>>([]);
 
-	const [rollResult, setRollResult] = useState(-1);
+	const [rollResult, setRollResult] = useState<{ value: number }>({ value: -1 });
 	const [countdown, setCountdown] = useState<number>(0);
 
 	useEffect(() => {
@@ -63,33 +66,19 @@ export default function RouletteGame() {
 
 		function onRouletteResult(rouletteResult: number) {
 			setGameStatus('spinning');
-			setRollResult(rouletteResult);
+			setRollResult({ value: rouletteResult });
 			setTimeout(() => {
+				socket.emit('getLastSpins');
 				const choiceResult = Math.floor((rouletteResult + 6) / 7);
-
-				setActiveBets((prev) =>
-					prev.map((el) => {
-						if (el.choice === choiceResult) {
-							return { ...el, isWinning: true };
-						}
-						return { ...el, isWinning: false };
-					})
-				);
-
-				// TODO функция сверения баланса с бд и обновления его -> вместо добавить, убрать
-				// TODO использовать эту функцию при перезагрузке страницы
+				setActiveBets((prev) => prev.map((el) => ({ ...el, isWinning: el.choice === choiceResult })));
 
 				setTimeout(() => {
+					playerEmail && fetchBalance(playerEmail);
 					setGameStatus('betting');
 					setActiveBets([]);
+					setPlayerBetSum(0);
 					socket.emit('rouletteCountdown', rouletteCountdownCb);
 				}, 3000);
-
-				setLastSpins((prev) =>
-					prev.length >= 10
-						? [...prev.slice(1), { id: Date.now(), value: rouletteResult }]
-						: [...prev, { id: Date.now(), value: rouletteResult }]
-				);
 			}, 6000);
 		}
 
@@ -99,12 +88,6 @@ export default function RouletteGame() {
 					return { id: i, value: el };
 				})
 			);
-		}
-
-		function onWon(winnings: number) {
-			setTimeout(() => {
-				addBalance(winnings);
-			}, 6000);
 		}
 
 		function onActiveBets(activeBets: Array<{ playerEmail: string; bet: number; choice: 0 | 1 | 2 }>) {
@@ -130,7 +113,6 @@ export default function RouletteGame() {
 		socket.on('rouletteResult', onRouletteResult);
 		socket.on('lastSpins', onLastSpins);
 		socket.on('activeBets', onActiveBets);
-		socket.on('won', onWon);
 		socket.on('newBet', onNewBet);
 		socket.on('clearBet', onClearBet);
 
@@ -140,18 +122,17 @@ export default function RouletteGame() {
 			socket.off('rouletteResult', onRouletteResult);
 			socket.off('lastSpins', onLastSpins);
 			socket.off('activeBets', onActiveBets);
-			socket.off('won', onWon);
 			socket.off('newBet', onNewBet);
 			socket.off('clearBet', onClearBet);
 			socket.disconnect();
 		};
-	}, [playerEmail, addBalance]);
+	}, [playerEmail, fetchBalance]);
 
 	useEffect(() => {
 		if (!playerEmail || !isConnected || playerBetSum >= Number(balance) || gameStatus !== 'betting')
 			setIsBetsDisabled(true);
 		else setIsBetsDisabled(false);
-	}, [playerEmail, balance, gameStatus]);
+	}, [playerEmail, isConnected, balance, playerBetSum, gameStatus]);
 
 	// * UTILS
 	function addNewBet(newBet: { playerEmail: string; bet: number; choice: 0 | 1 | 2; isCurrentPlayer?: boolean }) {
@@ -205,6 +186,7 @@ export default function RouletteGame() {
 			<Countdown initialCountdown={countdown} />
 
 			<div className={styles.block}>
+				{/* // todo bet component with chips */}
 				<div>
 					Bet: $
 					<Input
@@ -217,23 +199,8 @@ export default function RouletteGame() {
 						onChange={(e: any) => handleChangeBetValue(Number(e.target.value))}
 					/>
 				</div>
-
 				<div>Bet sum: ${playerBetSum.toFixed(2)}</div>
-
-				<div className={styles.lastSpins}>
-					{lastSpins.map((item) => (
-						<div
-							className={clsx({
-								[styles.green]: item.value === 0,
-								[styles.red]: item.value > 0 && item.value < 8,
-								[styles.black]: item.value > 7 && item.value < 15,
-							})}
-							key={item.id}
-						>
-							{item.value}
-						</div>
-					))}
-				</div>
+				<LastSpins lastSpins={lastSpins} />
 			</div>
 
 			<div className={styles.betMaker}>
@@ -257,48 +224,5 @@ export default function RouletteGame() {
 				</div>
 			</div>
 		</div>
-	);
-}
-
-function BetsList({
-	bets,
-	onClear,
-}: {
-	bets: Array<{ playerEmail: string; bet: number; choice: 0 | 1 | 2; isCurrentPlayer?: boolean; isWinning?: boolean }>;
-	onClear?: (choice: 0 | 1 | 2) => void;
-}) {
-	return (
-		<>
-			<ul>
-				<p>
-					<span>players: {bets.length}</span>
-					<span>total bets: ${bets.reduce((prev, curr) => prev + curr.bet, 0).toFixed(2)}</span>
-				</p>
-
-				<hr />
-
-				{bets.map((el) => {
-					return (
-						<li
-							key={el.playerEmail}
-							className={clsx({
-								[styles.currentPlayerBet]: el.isCurrentPlayer,
-								[styles.losingBet]: el.isWinning === false,
-							})}
-						>
-							<span>{el.playerEmail}</span>
-							<span>
-								{el.isWinning === true
-									? `+ $${el.bet.toFixed(2)}`
-									: el.isWinning === false
-									? `- $${el.bet.toFixed(2)}`
-									: `$${el.bet.toFixed(2)}`}
-								{el.isCurrentPlayer && onClear && <button onClick={() => onClear(el.choice)}>X</button>}
-							</span>
-						</li>
-					);
-				})}
-			</ul>
-		</>
 	);
 }

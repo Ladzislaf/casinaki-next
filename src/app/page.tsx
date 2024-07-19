@@ -14,7 +14,10 @@ export default async function Home() {
 					<h2>
 						<span>New game!</span>
 					</h2>
-					<p>Roulette game beta released! You can try it now, but it still may have some bugs and issues.</p>
+					<p>
+						Roulette game released, try it now! Roulette game server may fall asleep, so you need to wait about 30
+						seconds to connect.
+					</p>
 					<Link className='linkBtn' href='/game/roulette'>
 						Try now
 					</Link>

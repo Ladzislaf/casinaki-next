@@ -7,8 +7,6 @@ import React, { createContext, useState } from 'react';
 export type PlayerContextType = {
 	balance: number;
 	updateBalance: (newBalance: number) => void;
-	addBalance: (balanceToAdd: number) => void;
-	substractBalance: (balanceToSubstract: number) => void;
 	fetchBalance: (playerEmail: string) => void;
 
 	bet: number;
@@ -23,35 +21,16 @@ export default function Providers({ children }: { children: React.ReactNode }) {
 
 	const updateBalance = (newBalance: number) => {
 		setBalance(newBalance);
-		sessionStorage.setItem('playerBalance', newBalance.toString());
 	};
 
-	const addBalance = (balanceToAdd: number) => {
-		setBalance((prev) => prev + balanceToAdd);
-
-		const sessionPlayerBalance = sessionStorage.getItem('playerBalance');
-		sessionPlayerBalance &&
-			sessionStorage.setItem('playerBalance', (Number(sessionPlayerBalance) + balanceToAdd).toString());
-	};
-
-	const substractBalance = (balanceToSubstract: number) => {
-		setBalance((prev) => (prev - balanceToSubstract < 0 ? 0 : prev - balanceToSubstract));
-
-		const sessionPlayerBalance = sessionStorage.getItem('playerBalance');
-		sessionPlayerBalance && Number(sessionPlayerBalance) - balanceToSubstract < 0
-			? sessionStorage.setItem('playerBalance', '0')
-			: sessionStorage.setItem('playerBalance', (Number(sessionPlayerBalance) - balanceToSubstract).toString());
-	};
-
-	const fetchBalance = async (playerEmail: string) => {
-		const playerBalance = await getBalanceAction(playerEmail);
-		playerBalance && setBalance(playerBalance);
+	const fetchBalance = (playerEmail: string) => {
+		getBalanceAction(playerEmail).then((playerBalance) => {
+			typeof playerBalance !== 'undefined' && setBalance(playerBalance);
+		});
 	};
 
 	return (
-		<CurrentPlayerContext.Provider
-			value={{ balance, updateBalance, addBalance, substractBalance, fetchBalance, bet, setBet }}
-		>
+		<CurrentPlayerContext.Provider value={{ balance, updateBalance, fetchBalance, bet, setBet }}>
 			<SessionProvider>{children}</SessionProvider>
 		</CurrentPlayerContext.Provider>
 	);

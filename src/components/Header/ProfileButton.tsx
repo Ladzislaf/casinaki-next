@@ -3,34 +3,24 @@ import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Header.module.scss';
 import { useSession, signOut } from 'next-auth/react';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
-import { getBalanceAction } from '@/actions/dataActions';
 
 export default function ProfileButton() {
 	const session = useSession();
-	const { balance, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { balance, fetchBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 	useEffect(() => {
-		async function fetchBalance() {
-			const sessionPlayerBalance = sessionStorage.getItem('playerBalance');
+		if (session.status === 'authenticated' && !isAuthenticated) {
+			setIsAuthenticated(true);
 			const playerEmail = session?.data?.user?.email;
-
-			if (sessionPlayerBalance) {
-				updateBalance(Number(sessionPlayerBalance));
-			} else {
-				const playerBalance = await getBalanceAction(playerEmail as string);
-				playerBalance && updateBalance(playerBalance);
-				playerBalance && sessionStorage.setItem('playerBalance', playerBalance.toString());
-			}
+			playerEmail && fetchBalance(playerEmail);
 		}
-
-		session.status === 'authenticated' && fetchBalance();
-	}, [session, updateBalance]);
+	}, [session, isAuthenticated, fetchBalance]);
 
 	const logoutHandler = () => {
 		signOut();
-		sessionStorage.removeItem('playerBalance');
 	};
 
 	return (

@@ -3,11 +3,11 @@ import { useEffect, useState } from 'react';
 import styles from './Roulette.module.scss';
 import RouletteRow from './RouletteRow';
 
-export default function Roulette({ rollResult }: { rollResult: number }) {
+export default function Roulette({ rollResult }: { rollResult: { value: number } }) {
 	const [wheelStyles, setWheelStyles] = useState({});
 
 	useEffect(() => {
-		rollResult !== -1 && spinRoulette(rollResult);
+		rollResult.value !== -1 && spinRoulette(rollResult.value);
 	}, [rollResult]);
 
 	function spinRoulette(rollResult: number) {
