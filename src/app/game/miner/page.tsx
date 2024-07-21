@@ -4,7 +4,7 @@ import styles from './miner.module.scss';
 import Button from '@/components/Button/Button';
 import BetMaker from '@/components/BetMaker/BetMaker';
 import { useSession } from 'next-auth/react';
-import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
+import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
 import playMinerAction from '@/actions/playMinerAction';
 import { calcChances, calcCoeff } from '@/utils/utils';
 import Cell from './MinerCell';
@@ -20,7 +20,7 @@ const minerCells = [
 export default function MinerGame() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
-	const { bet, balance, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { bet, balance, setBalance } = useContext(PlayerContext) as PlayerContextType;
 	const [cellClasses, setCellClasses] = useState<string[]>(new Array(25));
 	const [activeBet, setActiveBet] = useState(bet);
 	const [gameState, setGameState] = useState('betting');
@@ -43,7 +43,7 @@ export default function MinerGame() {
 
 		playMinerAction({ playerEmail, bet, bombsCount })
 			.then((res) => {
-				res?.newBalance && updateBalance(res.newBalance);
+				res?.newBalance && setBalance(res.newBalance);
 			})
 			.finally(() => {
 				setGameState('playing');
@@ -73,7 +73,7 @@ export default function MinerGame() {
 							else return 'bomb';
 						})
 					);
-					updateBalance(res.newBalance);
+					setBalance(res.newBalance);
 					alert('Congratulations! You are the absolute miner champion!');
 				} else if (res?.picked && res.bombs) {
 					// * lost
@@ -98,7 +98,7 @@ export default function MinerGame() {
 		playMinerAction({ playerEmail })
 			.then((res) => {
 				if (res?.newBalance && res.gameResult && res.bombs && res.picked) {
-					res.newBalance && updateBalance(res.newBalance);
+					res.newBalance && setBalance(res.newBalance);
 					setPayout(res.gameResult);
 					setCellClasses(
 						cellClasses.map((el, i) => {

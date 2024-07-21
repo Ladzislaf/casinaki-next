@@ -1,7 +1,7 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
+import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
 import styles from './hilo.module.scss';
 import BetMaker from '../../../components/BetMaker/BetMaker';
 import Button from '@/components/Button/Button';
@@ -14,7 +14,7 @@ const cardsDeck = genCardsDeck('hilo');
 export default function Hilo() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
-	const { balance, bet, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { balance, bet, setBalance } = useContext(PlayerContext) as PlayerContextType;
 	const [activeCardIndex, setActiveCardIndex] = useState(-1);
 	const [cardsHistory, setCardsHistory] = useState([-1]);
 	const [coeffs, setCoeffs] = useState({ hi: 1, lo: 1, total: 1 });
@@ -45,7 +45,7 @@ export default function Hilo() {
 					lo: calcHiloChances(activeCardIndex, 'lower'),
 				});
 				setActiveBet(bet);
-				res?.newBalance && updateBalance(res?.newBalance);
+				res?.newBalance && setBalance(res?.newBalance);
 			})
 			.finally(() => {
 				setGameState('playing');
@@ -85,7 +85,7 @@ export default function Hilo() {
 		playHiloAction({ playerEmail })
 			.then((res) => {
 				if (res?.newBalance && res.gameResult) {
-					updateBalance(res.newBalance);
+					setBalance(res.newBalance);
 					setPayout(res.gameResult);
 				}
 			})

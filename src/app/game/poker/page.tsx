@@ -4,7 +4,7 @@ import styles from './poker.module.scss';
 import clsx from 'clsx';
 import { useSession } from 'next-auth/react';
 import { useContext, useState } from 'react';
-import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
+import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import playPokerAction from '@/actions/playPokerAction';
@@ -24,7 +24,7 @@ const pokerCombitanions: { name: string; coeff: number }[] = [
 export default function PokerGame() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
-	const { bet, balance, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { bet, balance, setBalance } = useContext(PlayerContext) as PlayerContextType;
 	const [payout, setPayout] = useState('');
 	const [gameStatus, setGameStatus] = useState('betting');
 	const [playDisable, setPlayDisable] = useState(false);
@@ -39,7 +39,7 @@ export default function PokerGame() {
 
 		playPokerAction({ playerEmail, bet })
 			.then((res) => {
-				res?.newBalance && updateBalance(res.newBalance);
+				res?.newBalance && setBalance(res.newBalance);
 				res?.playerHand && setPlayerHand(res.playerHand);
 			})
 			.finally(() => {
@@ -54,7 +54,7 @@ export default function PokerGame() {
 		playPokerAction({ playerEmail, holdCards })
 			.then((res) => {
 				res?.playerHand && setPlayerHand(res.playerHand);
-				res?.newBalance && updateBalance(res.newBalance);
+				res?.newBalance && setBalance(res.newBalance);
 				res?.gameResult && setPayout(res.gameResult);
 				res?.combination && setActiveCombination(res.combination);
 			})

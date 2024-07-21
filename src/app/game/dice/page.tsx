@@ -6,13 +6,13 @@ import playDiceAction from '@/actions/playDiceAction';
 import Button from '@/components/Button/Button';
 import { useContext, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
+import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
 import { overDiceCoeffs, underDiceCoeffs } from '@/utils/utils';
 
 export default function Dice() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
-	const { balance, bet, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { balance, bet, setBalance } = useContext(PlayerContext) as PlayerContextType;
 	const [payout, setPayout] = useState('');
 	const [buttons, setButtons] = useState({ over: true, under: false });
 	const [rollButtonDisable, setRollButtonDisable] = useState(false);
@@ -25,7 +25,7 @@ export default function Dice() {
 			.then((res) => {
 				res?.gameResult && setPayout(res?.gameResult);
 				res?.diceResult && setResultDice(res?.diceResult);
-				res?.newBalance && updateBalance(res?.newBalance);
+				res?.newBalance && setBalance(res?.newBalance);
 			})
 			.finally(() => {
 				setRollButtonDisable(false);

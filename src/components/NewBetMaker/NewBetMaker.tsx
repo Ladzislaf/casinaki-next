@@ -1,7 +1,7 @@
 'use client';
 import { PropsWithChildren, useContext, useEffect, useState } from 'react';
 import Button from '../Button/Button';
-import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
+import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
 import { useSession } from 'next-auth/react';
 import { MAX_BET, MIN_BET } from '@/utils/utils';
 import styles from './NewBetMaker.module.scss';
@@ -15,7 +15,7 @@ export default function NewBetMaker({ bet, setBet, children }: PropsWithChildren
 	const [betStep, setBetStep] = useState(MIN_BET);
 
 	const session = useSession();
-	const { balance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { balance } = useContext(PlayerContext) as PlayerContextType;
 
 	useEffect(() => {
 		if (bet >= 10000) setBetStep(1000);

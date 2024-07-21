@@ -3,13 +3,13 @@ import { activateDailyBonus, activatePromo } from '@/actions/playerAction';
 import Button from '@/components/Button/Button';
 import { useSession } from 'next-auth/react';
 import { useContext, useState } from 'react';
-import { CurrentPlayerContext, PlayerContextType } from '../Providers';
+import { PlayerContext, PlayerContextType } from '../../providers/ContextProvider';
 import Input from '@/components/Input/Input';
 
 export default function Balance() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
-	const { balance, updateBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { balance, setBalance } = useContext(PlayerContext) as PlayerContextType;
 	const [disabled, setDisabled] = useState(false);
 	const [promo, setPromo] = useState('');
 
@@ -17,7 +17,7 @@ export default function Balance() {
 		setDisabled(true);
 		activateDailyBonus(playerEmail)
 			.then((res) => {
-				res?.newBalance && updateBalance(res.newBalance);
+				res?.newBalance && setBalance(res.newBalance);
 				res?.message && alert(res.message);
 			})
 			.finally(() => {
@@ -29,7 +29,7 @@ export default function Balance() {
 		setDisabled(true);
 		activatePromo(playerEmail, promo)
 			.then((res) => {
-				res?.newBalance && updateBalance(res.newBalance);
+				res?.newBalance && setBalance(res.newBalance);
 				res?.message && alert(res.message);
 			})
 			.finally(() => setDisabled(false));
@@ -41,7 +41,9 @@ export default function Balance() {
 
 	return (
 		<div className='page'>
-			<h2>{playerEmail && `${playerEmail.substring(0, playerEmail.indexOf('@'))}, your balance: $${balance}`}</h2>
+			<h2>
+				{playerEmail && `${playerEmail.substring(0, playerEmail.indexOf('@'))}, your balance: $${balance.toFixed(2)}`}
+			</h2>
 			<h2>Daily bonus</h2>
 			<Button onClick={getDailyBonus} disabled={!session.data?.user || disabled}>
 				Get daily $1

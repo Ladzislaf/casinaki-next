@@ -4,11 +4,11 @@ import Image from 'next/image';
 import styles from './Header.module.scss';
 import { useSession, signOut } from 'next-auth/react';
 import { useContext, useEffect, useState } from 'react';
-import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
+import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
 
 export default function ProfileButton() {
 	const session = useSession();
-	const { balance, fetchBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { balance, fetchBalance } = useContext(PlayerContext) as PlayerContextType;
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 	useEffect(() => {

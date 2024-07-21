@@ -1,7 +1,7 @@
 'use client';
 import { useSession } from 'next-auth/react';
 import { useContext, useEffect, useState } from 'react';
-import { CurrentPlayerContext, PlayerContextType } from '@/app/Providers';
+import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
 import Roulette from '@/components/Roulette/Roulette';
 import { socket } from '@/utils/socket';
 import Countdown from './Countdown';
@@ -25,7 +25,7 @@ type ActiveBet = {
 export default function RouletteGame() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
-	const { balance, fetchBalance } = useContext(CurrentPlayerContext) as PlayerContextType;
+	const { balance, fetchBalance } = useContext(PlayerContext) as PlayerContextType;
 
 	const [isConnected, setIsConnected] = useState(false);
 	const [transport, setTransport] = useState('N/A');

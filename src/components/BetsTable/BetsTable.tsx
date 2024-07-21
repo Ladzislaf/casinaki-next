@@ -42,9 +42,9 @@ export default function BetsTable({ betsList }: { betsList: betRow[] }) {
 									<Link href={`/game/${el.game.name}`}>{el.game.name}</Link>
 								</td>
 								<td>{el.player.email.substring(0, el.player.email.indexOf('@'))}</td>
-								<td>${el.bet}</td>
-								<td>{el.coefficient}x</td>
-								<td>{el.isWon ? `+ $${el.payout}` : `- $${el.payout}`}</td>
+								<td>${el.bet.toFixed(2)}</td>
+								<td>{el.coefficient.toFixed(2)}x</td>
+								<td>{`${el.isWon ? '+' : '-'} $${el.payout.toFixed(2)}`}</td>
 								<DateCell createdAt={el.createdAt} />
 							</tr>
 						);
