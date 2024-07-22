@@ -58,6 +58,7 @@
 			}
 
 			> .profile {
+				z-index: 10;
 				visibility: hidden;
 				position: absolute;
 				top: 100%;
@@ -68,7 +69,7 @@
 
 				border: 0.1rem solid var(--orange);
 				border-radius: 1rem;
-				background-color: var(--orangeDark);
+				background-color: var(--content-block-bg);
 
 				> * {
 					text-align: center;
@@ -84,4 +85,9 @@
 			}
 		}
 	}
+}
+
+.themeSwitcher {
+	border: none;
+	background-color: transparent;
 }

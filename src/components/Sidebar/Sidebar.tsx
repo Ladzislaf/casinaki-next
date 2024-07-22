@@ -14,22 +14,22 @@ export default function Sidebar() {
 	return (
 		<nav className={clsx('sidenav', styles.sidebar)}>
 			<Link href='/game/roulette'>
-				<Image src={rouletteLogo} alt='roulette game logo' />
+				<Image className='svg' src={rouletteLogo} alt='roulette game logo' />
 			</Link>
 			<Link href='/game/hilo'>
-				<Image src={hiLowLogo} alt='higher-lower game logo' />
+				<Image className='svg' src={hiLowLogo} alt='higher-lower game logo' />
 			</Link>
 			<Link href='/game/miner'>
-				<Image src={minerLogo} alt='miner game logo' />
+				<Image className='svg' src={minerLogo} alt='miner game logo' />
 			</Link>
 			<Link href='/game/blackjack'>
-				<Image src={blackjackLogo} alt='blackjack game logo' />
+				<Image className='svg' src={blackjackLogo} alt='blackjack game logo' />
 			</Link>
 			<Link href='/game/poker'>
-				<Image src={pokerLogo} alt='poker game logo' />
+				<Image className='svg' src={pokerLogo} alt='poker game logo' />
 			</Link>
 			<Link href='/game/dice'>
-				<Image src={diceLogo} alt='dice game logo' />
+				<Image className='svg' src={diceLogo} alt='dice game logo' />
 			</Link>
 		</nav>
 	);

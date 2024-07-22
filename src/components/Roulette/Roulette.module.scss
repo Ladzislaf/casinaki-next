@@ -6,11 +6,12 @@
 	overflow: hidden;
 	border-radius: 1rem;
 	width: 100%;
+	color: white;
 
 	> .selector {
 		position: absolute;
 		width: 0.2rem;
-		background: white;
+		background: var(--foreground);
 		left: 50%;
 		height: 100%;
 		transform: translate(-50%, 0%);

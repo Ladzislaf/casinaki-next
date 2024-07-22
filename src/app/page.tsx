@@ -46,20 +46,22 @@ export default async function Home() {
 				</Block>
 			</HorizontalBlockLine>
 
-			<Block>
-				<h2>
-					<span>New game!</span>
-				</h2>
-				<p>
-					Video Poker is a game where you need to collect a poker combination. You&apos;ll have 5 starting cards. Then,
-					you can choose the cards that you want to hold. When you are ready, press &apos;Deal&apos; button and
-					you&apos;ll get the remaining cards. Finally, your winnings will depend on the collected combination. Good
-					luck!
-				</p>
-				<Link className='linkBtn' href='/game/poker'>
-					Try now
-				</Link>
-			</Block>
+			<HorizontalBlockLine>
+				<Block>
+					<h2>
+						<span>New game!</span>
+					</h2>
+					<p>
+						Video Poker is a game where you need to collect a poker combination. You&apos;ll have 5 starting cards.
+						Then, you can choose the cards that you want to hold. When you are ready, press &apos;Deal&apos; button and
+						you&apos;ll get the remaining cards. Finally, your winnings will depend on the collected combination. Good
+						luck!
+					</p>
+					<Link className='linkBtn' href='/game/poker'>
+						Try now
+					</Link>
+				</Block>
+			</HorizontalBlockLine>
 
 			<h2>Last bets</h2>
 			<BetsTable betsList={betsHistory} />

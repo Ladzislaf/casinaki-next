@@ -5,10 +5,10 @@
 		padding: 0.5rem;
 		border-collapse: separate;
 		border-radius: 1rem;
-		background: var(--greyBorder);
+		background: var(--primary-border);
 
 		> thead > tr > td {
-			background: var(--orangeDark);
+			background: var(--content-block-bg);
 			border-radius: 1rem;
 			text-align: center;
 		}

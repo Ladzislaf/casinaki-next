@@ -29,8 +29,8 @@
 .green,
 .black {
 	width: 100%;
-	color: var(--foreground);
-	border-color: var(--foreground);
+	color: white;
+	border-color: var(--primary-border);
 
 	&:hover {
 		color: #ffffff6a;

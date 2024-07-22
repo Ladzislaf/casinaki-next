@@ -1,21 +1,31 @@
 :root {
-	--foreground: #1b1b1e;
-	--background: #dbdbe7;
+	--foreground: #dbdbe7;
+	--background: #1b1b1e;
+
 	--orange: #ff8c00;
 	--orangeDark: #ab5e00;
 	--orangeHover: #ff8c0050;
-	--grey: #2d2d2d;
-	--greyBorder: #595959;
+
+	--primary-bg: #2d2d2d;
+	--primary-border: #595959;
+
+	--content-block-bg: #ff8c0077;
+	--content-block-border: #ff8c00;
 
 	--rouletteGreen: #00c74d;
 	--rouletteRed: #f95146;
 	--rouletteBlack: #2d3035;
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--foreground: #dbdbe7;
-		--background: #1b1b1e;
+[data-theme='light'] {
+	--foreground: #0c0c0e;
+	--background: #d1d1d1;
+
+	--primary-bg: #fbfbfb;
+	--primary-border: #b4b4b4;
+
+	.svg {
+		filter: brightness(0%);
 	}
 }
 
@@ -87,8 +97,8 @@ body {
 	> header {
 		width: 70%;
 		height: 3rem;
-		background: var(--grey);
-		border: 0.1rem solid var(--greyBorder);
+		background: var(--primary-bg);
+		border: 0.1rem solid var(--primary-border);
 		border-radius: 1rem;
 		margin: auto;
 	}
@@ -101,8 +111,8 @@ body {
 		> nav.sidenav {
 			width: 4rem;
 
-			background: var(--grey);
-			border: 0.1rem solid var(--greyBorder);
+			background: var(--primary-bg);
+			border: 0.1rem solid var(--primary-border);
 			border-radius: 1rem;
 			margin: auto;
 		}
@@ -123,8 +133,8 @@ body {
 			> main,
 			footer {
 				padding: 0.5rem;
-				background: var(--grey);
-				border: 0.1rem solid var(--greyBorder);
+				background: var(--primary-bg);
+				border: 0.1rem solid var(--primary-border);
 				border-radius: 1rem;
 			}
 		}
@@ -154,10 +164,4 @@ body {
 	align-items: center;
 	width: 100%;
 	min-height: 100%;
-}
-
-@media (prefers-color-scheme: dark) {
-	html {
-		color-scheme: dark;
-	}
 }

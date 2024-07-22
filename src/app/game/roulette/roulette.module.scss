@@ -60,13 +60,14 @@
 	justify-content: safe center;
 	overflow: hidden;
 	max-width: 50%;
+	color: white;
 
 	> div {
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		margin: 0.5rem 0.2rem;
-		border: 0.1rem solid var(--greyBorder);
+		border: 0.1rem solid var(--primary-border);
 		border-radius: 50%;
 		min-width: 2.5rem;
 		min-height: 2.5rem;
@@ -99,12 +100,13 @@
 	padding: 0.1rem 1rem;
 	margin: 0.2rem;
 	width: fit-content;
-	border: 0.1rem solid rgb(255, 44, 44);
-	background-color: rgb(131, 55, 55);
+	border: 0.1rem solid rgb(193, 2, 2);
+	background-color: rgb(249, 49, 49);
+	color: white;
 
 	&.success {
 		border: 0.1rem solid rgb(55, 233, 55);
-		background-color: rgb(14, 115, 14);
+		background-color: rgba(17, 198, 17, 0.911);
 	}
 }
 
