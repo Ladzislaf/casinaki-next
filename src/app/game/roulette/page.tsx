@@ -15,7 +15,7 @@ import LastSpins from './LastSpins';
 import NewBetMaker from '@/components/NewBetMaker/NewBetMaker';
 import { useTranslations } from 'next-intl';
 
-type ActiveBet = {
+export type ActiveBet = {
 	playerEmail: string;
 	bet: number;
 	choice: 0 | 1 | 2;

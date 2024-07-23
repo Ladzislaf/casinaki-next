@@ -2,14 +2,9 @@
 import clsx from 'clsx';
 import styles from './roulette.module.scss';
 import { useTranslations } from 'next-intl';
+import type { ActiveBet } from './page';
 
-export default function BetsList({
-	bets,
-	onClear,
-}: {
-	bets: Array<{ playerEmail: string; bet: number; choice: 0 | 1 | 2; isCurrentPlayer?: boolean; isWinning?: boolean }>;
-	onClear?: (choice: 0 | 1 | 2) => void;
-}) {
+export default function BetsList({ bets, onClear }: { bets: Array<ActiveBet>; onClear?: (choice: 0 | 1 | 2) => void }) {
 	const t = useTranslations('RouletteGamePage');
 
 	return (
@@ -22,23 +17,19 @@ export default function BetsList({
 
 				<hr />
 
-				{bets.map((el) => {
+				{bets.map((bet) => {
 					return (
 						<li
-							key={el.playerEmail}
+							key={bet.playerEmail}
 							className={clsx({
-								[styles.currentPlayerBet]: el.isCurrentPlayer,
-								[styles.losingBet]: el.isWinning === false,
+								[styles.currentPlayerBet]: bet.isCurrentPlayer,
+								[styles.losingBet]: bet.isWinning === false,
 							})}
 						>
-							<span>{el.playerEmail.substring(0, el.playerEmail.indexOf('@'))}</span>
+							<span>{bet.playerEmail.substring(0, bet.playerEmail.indexOf('@'))}</span>
 							<span>
-								{el.isWinning === true
-									? `+ $${el.bet.toFixed(2)}`
-									: el.isWinning === false
-									? `- $${el.bet.toFixed(2)}`
-									: `$${el.bet.toFixed(2)}`}
-								{el.isCurrentPlayer && onClear && <button onClick={() => onClear(el.choice)}>X</button>}
+								<BetResult bet={bet} />
+								{bet.isCurrentPlayer && onClear && <button onClick={() => onClear(bet.choice)}>X</button>}
 							</span>
 						</li>
 					);
@@ -46,4 +37,11 @@ export default function BetsList({
 			</ul>
 		</>
 	);
+}
+
+function BetResult({ bet }: { bet: ActiveBet }) {
+	if (bet.isWinning === true && bet.choice === 0) return `+ $${(bet.bet * 13).toFixed(2)}`;
+	if (bet.isWinning === true && bet.choice !== 0) return `+ $${bet.bet.toFixed(2)}`;
+	if (bet.isWinning === false) return `- $${bet.bet.toFixed(2)}`;
+	return `$${bet.bet.toFixed(2)}`;
 }

@@ -21,7 +21,9 @@ export default async function playRouletteAction({ playerEmail, bet, isWon, isZe
 		return;
 	}
 
-	const newBalance = isWon ? player.balance + bet : player.balance - bet;
+	const coeff = isZeroBet ? 14 : 2;
+	const newBalance = isWon ? player.balance + bet * coeff - bet : player.balance - bet;
+
 	await updatePlayerBalance(playerEmail, newBalance);
-	await addGameLogRecord(playerEmail, 6, bet, isZeroBet ? 14 : 2, isWon);
+	await addGameLogRecord(playerEmail, 6, bet, coeff, isWon);
 }
