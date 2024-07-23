@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
 import playMinerAction from '@/actions/playMinerAction';
 import { calcChances, calcCoeff } from '@/utils/utils';
+import { useTranslations } from 'next-intl';
 import Cell from './MinerCell';
 
 const minerCells = [
@@ -29,6 +30,7 @@ export default function MinerGame() {
 	const [coeffs, setCoeffs] = useState({ activeCoeff: 1, nextCoeff: calcCoeff(25 - bombsCount, 25) });
 	const [cellsDisable, setCellsDisable] = useState(true);
 	const [playDisable, setPlayDisable] = useState(false);
+	const t = useTranslations('MinerGamePage');
 
 	useEffect(() => {
 		setCoeffs((coeffs) => ({ ...coeffs, nextCoeff: calcCoeff(25 - bombsCount, 25) }));
@@ -118,7 +120,7 @@ export default function MinerGame() {
 	return (
 		<div className='gamePage'>
 			<div>
-				<h1>MINER GAME</h1>
+				<h1>{t('heading')}</h1>
 
 				<div className={styles.minerField}>
 					<div className={styles.bombsPicker}>
@@ -130,7 +132,7 @@ export default function MinerGame() {
 						>
 							+
 						</Button>
-						<h2>{`BOMBS [${bombsCount}]`}</h2>
+						<h2>{t('bombsCount', { count: bombsCount })}</h2>
 						<Button
 							onClick={() => {
 								bombsCount > 1 && setBombsCount(bombsCount - 1);
@@ -166,15 +168,15 @@ export default function MinerGame() {
 				{gameState === 'betting' ? (
 					<>
 						<Button onClick={startGameHandler} disabled={!playerEmail || playDisable || Number(balance) < bet}>
-							Start the game | {calcChances(25 - bombsCount, 25)}% | {coeffs.nextCoeff.toFixed(2)}x
+							{t('startGameButton')} | {calcChances(25 - bombsCount, 25)}% | {coeffs.nextCoeff.toFixed(2)}x
 						</Button>
 					</>
 				) : (
 					<>
 						<Button onClick={cashOutHandler} disabled={coeffs.activeCoeff === 1}>
-							Cash out | ${(coeffs.activeCoeff * activeBet).toFixed(2)} | ({coeffs.activeCoeff.toFixed(2)}x)
+							{t('cashOut')} | ${(coeffs.activeCoeff * activeBet).toFixed(2)} | ({coeffs.activeCoeff.toFixed(2)}x)
 						</Button>
-						<h3>Nextcoeff: {coeffs.nextCoeff.toFixed(2)}x</h3>
+						<h3>{t('nextCoeff', { coeff: coeffs.nextCoeff.toFixed(2) })}</h3>
 					</>
 				)}
 				<h2>{payout}</h2>

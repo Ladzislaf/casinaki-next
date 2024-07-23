@@ -8,6 +8,7 @@ import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import { calcHiloChances, calcHiloCoeff, genCardsDeck, getRand } from '@/utils/utils';
 import playHiloAction from '@/actions/playHiloAction';
+import { useTranslations } from 'next-intl';
 
 const cardsDeck = genCardsDeck('hilo');
 
@@ -23,6 +24,7 @@ export default function Hilo() {
 	const [payout, setPayout] = useState('');
 	const [gameState, setGameState] = useState('betting');
 	const [playDisable, setPlayDisable] = useState(false);
+	const t = useTranslations('HiloGamePage');
 
 	useEffect(() => {
 		setActiveCardIndex(getRand(0, 51));
@@ -97,13 +99,13 @@ export default function Hilo() {
 	const getButtonLabel = (mode: 'higher' | 'lower') => {
 		switch (mode) {
 			case 'higher':
-				if (cardsDeck[activeCardIndex].value === 13) return 'Same';
-				else if (cardsDeck[activeCardIndex].value === 1) return 'Higher';
-				else return 'Higher or same';
+				if (cardsDeck[activeCardIndex].value === 13) return t('same');
+				else if (cardsDeck[activeCardIndex].value === 1) return t('higher');
+				else return t('higherOrSame');
 			case 'lower':
-				if (cardsDeck[activeCardIndex].value === 1) return 'Same';
-				else if (cardsDeck[activeCardIndex].value === 13) return 'Lower';
-				else return 'Lower or same';
+				if (cardsDeck[activeCardIndex].value === 1) return t('same');
+				else if (cardsDeck[activeCardIndex].value === 13) return t('lower');
+				else return t('lowerOrSame');
 			default:
 				console.error('[Hi-Low page] Error: no such mode in checkName function');
 				return '';
@@ -117,15 +119,15 @@ export default function Hilo() {
 	return (
 		<div className={'gamePage'}>
 			<div>
-				<h1>HIGHER-LOWER GAME</h1>
+				<h1>{t('heading')}</h1>
 				<div className={styles.cardsContainer}>
 					<div>
 						<Card cardIndex={1} cardColor='#222222'>
-							lowest
+							{t('lowest')}
 						</Card>
 						<Card cardIndex={activeCardIndex} />
 						<Card cardIndex={49} cardColor='#222222'>
-							highest
+							{t('highest')}
 						</Card>
 					</div>
 					<div>
@@ -140,10 +142,10 @@ export default function Hilo() {
 				{gameState === 'betting' ? (
 					<>
 						<Button onClick={startGameHandler} disabled={!session.data?.user || playDisable || bet > Number(balance)}>
-							Start the game
+							{t('startGameButton')}
 						</Button>
 						<Button disabled={playDisable} onClick={() => setActiveCardIndex(getRand(0, 51))}>
-							Skip card
+							{t('skipCardButton')}
 						</Button>
 					</>
 				) : (
@@ -155,7 +157,7 @@ export default function Hilo() {
 							⇊ {getButtonLabel('lower')} | {chances.lo}% | {coeffs.lo.toFixed(2)}x
 						</Button>
 						<Button onClick={cashOutHandler} disabled={coeffs.total === 1}>
-							{coeffs.total.toFixed(2)}x Cash out ${(activeBet * coeffs.total).toFixed(2)}
+							{coeffs.total.toFixed(2)}x {t('cashOut')} ${(activeBet * coeffs.total).toFixed(2)}
 						</Button>
 					</>
 				)}

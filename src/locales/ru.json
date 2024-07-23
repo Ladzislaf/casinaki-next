@@ -10,7 +10,7 @@
 
 		"pokerGameBlock": {
 			"heading": "Новая игра!",
-			"text": "Видео покер - это игра где нужно собрать покерную комбинацию. Вы получаете 5 стартовых карт. Затем, можно выбрать карты, которые вы хотите оставить. Когда будете готовы, нажимайте кнопку 'Готово', и вы получите оставшиеся карты. В результате размер выигрыша будет зависеть от собранной комбинации. Удачи!",
+			"text": "Видео покер - это игра где нужно собрать покерную комбинацию. Вы получаете 5 стартовых карт. Затем, можно выбрать карты, которые вы хотите оставить. Когда будете готовы, нажимайте кнопку 'Раздать', и вы получите оставшиеся карты. В результате размер выигрыша будет зависеть от собранной комбинации. Удачи!",
 			"button": "Играть"
 		},
 
@@ -27,6 +27,98 @@
 		}
 	},
 
+	"BalancePage": {
+		"yourBalanceText": "{username}, ваш баланс: {balance}",
+		"dailyBonusHeading": "Ежедневный бонус",
+		"dailyBonusButton": "Забрать {amount}",
+		"promocodeHeading": "Введите промокод",
+		"promocodeText": "{promocode} дает {amount} для новых игроков",
+		"promocodeInput": "промокод",
+		"promocodeButton": "Активировать"
+	},
+
+	"BestPlayersPage": {
+		"betsButton": "Ставки",
+		"winsButton": "Выигрыши",
+		"lossesButton": "Проигрыши",
+		"betsHeading": "Лучшие ставки",
+		"winsHeading": "Лучшие выигрыши",
+		"lossesHeading": "Самые большие проигрыши"
+	},
+
+	"RouletteGamePage": {
+		"heading": "РУЛЕТКА",
+		"disconnected": "отключен",
+		"connected": "подключен по {transport}",
+		"betSum": "Общая ставка: {amount}",
+		"buttonRed": "КРАСНЫЙ",
+		"buttonGreen": "ЗЕЛЕНЫЙ",
+		"buttonBlack": "ЧЕРНЫЙ",
+		"playersCount": "игроков: {count}",
+		"totalBets": "сумма ставок: {amount}"
+	},
+
+	"HiloGamePage": {
+		"heading": "ИГРА HIGHER-LOWER",
+		"lowest": "низший",
+		"highest": "высший",
+		"startGameButton": "Начать игру",
+		"skipCardButton": "Пропустить карту",
+		"cashOut": "Вывести",
+		"higher": "Выше",
+		"lower": "Ниже",
+		"same": "Равно",
+		"higherOrSame": "Выше или равно",
+		"lowerOrSame": "Ниже или равно"
+	},
+
+	"MinerGamePage": {
+		"heading": "МИНЁР",
+		"bombsCount": "БОМБ: [{count}]",
+		"startGameButton": "Начать игру",
+		"cashOut": "Вывести",
+		"nextCoeff": "След. коэффициент: {coeff}x"
+	},
+
+	"BlackjackGamePage": {
+		"heading": "ИГРА BLACKJACK",
+		"dealer": "Дилер",
+		"player": "Вы",
+		"startGameButton": "Начать игру",
+		"takeAnotherCardButton": "Взять ещё карту",
+		"enoughButton": "Достаточно"
+	},
+
+	"PokerGamePage": {
+		"heading": "ПОКЕР",
+		"combinations": {
+			"pair": "ПАРА ВАЛЕТОВ ИЛИ ВЫШЕ",
+			"twoPairs": "ДВЕ ПАРЫ",
+			"threeOfAKind": "СЕТ",
+			"straight": "СТРИТ",
+			"flush": "ФЛЕШ",
+			"fullHouse": "ФУЛЛ ХАУС",
+			"fourOfAKind": "КАРЕ",
+			"straightFlush": "СТРИТ ФЛЕШ",
+			"royalFlush": "ФЛЕШ РОЯЛЬ"
+		},
+		"startGameButton": "Начать игру",
+		"dealButton": "Раздать"
+	},
+
+	"DiceGamePage": {
+		"heading": "КОСТИ",
+		"overButton": "больше",
+		"underButton": "меньше",
+		"rollDiceButton": "Бросить кости",
+		"result": "Выпало: [{resultDice}]"
+	},
+
+	"BetMaker": {
+		"bet": "СТАВКА: {amount}",
+		"notSignedMessage": "Войдите чтобы начать игру"
+	},
+
 	"BetsTable": {
 		"game": "игра",
 		"player": "игрок",
@@ -34,6 +126,13 @@
 		"coefficient": "коэффициент",
 		"payout": "выплата",
 		"time": "время"
+	},
+
+	"Header": {
+		"bestPlayersButton": "Лучшие игроки",
+		"balanceButton": "Мой баланс",
+		"signIn": "Войти",
+		"signOut": "Выйти"
 	},
 
 	"Footer": {

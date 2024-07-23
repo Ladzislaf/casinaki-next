@@ -5,11 +5,13 @@ import styles from './Header.module.scss';
 import { useSession, signOut } from 'next-auth/react';
 import { useContext, useEffect, useState } from 'react';
 import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
+import { useTranslations } from 'next-intl';
 
 export default function ProfileButton() {
 	const session = useSession();
 	const { balance, fetchBalance } = useContext(PlayerContext) as PlayerContextType;
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const t = useTranslations('Header');
 
 	useEffect(() => {
 		if (session.status === 'authenticated' && !isAuthenticated) {
@@ -34,16 +36,16 @@ export default function ProfileButton() {
 						${balance === -1 ? '**.**' : balance.toFixed(2)}
 						<div className={styles.profile}>
 							<div>{session.data.user?.email}</div>
-							<Link href='/balance'>My balance</Link>
+							<Link href='/balance'>{t('balanceButton')}</Link>
 							<Link href='/' onClick={logoutHandler}>
-								LOG OUT
+								{t('signOut')}
 							</Link>
 						</div>
 					</div>
 				</>
 			) : (
 				<Link className={styles.player} href='/signin'>
-					SIGN IN
+					{t('signIn')}
 				</Link>
 			)}
 		</>

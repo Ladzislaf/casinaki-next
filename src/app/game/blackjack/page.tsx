@@ -7,6 +7,7 @@ import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import playBlackjackAction from '@/actions/playBlackjackAction';
+import { useTranslations } from 'next-intl';
 
 export default function BlackjackGame() {
 	const session = useSession();
@@ -17,6 +18,7 @@ export default function BlackjackGame() {
 	const [playDisable, setPlayDisable] = useState(false);
 	const [dealerHand, setDealerHand] = useState({ cards: [-1, -1], sum: 0 });
 	const [playerHand, setPlayerHand] = useState({ cards: [-1, -1], sum: 0 });
+	const t = useTranslations('BlackjackGamePage');
 
 	const startGame = () => {
 		setPlayDisable(true);
@@ -68,11 +70,13 @@ export default function BlackjackGame() {
 	return (
 		<div className='gamePage'>
 			<div>
-				<h1>BLACKJACK GAME</h1>
+				<h1>{t('heading')}</h1>
 
 				<div className={styles.jackField}>
 					<div>
-						<h3>Dealer ({dealerHand.sum})</h3>
+						<h3>
+							{t('dealer')} ({dealerHand.sum})
+						</h3>
 						<div>
 							{dealerHand.cards.map((cardIndex, index) => {
 								return <Card key={index} cardIndex={cardIndex} />;
@@ -81,7 +85,9 @@ export default function BlackjackGame() {
 					</div>
 
 					<div>
-						<h3>You ({playerHand.sum})</h3>
+						<h3>
+							{t('player')} ({playerHand.sum})
+						</h3>
 						<div>
 							{playerHand.cards.map((cardIndex, index) => {
 								return <Card key={index} cardIndex={cardIndex} />;
@@ -94,15 +100,15 @@ export default function BlackjackGame() {
 			<BetMaker>
 				{gameStatus === 'betting' ? (
 					<Button onClick={startGame} disabled={!session.data?.user || playDisable || bet > Number(balance)}>
-						Start the game
+						{t('startGameButton')}
 					</Button>
 				) : (
 					<>
 						<Button onClick={getAnotherCard} disabled={playDisable}>
-							Take another card
+							{t('takeAnotherCardButton')}
 						</Button>
 						<Button onClick={checkResults} disabled={playDisable}>
-							Enough
+							{t('enoughButton')}
 						</Button>
 					</>
 				)}

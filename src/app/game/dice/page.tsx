@@ -8,6 +8,7 @@ import { useContext, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
 import { overDiceCoeffs, underDiceCoeffs } from '@/utils/utils';
+import { useTranslations } from 'next-intl';
 
 export default function Dice() {
 	const session = useSession();
@@ -18,6 +19,7 @@ export default function Dice() {
 	const [rollButtonDisable, setRollButtonDisable] = useState(false);
 	const [activeDice, setActiveDice] = useState(7);
 	const [resultDice, setResultDice] = useState(0);
+	const t = useTranslations('DiceGamePage');
 
 	function rollDice() {
 		setRollButtonDisable(true);
@@ -45,7 +47,7 @@ export default function Dice() {
 	return (
 		<div className='gamePage'>
 			<div>
-				<h1>DICE GAME</h1>
+				<h1>{t('heading')}</h1>
 
 				<div className={styles.diceField}>
 					<div className={styles.gameOptions}>
@@ -54,13 +56,13 @@ export default function Dice() {
 								style={{ background: clsx({ '#00800080': buttons.over }) }}
 								onClick={() => setButtons({ over: true, under: false })}
 							>
-								over
-							</Button>{' '}
+								{t('overButton')}
+							</Button>
 							<Button
 								style={{ background: clsx({ '#00800080': buttons.under }) }}
 								onClick={() => setButtons({ over: false, under: true })}
 							>
-								under
+								{t('underButton')}
 							</Button>
 						</div>
 
@@ -72,13 +74,13 @@ export default function Dice() {
 						</div>
 					</div>
 
-					<h2>{`Result: [${resultDice}]`}</h2>
+					<h2>{t('result', { resultDice })}</h2>
 				</div>
 			</div>
 
 			<BetMaker>
 				<Button onClick={rollDice} disabled={rollButtonDisable || !session.data?.user || bet > Number(balance)}>
-					Roll dice | {buttons.over ? overDiceCoeffs[activeDice - 2] : underDiceCoeffs[activeDice - 2]}x
+					{t('rollDiceButton')} | {buttons.over ? overDiceCoeffs[activeDice - 2] : underDiceCoeffs[activeDice - 2]}x
 				</Button>
 				<h2>{payout}</h2>
 			</BetMaker>

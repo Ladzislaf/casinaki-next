@@ -27,6 +27,98 @@
 		}
 	},
 
+	"BalancePage": {
+		"yourBalanceText": "{username}, your balance: {balance}",
+		"dailyBonusHeading": "Daily bonus",
+		"dailyBonusButton": "Get daily {amount}",
+		"promocodeHeading": "Enter promocode",
+		"promocodeText": "{promocode} gives {amount} for new players",
+		"promocodeInput": "promocode",
+		"promocodeButton": "Activate"
+	},
+
+	"BestPlayersPage": {
+		"betsButton": "Bets",
+		"winsButton": "Wins",
+		"lossesButton": "Losses",
+		"betsHeading": "The biggest bets",
+		"winsHeading": "The biggest wins",
+		"lossesHeading": "The biggest losses"
+	},
+
+	"RouletteGamePage": {
+		"heading": "ROULETTE",
+		"disconnected": "disconnected",
+		"connected": "connected by {transport}",
+		"betSum": "Bet sum: {amount}",
+		"buttonRed": "RED",
+		"buttonGreen": "GREEN",
+		"buttonBlack": "BLACK",
+		"playersCount": "players: {count}",
+		"totalBets": "total bets: {amount}"
+	},
+
+	"HiloGamePage": {
+		"heading": "HIGHER-LOWER GAME",
+		"lowest": "lowest",
+		"highest": "highest",
+		"startGameButton": "Start the game",
+		"skipCardButton": "Skip the card",
+		"cashOut": "Cash out",
+		"higher": "Higher",
+		"lower": "Lower",
+		"same": "Same",
+		"higherOrSame": "Higher or same",
+		"lowerOrSame": "Lower or same"
+	},
+
+	"MinerGamePage": {
+		"heading": "MINER GAME",
+		"bombsCount": "BOMBS: [{count}]",
+		"startGameButton": "Start the game",
+		"cashOut": "Cash out",
+		"nextCoeff": "Next coeff: {coeff}x"
+	},
+
+	"BlackjackGamePage": {
+		"heading": "BLACKJACK GAME",
+		"dealer": "Dealer",
+		"player": "You",
+		"startGameButton": "Start the game",
+		"takeAnotherCardButton": "Take another card",
+		"enoughButton": "Enough"
+	},
+
+	"PokerGamePage": {
+		"heading": "POKER GAME",
+		"combinations": {
+			"pair": "PAIR OF JACKS OR BETTER",
+			"twoPairs": "TWO PAIRS",
+			"threeOfAKind": "THREE OF A KIND",
+			"straight": "STRAIGHT",
+			"flush": "FLUSH",
+			"fullHouse": "FULL HOUSE",
+			"fourOfAKind": "FOUR OF A KIND",
+			"straightFlush": "STRAIGHT FLUSH",
+			"royalFlush": "ROYAL FLUSH"
+		},
+		"startGameButton": "Start the game",
+		"dealButton": "Deal"
+	},
+
+	"DiceGamePage": {
+		"heading": "DICE GAME",
+		"overButton": "over",
+		"underButton": "under",
+		"rollDiceButton": "Roll dice",
+		"result": "Result: [{resultDice}]"
+	},
+
+	"BetMaker": {
+		"bet": "BET: {amount}",
+		"notSignedMessage": "Sign in to play"
+	},
+
 	"BetsTable": {
 		"game": "game",
 		"player": "player",
@@ -34,6 +126,13 @@
 		"coefficient": "coefficient",
 		"payout": "payout",
 		"time": "time"
+	},
+
+	"Header": {
+		"bestPlayersButton": "Best players",
+		"balanceButton": "My balance",
+		"signIn": "SIGN IN",
+		"signOut": "LOG OUT"
 	},
 
 	"Footer": {

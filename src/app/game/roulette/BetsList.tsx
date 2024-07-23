@@ -1,6 +1,7 @@
 'use client';
 import clsx from 'clsx';
 import styles from './roulette.module.scss';
+import { useTranslations } from 'next-intl';
 
 export default function BetsList({
 	bets,
@@ -9,12 +10,14 @@ export default function BetsList({
 	bets: Array<{ playerEmail: string; bet: number; choice: 0 | 1 | 2; isCurrentPlayer?: boolean; isWinning?: boolean }>;
 	onClear?: (choice: 0 | 1 | 2) => void;
 }) {
+	const t = useTranslations('RouletteGamePage');
+
 	return (
 		<>
 			<ul>
 				<p>
-					<span>players: {bets.length}</span>
-					<span>total bets: ${bets.reduce((prev, curr) => prev + curr.bet, 0).toFixed(2)}</span>
+					<span>{t('playersCount', { count: bets.length })}</span>
+					<span>{t('totalBets', { amount: `$${bets.reduce((prev, curr) => prev + curr.bet, 0).toFixed(2)}` })}</span>
 				</p>
 
 				<hr />
@@ -28,7 +31,7 @@ export default function BetsList({
 								[styles.losingBet]: el.isWinning === false,
 							})}
 						>
-							<span>{el.playerEmail}</span>
+							<span>{el.playerEmail.substring(0, el.playerEmail.indexOf('@'))}</span>
 							<span>
 								{el.isWinning === true
 									? `+ $${el.bet.toFixed(2)}`

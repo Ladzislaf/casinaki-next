@@ -13,6 +13,7 @@ import BetsList from './BetsList';
 import LastSpins from './LastSpins';
 
 import NewBetMaker from '@/components/NewBetMaker/NewBetMaker';
+import { useTranslations } from 'next-intl';
 
 type ActiveBet = {
 	playerEmail: string;
@@ -26,6 +27,7 @@ export default function RouletteGame() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
 	const { balance, fetchBalance } = useContext(PlayerContext) as PlayerContextType;
+	const t = useTranslations('RouletteGamePage');
 
 	const [isConnected, setIsConnected] = useState(false);
 	const [transport, setTransport] = useState('N/A');
@@ -178,9 +180,9 @@ export default function RouletteGame() {
 
 	return (
 		<div className={styles.container}>
-			<h1>ROULETTE</h1>
+			<h1>{t('heading')}</h1>
 			<p className={clsx(styles.connectionType, { [styles.success]: isConnected })}>
-				{isConnected ? `connected by ${transport}` : 'disconnected'}
+				{isConnected ? t('connected', { transport }) : t('disconnected')}
 			</p>
 			<Roulette rollResult={rollResult} />
 			<Countdown initialCountdown={countdown} />
@@ -199,26 +201,26 @@ export default function RouletteGame() {
 						onChange={(e: any) => handleChangeBetValue(Number(e.target.value))}
 					/>
 				</div>
-				<div>Bet sum: ${playerBetSum.toFixed(2)}</div>
+				<div>{t('betSum', { amount: `$${playerBetSum.toFixed(2)}` })}</div>
 				<LastSpins lastSpins={lastSpins} />
 			</div>
 
 			<div className={styles.betMaker}>
 				<div>
 					<Button onClick={() => handleBet(1)} bgColor='red' disabled={isBetsDisabled}>
-						RED
+						{t('buttonRed')}
 					</Button>
 					<BetsList bets={activeBets.filter((el) => el.choice === 1)} onClear={handleClearBet} />
 				</div>
 				<div>
 					<Button onClick={() => handleBet(0)} bgColor='green' disabled={isBetsDisabled}>
-						GREEN
+						{t('buttonGreen')}
 					</Button>
 					<BetsList bets={activeBets.filter((el) => el.choice === 0)} onClear={handleClearBet} />
 				</div>
 				<div>
 					<Button onClick={() => handleBet(2)} bgColor='black' disabled={isBetsDisabled}>
-						BLACK
+						{t('buttonBlack')}
 					</Button>
 					<BetsList bets={activeBets.filter((el) => el.choice === 2)} onClear={handleClearBet} />
 				</div>

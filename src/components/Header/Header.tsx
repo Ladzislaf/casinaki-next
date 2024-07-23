@@ -6,8 +6,11 @@ import logo from '@/assets/logo.png';
 import ProfileButton from './ProfileButton';
 import ThemeSwitcher from './ThemeSwitcher';
 import LocaleSwitcher from './LocaleSwitcher';
+import { useTranslations } from 'next-intl';
 
 export default function Header() {
+	const t = useTranslations('Header');
+
 	return (
 		<header className={styles.header}>
 			<Link href='/'>
@@ -16,7 +19,7 @@ export default function Header() {
 			<div className={styles.links}>
 				<LocaleSwitcher />
 				<ThemeSwitcher />
-				<Link href='/best-players/biggest-wins'>Best players</Link>
+				<Link href='/best-players/biggest-wins'>{t('bestPlayersButton')}</Link>
 				<ProfileButton />
 			</div>
 		</header>

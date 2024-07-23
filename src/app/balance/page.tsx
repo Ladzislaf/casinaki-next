@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useContext, useState } from 'react';
 import { PlayerContext, PlayerContextType } from '../../providers/ContextProvider';
 import Input from '@/components/Input/Input';
+import { useTranslations } from 'next-intl';
 
 export default function Balance() {
 	const session = useSession();
@@ -12,6 +13,7 @@ export default function Balance() {
 	const { balance, setBalance } = useContext(PlayerContext) as PlayerContextType;
 	const [disabled, setDisabled] = useState(false);
 	const [promo, setPromo] = useState('');
+	const t = useTranslations('BalancePage');
 
 	const getDailyBonus = () => {
 		setDisabled(true);
@@ -42,17 +44,21 @@ export default function Balance() {
 	return (
 		<div className='page'>
 			<h2>
-				{playerEmail && `${playerEmail.substring(0, playerEmail.indexOf('@'))}, your balance: $${balance.toFixed(2)}`}
+				{playerEmail &&
+					t('yourBalanceText', {
+						username: `${playerEmail.substring(0, playerEmail.indexOf('@'))}`,
+						balance: `$${balance.toFixed(2)}`,
+					})}
 			</h2>
-			<h2>Daily bonus</h2>
+			<h2>{t('dailyBonusHeading')}</h2>
 			<Button onClick={getDailyBonus} disabled={!session.data?.user || disabled}>
-				Get daily $1
+				{t('dailyBonusButton', { amount: '$1' })}
 			</Button>
-			<h2>Enter promocode</h2>
-			<h3>kitstart gives 10$ for new players</h3>
-			<Input placeholder={'promocode'} onChange={onChangeHandler} />
+			<h2>{t('promocodeHeading')}</h2>
+			<h3>{t('promocodeText', { promocode: 'kitstart', amount: '$10' })}</h3>
+			<Input placeholder={t('promocodeInput')} onChange={onChangeHandler} />
 			<Button onClick={getPromo} disabled={!session.data?.user || disabled || promo.length < 5 || promo.length > 20}>
-				Activate
+				{t('promocodeButton')}
 			</Button>
 		</div>
 	);

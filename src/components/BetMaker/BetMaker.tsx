@@ -5,11 +5,13 @@ import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
 import { useSession } from 'next-auth/react';
 import { MAX_BET, MIN_BET } from '@/utils/utils';
 import styles from './BetMaker.module.scss';
+import { useTranslations } from 'next-intl';
 
 export default function BetMaker({ children }: { children?: React.ReactNode }) {
 	const session = useSession();
 	const { balance, bet, setBet } = useContext(PlayerContext) as PlayerContextType;
 	const [betStep, setBetStep] = useState(MIN_BET);
+	const t = useTranslations('BetMaker');
 
 	useEffect(() => {
 		if (bet >= 10000) setBetStep(1000);
@@ -35,7 +37,7 @@ export default function BetMaker({ children }: { children?: React.ReactNode }) {
 			<>
 				<div className={styles.bet}>
 					<Button onClick={() => changeBet(bet - betStep)}>-</Button>
-					<h2>BET: ${bet.toFixed(2)}</h2>
+					<h2>{t('bet', { amount: `$${bet.toFixed(2)}` })}</h2>
 					<Button onClick={() => changeBet(bet + betStep)}>+</Button>
 				</div>
 
@@ -48,7 +50,7 @@ export default function BetMaker({ children }: { children?: React.ReactNode }) {
 
 				{children}
 			</>
-			{!session?.data && <h3>Sign in to play</h3>}
+			{!session?.data && <h3>{t('notSignedMessage')}</h3>}
 		</div>
 	);
 }

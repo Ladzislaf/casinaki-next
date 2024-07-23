@@ -8,17 +8,18 @@ import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
 import playPokerAction from '@/actions/playPokerAction';
+import { useTranslations } from 'next-intl';
 
 const pokerCombitanions: { name: string; coeff: number }[] = [
-	{ name: 'ROYAL FLUSH', coeff: 800 },
-	{ name: 'STRAIGHT FLUSH', coeff: 60 },
-	{ name: '4 OF A KIND', coeff: 22 },
-	{ name: 'FULL HOUSE', coeff: 9 },
-	{ name: 'FLUSH', coeff: 6 },
-	{ name: 'STRAIGHT', coeff: 4 },
-	{ name: '3 OF A KIND', coeff: 3 },
-	{ name: '2 PAIR', coeff: 2 },
-	{ name: 'PAIR OF JACKS OR BETTER', coeff: 1 },
+	{ name: 'royalFlush', coeff: 800 },
+	{ name: 'straightFlush', coeff: 60 },
+	{ name: 'fourOfAKind', coeff: 22 },
+	{ name: 'fullHouse', coeff: 9 },
+	{ name: 'flush', coeff: 6 },
+	{ name: 'straight', coeff: 4 },
+	{ name: 'threeOfAKind', coeff: 3 },
+	{ name: 'twoPairs', coeff: 2 },
+	{ name: 'pair', coeff: 1 },
 ];
 
 export default function PokerGame() {
@@ -31,6 +32,7 @@ export default function PokerGame() {
 	const [playerHand, setPlayerHand] = useState([1, 49, 45, 41, 37]);
 	const [holdCards, setHoldCards] = useState<number[]>([]);
 	const [activeCombination, setActiveCombination] = useState(0);
+	const t = useTranslations('PokerGamePage');
 
 	const startGame = () => {
 		setPlayDisable(true);
@@ -75,14 +77,14 @@ export default function PokerGame() {
 	return (
 		<div className='gamePage'>
 			<div>
-				<h1>POKER GAME</h1>
+				<h1>{t('heading')}</h1>
 
 				<table className={styles.combinationTable}>
 					<tbody>
 						{pokerCombitanions.map((el, i) => {
 							return (
 								<tr key={i} className={clsx({ [styles.active]: activeCombination - 1 === i })}>
-									<td>{el.name}</td>
+									<td>{t(`combinations.${el.name}`)}</td>
 									<td>{el.coeff}x</td>
 									<td>{(el.coeff * bet).toFixed(2)}$</td>
 								</tr>
@@ -108,12 +110,12 @@ export default function PokerGame() {
 			<BetMaker>
 				{gameStatus === 'betting' ? (
 					<Button onClick={startGame} disabled={!session.data?.user || playDisable || bet > Number(balance)}>
-						Start the game
+						{t('startGameButton')}
 					</Button>
 				) : (
 					<>
 						<Button onClick={dealCards} disabled={playDisable}>
-							Deal
+							{t('dealButton')}
 						</Button>
 					</>
 				)}
