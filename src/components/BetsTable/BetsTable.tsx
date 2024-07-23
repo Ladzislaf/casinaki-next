@@ -1,6 +1,7 @@
 import styles from './BetsTable.module.scss';
 import Link from 'next/link';
 import DateCell from './DateCell';
+import { useTranslations } from 'next-intl';
 
 type betRow = {
 	id: number;
@@ -21,17 +22,19 @@ type betRow = {
 };
 
 export default function BetsTable({ betsList }: { betsList: betRow[] }) {
+	const t = useTranslations('BetsTable');
+
 	return (
 		<div className={styles.container}>
 			<table className={styles.tbl}>
 				<thead>
 					<tr>
-						<td>game</td>
-						<td>player</td>
-						<td>bet</td>
-						<td>coefficient</td>
-						<td>payout</td>
-						<td>time</td>
+						<td>{t('game')}</td>
+						<td>{t('player')}</td>
+						<td>{t('bet')}</td>
+						<td>{t('coefficient')}</td>
+						<td>{t('payout')}</td>
+						<td>{t('time')}</td>
 					</tr>
 				</thead>
 				<tbody>

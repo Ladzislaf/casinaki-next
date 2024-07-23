@@ -87,7 +87,12 @@
 	}
 }
 
-.themeSwitcher {
+.themeSwitcher,
+.localeSwitcher {
+	font-size: inherit;
+	font-family: inherit;
 	border: none;
 	background-color: transparent;
+	appearance: none;
+	outline: none;
 }

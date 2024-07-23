@@ -7,6 +7,8 @@ import Footer from '@/components/Footer/Footer';
 import ContextProvider from '@/providers/ContextProvider';
 import PlayerSessionProvider from '@/providers/PlayerSessionProvider';
 import PlayerThemeProvider from '@/providers/PlayerThemeProvider';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
 
 const kanit = Kanit({ subsets: ['latin'], weight: ['800'] });
 const oswald = Oswald({ subsets: ['latin'], weight: ['700'] });
@@ -17,25 +19,30 @@ export const metadata: Metadata = {
 	description: 'Casino site',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const locale = await getLocale();
+	const messages = await getMessages();
+
 	return (
-		<html lang='en' suppressHydrationWarning>
+		<html lang={locale} suppressHydrationWarning>
 			<body className={roboto.className}>
 				<PlayerSessionProvider>
 					<ContextProvider>
 						<PlayerThemeProvider>
-							<Header />
-							<div>
-								<Sidebar />
+							<NextIntlClientProvider messages={messages}>
+								<Header />
 								<div>
-									<main>{children}</main>
-									<Footer />
+									<Sidebar />
+									<div>
+										<main>{children}</main>
+										<Footer />
+									</div>
 								</div>
-							</div>
+							</NextIntlClientProvider>
 						</PlayerThemeProvider>
 					</ContextProvider>
 				</PlayerSessionProvider>

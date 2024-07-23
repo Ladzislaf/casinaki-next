@@ -5,11 +5,14 @@ import githubLogo from '@/assets/footer/github-logo.svg';
 import telegramLogo from '@/assets/footer/telegram-logo.svg';
 import linkedinLogo from '@/assets/footer/linkedin-logo.svg';
 import gmailLogo from '@/assets/footer/gmail-logo.svg';
+import { useTranslations } from 'next-intl';
 
 export default function Footer() {
+	const t = useTranslations('Footer');
+
 	return (
 		<footer>
-			<h3>Made by Ladzislaf</h3>
+			<h3>{t('devBy')}</h3>
 
 			<nav>
 				<Link href='https://github.com/Ladzislaf' target='_blank'>
@@ -26,7 +29,7 @@ export default function Footer() {
 				</Link>
 			</nav>
 
-			<p>If you found a bug or an issue, please contact me via socials</p>
+			<p>{t('bugInfo')}</p>
 		</footer>
 	);
 }

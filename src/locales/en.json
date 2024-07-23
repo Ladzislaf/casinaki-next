@@ -1,0 +1,43 @@
+{
+	"MainPage": {
+		"betsTableHeading": "Last bets",
+
+		"rouletteGameBlock": {
+			"heading": "New game!",
+			"text": "Roulette game released, try it now! Roulette game server may switch to sleep mode, so you need to wait about 30 seconds to connect.",
+			"button": "Play"
+		},
+
+		"pokerGameBlock": {
+			"heading": "New game!",
+			"text": "Video Poker is a game where you need to collect a poker combination. You'll have 5 starting cards. Then, you can choose the cards that you want to hold. When you are ready, press 'Deal' button and you'll get the remaining cards. Finally, your winnings will depend on the collected combination. Good luck!",
+			"button": "Play"
+		},
+
+		"promocodeFeatureBlock": {
+			"text1": "All new users have a <highlight>$5</highlight> bonus balance",
+			"text2": "The <highlight>kitstart</highlight> promo code gives you an additional <highlight>$10</highlight>",
+			"button": "Enter promocode"
+		},
+
+		"bestPlayersFeatureBlock": {
+			"heading": "New feature!",
+			"text": "Best players page has recentely added!",
+			"button": "Check out"
+		}
+	},
+
+	"BetsTable": {
+		"game": "game",
+		"player": "player",
+		"bet": "bet",
+		"coefficient": "coefficient",
+		"payout": "payout",
+		"time": "time"
+	},
+
+	"Footer": {
+		"devBy": "Developed by Ladzislaf",
+		"bugInfo": "If you found a bug or an issue, please contact me via socials"
+	}
+}

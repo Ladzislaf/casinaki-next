@@ -2,46 +2,41 @@ import { fetchBetsHistory } from '@/actions/dataActions';
 import BetsTable from '@/components/BetsTable/BetsTable';
 import Block from '@/components/Blocks/Block';
 import HorizontalBlockLine from '@/components/Blocks/HorizontalBlocksLine';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 
 export default async function Home() {
 	const betsHistory = await fetchBetsHistory();
+	const t = await getTranslations('MainPage');
 
 	return (
 		<div className='page'>
 			<HorizontalBlockLine>
 				<Block>
 					<h2>
-						<span>New game!</span>
+						<span>{t('rouletteGameBlock.heading')}</span>
 					</h2>
-					<p>
-						Roulette game released, try it now! Roulette game server may fall asleep, so you need to wait about 30
-						seconds to connect.
-					</p>
+					<p>{t('rouletteGameBlock.text')}</p>
 					<Link className='linkBtn' href='/game/roulette'>
-						Try now
+						{t('rouletteGameBlock.button')}
 					</Link>
 				</Block>
 
 				<Block>
-					<h2>
-						All new users have a <span>$5</span> bonus balance
-					</h2>
-					<h2>
-						The <span>kitstart</span> promo code gives you an additional <span>$10</span>
-					</h2>
+					<h3>{t.rich('promocodeFeatureBlock.text1', { highlight: (c) => <span>{c}</span> })}</h3>
+					<h3>{t.rich('promocodeFeatureBlock.text2', { highlight: (c) => <span>{c}</span> })}</h3>
 					<Link className='linkBtn' href='/balance'>
-						Enter promocode
+						{t('promocodeFeatureBlock.button')}
 					</Link>
 				</Block>
 
 				<Block>
 					<h2>
-						<span>New feature!</span>
+						<span>{t('bestPlayersFeatureBlock.heading')}</span>
 					</h2>
-					<p>Best players page has recentely added!</p>
+					<p>{t('bestPlayersFeatureBlock.text')}</p>
 					<Link className='linkBtn' href='/best-players/biggest-wins'>
-						Check out
+						{t('bestPlayersFeatureBlock.button')}
 					</Link>
 				</Block>
 			</HorizontalBlockLine>
@@ -49,21 +44,16 @@ export default async function Home() {
 			<HorizontalBlockLine>
 				<Block>
 					<h2>
-						<span>New game!</span>
+						<span>{t('pokerGameBlock.heading')}</span>
 					</h2>
-					<p>
-						Video Poker is a game where you need to collect a poker combination. You&apos;ll have 5 starting cards.
-						Then, you can choose the cards that you want to hold. When you are ready, press &apos;Deal&apos; button and
-						you&apos;ll get the remaining cards. Finally, your winnings will depend on the collected combination. Good
-						luck!
-					</p>
+					<p>{t('pokerGameBlock.text')}</p>
 					<Link className='linkBtn' href='/game/poker'>
-						Try now
+						{t('pokerGameBlock.button')}
 					</Link>
 				</Block>
 			</HorizontalBlockLine>
 
-			<h2>Last bets</h2>
+			<h2>{t('betsTableHeading')}</h2>
 			<BetsTable betsList={betsHistory} />
 		</div>
 	);
