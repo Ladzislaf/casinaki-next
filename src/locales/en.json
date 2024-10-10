@@ -50,7 +50,6 @@
 		"heading": "ROULETTE",
 		"disconnected": "disconnected",
 		"connected": "connected by {transport}",
-		"betSum": "Bet sum: {amount}",
 		"buttonRed": "RED",
 		"buttonGreen": "GREEN",
 		"buttonBlack": "BLACK",

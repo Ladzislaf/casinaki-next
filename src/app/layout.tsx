@@ -12,11 +12,11 @@ import { getLocale, getMessages } from 'next-intl/server';
 
 const kanit = Kanit({ subsets: ['latin'], weight: ['800'] });
 const oswald = Oswald({ subsets: ['latin'], weight: ['700'] });
-const roboto = Roboto({ subsets: ['latin'], weight: ['900'] });
+const roboto = Roboto({ subsets: ['latin'], weight: ['700', '900'] });
 
 export const metadata: Metadata = {
 	title: 'Casinaki project',
-	description: 'Casino site',
+	description: 'Casino app',
 };
 
 export default async function RootLayout({

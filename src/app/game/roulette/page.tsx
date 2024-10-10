@@ -8,12 +8,12 @@ import Countdown from './Countdown';
 import styles from './roulette.module.scss';
 import clsx from 'clsx';
 import Button from '@/components/Button/Button';
-import Input from '@/components/Input/Input';
 import BetsList from './BetsList';
 import LastSpins from './LastSpins';
 
-import NewBetMaker from '@/components/NewBetMaker/NewBetMaker';
+import ChipBetMaker from '@/components/ChipBetMaker/ChipBetMaker';
 import { useTranslations } from 'next-intl';
+import { ChipValue } from '@/components/Chip/Chip';
 
 export type ActiveBet = {
 	playerEmail: string;
@@ -32,7 +32,7 @@ export default function RouletteGame() {
 	const [isConnected, setIsConnected] = useState(false);
 	const [transport, setTransport] = useState('N/A');
 
-	const [playerBet, setPlayerBet] = useState(0.1);
+	const [playerBet, setPlayerBet] = useState<ChipValue>(0.2);
 	const [playerBetSum, setPlayerBetSum] = useState(0);
 	const [isBetsDisabled, setIsBetsDisabled] = useState(true);
 	const [gameStatus, setGameStatus] = useState<'betting' | 'spinning'>('betting');
@@ -174,10 +174,6 @@ export default function RouletteGame() {
 		socket.emit('clearBet', { playerEmail, choice });
 	};
 
-	const handleChangeBetValue = (value: number) => {
-		setPlayerBet(value);
-	};
-
 	return (
 		<div className={styles.container}>
 			<h1>{t('heading')}</h1>
@@ -188,38 +184,37 @@ export default function RouletteGame() {
 			<Countdown initialCountdown={countdown} />
 
 			<div className={styles.block}>
-				{/* // todo bet component with chips */}
-				<div>
-					Bet: $
-					<Input
-						type='number'
-						size={4}
-						min={0.1}
-						max={999999.99}
-						step={0.1}
-						value={playerBet}
-						onChange={(e: any) => handleChangeBetValue(Number(e.target.value))}
-					/>
-				</div>
-				<div>{t('betSum', { amount: `$${playerBetSum.toFixed(2)}` })}</div>
+				<ChipBetMaker bet={playerBet} setBet={setPlayerBet} totalBet={playerBetSum} />
 				<LastSpins lastSpins={lastSpins} />
 			</div>
 
 			<div className={styles.betMaker}>
 				<div>
-					<Button onClick={() => handleBet(1)} bgColor='red' disabled={isBetsDisabled}>
+					<Button
+						onClick={() => handleBet(1)}
+						bgColor='red'
+						disabled={isBetsDisabled || playerBet + playerBetSum > balance}
+					>
 						{t('buttonRed')}
 					</Button>
 					<BetsList bets={activeBets.filter((el) => el.choice === 1)} onClear={handleClearBet} />
 				</div>
 				<div>
-					<Button onClick={() => handleBet(0)} bgColor='green' disabled={isBetsDisabled}>
+					<Button
+						onClick={() => handleBet(0)}
+						bgColor='green'
+						disabled={isBetsDisabled || playerBet + playerBetSum > balance}
+					>
 						{t('buttonGreen')}
 					</Button>
 					<BetsList bets={activeBets.filter((el) => el.choice === 0)} onClear={handleClearBet} />
 				</div>
 				<div>
-					<Button onClick={() => handleBet(2)} bgColor='black' disabled={isBetsDisabled}>
+					<Button
+						onClick={() => handleBet(2)}
+						bgColor='black'
+						disabled={isBetsDisabled || playerBet + playerBetSum > balance}
+					>
 						{t('buttonBlack')}
 					</Button>
 					<BetsList bets={activeBets.filter((el) => el.choice === 2)} onClear={handleClearBet} />

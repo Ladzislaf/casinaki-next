@@ -1,4 +1,4 @@
-import { PropsWithChildren, ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
 import styes from './Button.module.scss';
 import clsx from 'clsx';
 
