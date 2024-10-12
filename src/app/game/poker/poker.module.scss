@@ -39,3 +39,28 @@
 		}
 	}
 }
+
+@media (max-width: 768px) {
+	.playerHand {
+		max-width: 100%;
+
+		> div {
+			margin-left: -0.9rem;
+			margin-right: -0.9rem;
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	@media (max-width: 768px) {
+		.playerHand > div {
+			font-size: 1.8rem;
+			margin-left: -1.1rem;
+			margin-right: -1.1rem;
+		}
+	}
+
+	.combinationTable {
+		padding: 0 1rem;
+	}
+}

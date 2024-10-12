@@ -3,9 +3,11 @@
 
 	> table {
 		padding: 0.5rem;
+		margin: 0.5rem;
 		border-collapse: separate;
 		border-radius: 1rem;
 		background: var(--primary-border);
+		max-width: 100%;
 
 		> thead > tr > td {
 			background: var(--content-block-bg);
@@ -19,6 +21,34 @@
 
 		a:hover {
 			color: var(--orange);
+		}
+	}
+}
+
+@media (max-width: 1200px) {
+	.container > table {
+		td {
+			padding: 0.2rem 0.5rem;
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	.container > table {
+		font-size: 10px;
+
+		td {
+			padding: 0.2rem;
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	.container > table {
+		font-size: 8px;
+
+		td {
+			padding: 0.1rem;
 		}
 	}
 }

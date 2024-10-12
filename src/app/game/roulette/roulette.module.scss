@@ -110,7 +110,12 @@
 	}
 }
 
-// ============================
-
-.progressContainer {
+@media (max-width: 1200px) {
+	.block {
+		flex-direction: column;
+	}
+	
+	.lastSpins {
+		max-width: 100%;
+	}
 }

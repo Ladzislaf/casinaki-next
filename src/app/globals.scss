@@ -110,7 +110,6 @@ body {
 
 		> nav.sidenav {
 			width: 4rem;
-
 			background: var(--primary-bg);
 			border: 0.1rem solid var(--primary-border);
 			border-radius: 1rem;
@@ -120,6 +119,7 @@ body {
 		> div {
 			margin: 0.5rem 0 0 0.5rem;
 			width: 100%;
+			height: 100%;
 			border-radius: 1rem;
 			overflow-x: scroll;
 
@@ -164,4 +164,64 @@ body {
 	align-items: center;
 	width: 100%;
 	min-height: 100%;
+}
+
+@media (max-width: 1200px) {
+	html {
+		font-size: 18px;
+	}
+
+	.gamePage {
+		flex-direction: column-reverse;
+		height: 100%;
+
+		> div:first-child,
+		div:last-child {
+			width: 100%;
+		}
+	}
+}
+
+@media (max-width: 900px) {
+	html {
+		font-size: 16px;
+	}
+}
+
+@media (max-width: 768px) {
+	html {
+		font-size: 14px;
+	}
+
+	body {
+		> header {
+			width: 80%;
+		}
+	}
+}
+
+@media (max-width: 480px) {
+	html {
+		font-size: 12px;
+	}
+
+	body {
+		> header {
+			width: 100%;
+		}
+
+		> div {
+			flex-direction: column;
+
+			> nav.sidenav {
+				width: 100%;
+				flex-direction: row;
+				margin: 0.5rem auto;
+			}
+
+			> div {
+				margin: 0;
+			}
+		}
+	}
 }
