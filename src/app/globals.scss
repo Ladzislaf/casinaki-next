@@ -107,6 +107,7 @@ body {
 		height: calc(100% - 3rem);
 		display: flex;
 		flex-direction: row;
+		padding-top: 0.5rem;
 
 		> nav.sidenav {
 			width: 4rem;
@@ -117,7 +118,7 @@ body {
 		}
 
 		> div {
-			margin: 0.5rem 0 0 0.5rem;
+			margin-left: 0.5rem;
 			width: 100%;
 			height: 100%;
 			border-radius: 1rem;
@@ -216,7 +217,7 @@ body {
 			> nav.sidenav {
 				width: 100%;
 				flex-direction: row;
-				margin: 0.5rem auto;
+				margin-bottom: 0.5rem;
 			}
 
 			> div {
