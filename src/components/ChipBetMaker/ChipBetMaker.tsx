@@ -1,6 +1,6 @@
 'use client';
 import styles from './ChipBetMaker.module.scss';
-import Chip, { ChipValue } from '../Chip/Chip';
+import Chip, {ChipValue} from '../Chip/Chip';
 
 type ChipBetMakerProps = {
 	bet: ChipValue;
@@ -8,7 +8,7 @@ type ChipBetMakerProps = {
 	totalBet: number;
 };
 
-export default function ChipBetMaker({ bet, setBet, totalBet }: ChipBetMakerProps) {
+export default function ChipBetMaker({bet, setBet, totalBet}: ChipBetMakerProps) {
 	const handleChipClick = (chipValue: ChipValue) => {
 		setBet(chipValue);
 	};

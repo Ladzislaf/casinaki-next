@@ -1,6 +1,6 @@
 'use server';
 import prisma from '@/utils/prisma';
-import { revalidatePath } from 'next/cache';
+import {revalidatePath} from 'next/cache';
 
 export async function createPlayerAction(playerEmail: string) {
 	try {
@@ -104,7 +104,7 @@ export async function fetchBiggestBets() {
 				},
 			},
 		},
-		orderBy: [{ bet: 'desc' }, { coefficient: 'desc' }],
+		orderBy: [{bet: 'desc'}, {coefficient: 'desc'}],
 		take: 10,
 	});
 }
@@ -126,7 +126,7 @@ export async function fetchBiggestWins() {
 				},
 			},
 		},
-		orderBy: [{ payout: 'desc' }, { coefficient: 'desc' }],
+		orderBy: [{payout: 'desc'}, {coefficient: 'desc'}],
 		take: 10,
 	});
 }
@@ -148,7 +148,7 @@ export async function fetchBiggestLosses() {
 				},
 			},
 		},
-		orderBy: [{ payout: 'desc' }, { coefficient: 'desc' }],
+		orderBy: [{payout: 'desc'}, {coefficient: 'desc'}],
 		take: 10,
 	});
 }

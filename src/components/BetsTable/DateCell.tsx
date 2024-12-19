@@ -1,8 +1,8 @@
 'use client';
 
-import { memo, useEffect, useState } from 'react';
+import {memo, useEffect, useState} from 'react';
 
-function DateCell({ createdAt }: { createdAt: Date }) {
+function DateCell({createdAt}: {createdAt: Date}) {
 	const [date, setDate] = useState<Date | null>(null);
 
 	useEffect(() => {

@@ -21,6 +21,15 @@
 			"@/*": ["./src/*"]
 		}
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "prisma/seed.ts", "src/app/api/socket/route.js", "src/ws-server/server.mjs", "src/i18"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".next/types/**/*.ts",
+		"prisma/seed.ts",
+		"src/app/api/socket/route.js",
+		"src/ws-server/server.mjs",
+		"src/i18"
+	],
 	"exclude": ["node_modules"]
 }

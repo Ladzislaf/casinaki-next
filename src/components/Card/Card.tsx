@@ -1,6 +1,6 @@
 'use client';
-import React, { PropsWithChildren } from 'react';
-import { genCardsDeck } from '@/utils/utils';
+import React, {PropsWithChildren} from 'react';
+import {genCardsDeck} from '@/utils/utils';
 import clsx from 'clsx';
 import styles from './Card.module.scss';
 
@@ -38,7 +38,7 @@ export default function Card({
 
 	if (cardIndex === 52) {
 		return (
-			<div className={styles.card} style={{ background: cardBg, width: cardWidth, height: cardHeigth }}>
+			<div className={styles.card} style={{background: cardBg, width: cardWidth, height: cardHeigth}}>
 				<div>*</div>
 			</div>
 		);
@@ -53,11 +53,10 @@ export default function Card({
 				background: cardColor ? cardColor : cardBg,
 				width: cardWidth,
 				height: cardHeigth,
-			}}
-		>
+			}}>
 			<div>
 				{currentCard.index + currentCard.suit}
-				<p style={{ fontSize: '1.5rem' }}>{children}</p>
+				<p style={{fontSize: '1.5rem'}}>{children}</p>
 			</div>
 		</div>
 	);

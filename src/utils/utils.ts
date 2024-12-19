@@ -36,12 +36,12 @@ export function calcChances(a: number, b: number): string {
 export function calcCardsSum(cards: number[]): number {
 	let sum = 0;
 	const cardValues: number[] = [];
-	cards.forEach((el) => {
+	cards.forEach(el => {
 		const cardValue = getJackCardValue(el);
 		sum += cardValue;
 		cardValues.push(cardValue);
 	});
-	cardValues.forEach((el) => {
+	cardValues.forEach(el => {
 		if (el === 11 && sum > 21) {
 			sum -= 10;
 		}
@@ -130,21 +130,21 @@ export function genMinerBombs(bombsCount: number): number[] {
 	return bombsArr;
 }
 
-export function genCardsDeck(game: 'hilo' | 'blackjack'): { index: string; suit: string; value: number }[] {
+export function genCardsDeck(game: 'hilo' | 'blackjack'): {index: string; suit: string; value: number}[] {
 	const suits = ['♠', '♥', '♦', '♣'];
 	const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 	const values = {
 		hilo: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
 		blackjack: [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10],
 	};
-	const cards: { index: string; suit: string; value: number }[] = [];
+	const cards: {index: string; suit: string; value: number}[] = [];
 
 	for (let i = 0; i < ranks.length; i++) {
 		for (let suit of suits) {
-			cards.push({ index: ranks[i], suit: suit, value: values[game][i] });
+			cards.push({index: ranks[i], suit: suit, value: values[game][i]});
 		}
 	}
-	cards.push({ index: 'joker', suit: '', value: 0 });
+	cards.push({index: 'joker', suit: '', value: 0});
 
 	return cards;
 }
@@ -249,7 +249,7 @@ type pokerResults =
 export function checkPokerGame(cards: number[]): pokerResults {
 	if (cards.length !== 5) return 'nothing';
 	const cardValues: number[] = [];
-	cards.forEach((el) => {
+	cards.forEach(el => {
 		cardValues.push(getCardValue(el));
 	});
 	cardValues.sort((a, b) => a - b);
