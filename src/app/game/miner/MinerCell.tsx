@@ -21,7 +21,6 @@ export default function Cell({
 				[`${styles.bomb} ${styles.wasPicked}`]: cellClass === 'bomb wasPicked',
 			})}
 			onClick={onClick}
-			disabled={disabled || cellClass === 'picked'}
-		></button>
+			disabled={disabled || cellClass === 'picked'}></button>
 	);
 }

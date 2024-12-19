@@ -1,7 +1,7 @@
 import styles from './BetsTable.module.scss';
 import Link from 'next/link';
 import DateCell from './DateCell';
-import { useTranslations } from 'next-intl';
+import {useTranslations} from 'next-intl';
 
 type betRow = {
 	id: number;
@@ -21,7 +21,7 @@ type betRow = {
 	};
 };
 
-export default function BetsTable({ betsList }: { betsList: betRow[] }) {
+export default function BetsTable({betsList}: {betsList: betRow[]}) {
 	const t = useTranslations('BetsTable');
 
 	return (
@@ -38,7 +38,7 @@ export default function BetsTable({ betsList }: { betsList: betRow[] }) {
 					</tr>
 				</thead>
 				<tbody>
-					{betsList.map((el) => {
+					{betsList.map(el => {
 						return (
 							<tr key={el.id}>
 								<td>

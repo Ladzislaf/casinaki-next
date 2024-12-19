@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import {PropsWithChildren} from 'react';
 import styes from './Button.module.scss';
 import clsx from 'clsx';
 
@@ -7,9 +7,9 @@ type ButtonProps = {
 	[properties: string]: any;
 };
 
-export default function Button({ children, bgColor, ...properties }: PropsWithChildren<ButtonProps>) {
+export default function Button({children, bgColor, ...properties}: PropsWithChildren<ButtonProps>) {
 	return (
-		<button className={clsx(styes.btn, { [styes[bgColor as string]]: bgColor })} {...properties}>
+		<button className={clsx(styes.btn, {[styes[bgColor as string]]: bgColor})} {...properties}>
 			{children}
 		</button>
 	);

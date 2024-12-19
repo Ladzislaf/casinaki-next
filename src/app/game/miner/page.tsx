@@ -1,13 +1,13 @@
 'use client';
-import { useContext, useEffect, useState } from 'react';
+import {useContext, useEffect, useState} from 'react';
 import styles from './miner.module.scss';
 import Button from '@/components/Button/Button';
 import BetMaker from '@/components/BetMaker/BetMaker';
-import { useSession } from 'next-auth/react';
-import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
+import {useSession} from 'next-auth/react';
+import {PlayerContext, PlayerContextType} from '@/providers/ContextProvider';
 import playMinerAction from '@/actions/playMinerAction';
-import { calcChances, calcCoeff } from '@/utils/utils';
-import { useTranslations } from 'next-intl';
+import {calcChances, calcCoeff} from '@/utils/utils';
+import {useTranslations} from 'next-intl';
 import Cell from './MinerCell';
 
 const minerCells = [
@@ -21,19 +21,25 @@ const minerCells = [
 export default function MinerGame() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
-	const { bet, balance, setBalance } = useContext(PlayerContext) as PlayerContextType;
+	const {bet, balance, setBalance} = useContext(PlayerContext) as PlayerContextType;
 	const [cellClasses, setCellClasses] = useState<string[]>(new Array(25));
 	const [activeBet, setActiveBet] = useState(bet);
 	const [gameState, setGameState] = useState('betting');
 	const [payout, setPayout] = useState('');
 	const [bombsCount, setBombsCount] = useState(5);
-	const [coeffs, setCoeffs] = useState({ activeCoeff: 1, nextCoeff: calcCoeff(25 - bombsCount, 25) });
+	const [coeffs, setCoeffs] = useState({
+		activeCoeff: 1,
+		nextCoeff: calcCoeff(25 - bombsCount, 25),
+	});
 	const [cellsDisable, setCellsDisable] = useState(true);
 	const [playDisable, setPlayDisable] = useState(false);
 	const t = useTranslations('MinerGamePage');
 
 	useEffect(() => {
-		setCoeffs((coeffs) => ({ ...coeffs, nextCoeff: calcCoeff(25 - bombsCount, 25) }));
+		setCoeffs(coeffs => ({
+			...coeffs,
+			nextCoeff: calcCoeff(25 - bombsCount, 25),
+		}));
 	}, [bombsCount]);
 
 	const startGameHandler = () => {
@@ -43,8 +49,8 @@ export default function MinerGame() {
 		setCellClasses(Array(25).fill(''));
 		setPayout('');
 
-		playMinerAction({ playerEmail, bet, bombsCount })
-			.then((res) => {
+		playMinerAction({playerEmail, bet, bombsCount})
+			.then(res => {
 				res?.newBalance && setBalance(res.newBalance);
 			})
 			.finally(() => {
@@ -55,7 +61,7 @@ export default function MinerGame() {
 
 	const openCell = (cellIndex: number) => {
 		setCellsDisable(true);
-		playMinerAction({ playerEmail, cellIndex }).then((res) => {
+		playMinerAction({playerEmail, cellIndex}).then(res => {
 			if (res?.activeCoeff && res?.nextCoeff) {
 				// * right opened cell
 				setCellClasses(
@@ -63,7 +69,7 @@ export default function MinerGame() {
 						return i === cellIndex ? 'picked' : el;
 					})
 				);
-				setCoeffs({ activeCoeff: res.activeCoeff, nextCoeff: res.nextCoeff });
+				setCoeffs({activeCoeff: res.activeCoeff, nextCoeff: res.nextCoeff});
 				setCellsDisable(false);
 			} else if (res?.gameResult) {
 				if (res?.newBalance) {
@@ -89,7 +95,7 @@ export default function MinerGame() {
 					);
 				}
 				setPayout(res.gameResult);
-				setCoeffs({ activeCoeff: 1, nextCoeff: calcCoeff(25 - bombsCount, 25) });
+				setCoeffs({activeCoeff: 1, nextCoeff: calcCoeff(25 - bombsCount, 25)});
 				setGameState('betting');
 			}
 		});
@@ -97,8 +103,8 @@ export default function MinerGame() {
 
 	const cashOutHandler = () => {
 		setCellsDisable(true);
-		playMinerAction({ playerEmail })
-			.then((res) => {
+		playMinerAction({playerEmail})
+			.then(res => {
 				if (res?.newBalance && res.gameResult && res.bombs && res.picked) {
 					res.newBalance && setBalance(res.newBalance);
 					setPayout(res.gameResult);
@@ -112,13 +118,13 @@ export default function MinerGame() {
 				}
 			})
 			.finally(() => {
-				setCoeffs({ activeCoeff: 1, nextCoeff: calcCoeff(25 - bombsCount, 25) });
+				setCoeffs({activeCoeff: 1, nextCoeff: calcCoeff(25 - bombsCount, 25)});
 				setGameState('betting');
 			});
 	};
 
 	return (
-		<div className='gamePage'>
+		<div className="gamePage">
 			<div>
 				<h1>{t('heading')}</h1>
 
@@ -128,17 +134,15 @@ export default function MinerGame() {
 							onClick={() => {
 								bombsCount < 24 && setBombsCount(bombsCount + 1);
 							}}
-							disabled={gameState !== 'betting'}
-						>
+							disabled={gameState !== 'betting'}>
 							+
 						</Button>
-						<h2>{t('bombsCount', { count: bombsCount })}</h2>
+						<h2>{t('bombsCount', {count: bombsCount})}</h2>
 						<Button
 							onClick={() => {
 								bombsCount > 1 && setBombsCount(bombsCount - 1);
 							}}
-							disabled={gameState !== 'betting'}
-						>
+							disabled={gameState !== 'betting'}>
 							-
 						</Button>
 					</div>
@@ -147,7 +151,7 @@ export default function MinerGame() {
 						{minerCells.map((row, index) => {
 							return (
 								<div className={styles.row} key={index}>
-									{row.map((cellIndex) => {
+									{row.map(cellIndex => {
 										return (
 											<Cell
 												key={cellIndex}
@@ -176,7 +180,7 @@ export default function MinerGame() {
 						<Button onClick={cashOutHandler} disabled={coeffs.activeCoeff === 1}>
 							{t('cashOut')} | ${(coeffs.activeCoeff * activeBet).toFixed(2)} | ({coeffs.activeCoeff.toFixed(2)}x)
 						</Button>
-						<h3>{t('nextCoeff', { coeff: coeffs.nextCoeff.toFixed(2) })}</h3>
+						<h3>{t('nextCoeff', {coeff: coeffs.nextCoeff.toFixed(2)})}</h3>
 					</>
 				)}
 				<h2>{payout}</h2>

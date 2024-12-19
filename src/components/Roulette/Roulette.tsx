@@ -1,9 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import styles from './Roulette.module.scss';
 import RouletteRow from './RouletteRow';
 
-export default function Roulette({ rollResult }: { rollResult: { value: number } }) {
+export default function Roulette({rollResult}: {rollResult: {value: number}}) {
 	const [wheelStyles, setWheelStyles] = useState({});
 
 	useEffect(() => {

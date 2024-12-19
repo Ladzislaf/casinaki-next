@@ -1,4 +1,4 @@
-import { useTranslations } from 'next-intl';
+import {useTranslations} from 'next-intl';
 import Link from 'next/link';
 
 const linkStyles = {
@@ -14,15 +14,15 @@ export default function BestPlayersLayout({
 	const t = useTranslations('BestPlayersPage');
 
 	return (
-		<div className='page'>
+		<div className="page">
 			<div>
-				<Link className='linkBtn' href='/best-players/biggest-bets' style={linkStyles}>
+				<Link className="linkBtn" href="/best-players/biggest-bets" style={linkStyles}>
 					{t('betsButton')}
 				</Link>
-				<Link className='linkBtn' href='/best-players/biggest-wins' style={linkStyles}>
+				<Link className="linkBtn" href="/best-players/biggest-wins" style={linkStyles}>
 					{t('winsButton')}
 				</Link>
-				<Link className='linkBtn' href='/best-players/biggest-losses' style={linkStyles}>
+				<Link className="linkBtn" href="/best-players/biggest-losses" style={linkStyles}>
 					{t('lossesButton')}
 				</Link>
 			</div>

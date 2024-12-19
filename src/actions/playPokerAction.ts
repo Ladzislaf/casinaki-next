@@ -1,8 +1,8 @@
 'use server';
 import prisma from '@/utils/prisma';
-import { checkPokerGame, generateUniqueCards } from '@/utils/utils';
-import { kv } from '@vercel/kv';
-import { addGameLogRecord, updatePlayerBalance } from './dataActions';
+import {checkPokerGame, generateUniqueCards} from '@/utils/utils';
+import {kv} from '@vercel/kv';
+import {addGameLogRecord, updatePlayerBalance} from './dataActions';
 
 export default async function playPokerAction({
 	playerEmail,
@@ -13,7 +13,7 @@ export default async function playPokerAction({
 	bet?: number;
 	holdCards?: number[];
 }) {
-	const player = await prisma.player.findUnique({ where: { email: playerEmail } });
+	const player = await prisma.player.findUnique({where: {email: playerEmail}});
 	if (!player) {
 		console.error(`[PlayPokerAction] player ${playerEmail} not found`);
 		return;
@@ -22,9 +22,9 @@ export default async function playPokerAction({
 		console.error(`[PlayPokerAction] player ${playerEmail} hasn't enough money`);
 		return;
 	}
-	let activeGame: { bet: number; playerCards: number[] } | null = await kv.get(`poker:${playerEmail}`);
+	let activeGame: {bet: number; playerCards: number[]} | null = await kv.get(`poker:${playerEmail}`);
 	if (bet) {
-		activeGame = { bet, playerCards: generateUniqueCards(5) };
+		activeGame = {bet, playerCards: generateUniqueCards(5)};
 		kv.setex(`poker:${playerEmail}`, 1800, activeGame);
 		await updatePlayerBalance(playerEmail, player.balance - bet);
 		return {
@@ -34,7 +34,7 @@ export default async function playPokerAction({
 	} else if (activeGame && holdCards) {
 		kv.del(`poker:${playerEmail}`);
 		const newCards = generateUniqueCards(5 - holdCards?.length, activeGame.playerCards);
-		activeGame.playerCards = activeGame.playerCards.map((el) => {
+		activeGame.playerCards = activeGame.playerCards.map(el => {
 			if (holdCards.includes(el)) return el;
 			else return newCards.pop() || el;
 		});
@@ -84,11 +84,16 @@ export default async function playPokerAction({
 			const gameResult = `+ $${(activeGame.bet * coeff - activeGame.bet).toFixed(2)}`;
 			await updatePlayerBalance(playerEmail, newBalance);
 			await addGameLogRecord(playerEmail, 5, activeGame.bet, coeff, true);
-			return { newBalance, gameResult, playerHand: activeGame.playerCards, combination };
+			return {
+				newBalance,
+				gameResult,
+				playerHand: activeGame.playerCards,
+				combination,
+			};
 		} else {
 			const gameResult = `- $${activeGame.bet.toFixed(2)}`;
 			await addGameLogRecord(playerEmail, 5, activeGame.bet, 1, false);
-			return { gameResult, playerHand: activeGame.playerCards };
+			return {gameResult, playerHand: activeGame.playerCards};
 		}
 	}
 }

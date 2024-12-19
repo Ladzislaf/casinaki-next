@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/utils/prisma';
-import { addGameLogRecord, updatePlayerBalance } from './dataActions';
+import {addGameLogRecord, updatePlayerBalance} from './dataActions';
 
 type RouletteParams = {
 	playerEmail: string;
@@ -10,8 +10,8 @@ type RouletteParams = {
 	isZeroBet: boolean;
 };
 
-export default async function playRouletteAction({ playerEmail, bet, isWon, isZeroBet }: RouletteParams) {
-	const player = await prisma.player.findUnique({ where: { email: playerEmail } });
+export default async function playRouletteAction({playerEmail, bet, isWon, isZeroBet}: RouletteParams) {
+	const player = await prisma.player.findUnique({where: {email: playerEmail}});
 	if (!player) {
 		console.error(`[playRouletteAction] player ${playerEmail} not found`);
 		return;

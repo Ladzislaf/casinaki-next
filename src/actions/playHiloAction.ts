@@ -1,8 +1,8 @@
 'use server';
 import prisma from '@/utils/prisma';
-import { kv } from '@vercel/kv';
-import { calcHiloCoeff, generateNewCard, isHiloPlayerWon } from '@/utils/utils';
-import { addGameLogRecord, updatePlayerBalance } from './dataActions';
+import {kv} from '@vercel/kv';
+import {calcHiloCoeff, generateNewCard, isHiloPlayerWon} from '@/utils/utils';
+import {addGameLogRecord, updatePlayerBalance} from './dataActions';
 
 export default async function playHiloAction({
 	playerEmail,
@@ -15,7 +15,7 @@ export default async function playHiloAction({
 	bet?: number;
 	cardIndex?: number;
 }) {
-	const player = await prisma.player.findUnique({ where: { email: playerEmail } });
+	const player = await prisma.player.findUnique({where: {email: playerEmail}});
 	if (!player) {
 		console.error(`[PlayHilowAction] player ${playerEmail} not found`);
 		return;
@@ -24,12 +24,12 @@ export default async function playHiloAction({
 		console.error(`[PlayHilowAction] player ${playerEmail} hasn't enough money`);
 		return;
 	}
-	let activeGame: { bet: number; cardIndex: number; coeff: number } | null = await kv.get(`hilo:${playerEmail}`);
+	let activeGame: {bet: number; cardIndex: number; coeff: number} | null = await kv.get(`hilo:${playerEmail}`);
 	if (bet && cardIndex) {
-		activeGame = { bet, cardIndex, coeff: 1 };
+		activeGame = {bet, cardIndex, coeff: 1};
 		kv.setex(`hilo:${playerEmail}`, 1800, activeGame);
 		await updatePlayerBalance(playerEmail, player.balance - bet);
-		return { newBalance: player.balance - bet };
+		return {newBalance: player.balance - bet};
 	} else if (activeGame) {
 		const newCardIndex = generateNewCard(activeGame.cardIndex);
 		if (choice === 'higher' || choice === 'lower') {
@@ -37,13 +37,13 @@ export default async function playHiloAction({
 				activeGame.coeff = activeGame.coeff * calcHiloCoeff(activeGame.cardIndex, choice);
 				activeGame.cardIndex = newCardIndex;
 				kv.setex(`hilo:${playerEmail}`, 1800, activeGame);
-				return { newCardIndex, totalCoeff: activeGame.coeff };
+				return {newCardIndex, totalCoeff: activeGame.coeff};
 			} else {
 				const gameResult = `- $${activeGame.bet.toFixed(2)}`;
 				activeGame.coeff = activeGame.coeff * calcHiloCoeff(activeGame.cardIndex, choice);
 				await addGameLogRecord(playerEmail, 1, activeGame.bet, activeGame.coeff, false);
 				await kv.del(`hilo:${playerEmail}`);
-				return { gameResult, newCardIndex };
+				return {gameResult, newCardIndex};
 			}
 		} else {
 			// * cash out
@@ -52,7 +52,7 @@ export default async function playHiloAction({
 			await updatePlayerBalance(playerEmail, newBalance);
 			await addGameLogRecord(playerEmail, 1, activeGame.bet, activeGame.coeff, true);
 			await kv.del(`hilo:${playerEmail}`);
-			return { newBalance, gameResult };
+			return {newBalance, gameResult};
 		}
 	}
 }

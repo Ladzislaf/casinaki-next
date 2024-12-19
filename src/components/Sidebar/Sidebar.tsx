@@ -13,23 +13,23 @@ import rouletteLogo from '@/assets/sidebar/roulette.svg';
 export default function Sidebar() {
 	return (
 		<nav className={clsx('sidenav', styles.sidebar)}>
-			<Link href='/game/roulette'>
-				<Image className='svg' src={rouletteLogo} alt='roulette game logo' />
+			<Link href="/game/roulette">
+				<Image className="svg" src={rouletteLogo} alt="roulette game logo" />
 			</Link>
-			<Link href='/game/hilo'>
-				<Image className='svg' src={hiLowLogo} alt='higher-lower game logo' />
+			<Link href="/game/hilo">
+				<Image className="svg" src={hiLowLogo} alt="higher-lower game logo" />
 			</Link>
-			<Link href='/game/miner'>
-				<Image className='svg' src={minerLogo} alt='miner game logo' />
+			<Link href="/game/miner">
+				<Image className="svg" src={minerLogo} alt="miner game logo" />
 			</Link>
-			<Link href='/game/blackjack'>
-				<Image className='svg' src={blackjackLogo} alt='blackjack game logo' />
+			<Link href="/game/blackjack">
+				<Image className="svg" src={blackjackLogo} alt="blackjack game logo" />
 			</Link>
-			<Link href='/game/poker'>
-				<Image className='svg' src={pokerLogo} alt='poker game logo' />
+			<Link href="/game/poker">
+				<Image className="svg" src={pokerLogo} alt="poker game logo" />
 			</Link>
-			<Link href='/game/dice'>
-				<Image className='svg' src={diceLogo} alt='dice game logo' />
+			<Link href="/game/dice">
+				<Image className="svg" src={diceLogo} alt="dice game logo" />
 			</Link>
 		</nav>
 	);

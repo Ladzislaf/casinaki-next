@@ -1,6 +1,6 @@
 import BetsTable from '@/components/BetsTable/BetsTable';
-import { fetchBiggestWins } from '@/actions/dataActions';
-import { getTranslations } from 'next-intl/server';
+import {fetchBiggestWins} from '@/actions/dataActions';
+import {getTranslations} from 'next-intl/server';
 
 export default async function BetHistory() {
 	const biggestWins = await fetchBiggestWins();

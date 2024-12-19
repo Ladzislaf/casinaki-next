@@ -1,15 +1,15 @@
 'use client';
-import { useContext, useEffect, useState } from 'react';
+import {useContext, useEffect, useState} from 'react';
 import Button from '../Button/Button';
-import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
-import { useSession } from 'next-auth/react';
-import { MAX_BET, MIN_BET } from '@/utils/utils';
+import {PlayerContext, PlayerContextType} from '@/providers/ContextProvider';
+import {useSession} from 'next-auth/react';
+import {MAX_BET, MIN_BET} from '@/utils/utils';
 import styles from './BetMaker.module.scss';
-import { useTranslations } from 'next-intl';
+import {useTranslations} from 'next-intl';
 
-export default function BetMaker({ children }: { children?: React.ReactNode }) {
+export default function BetMaker({children}: {children?: React.ReactNode}) {
 	const session = useSession();
-	const { balance, bet, setBet } = useContext(PlayerContext) as PlayerContextType;
+	const {balance, bet, setBet} = useContext(PlayerContext) as PlayerContextType;
 	const [betStep, setBetStep] = useState(MIN_BET);
 	const t = useTranslations('BetMaker');
 
@@ -37,7 +37,7 @@ export default function BetMaker({ children }: { children?: React.ReactNode }) {
 			<>
 				<div className={styles.bet}>
 					<Button onClick={() => changeBet(bet - betStep)}>-</Button>
-					<h2>{t('bet', { amount: `$${bet.toFixed(2)}` })}</h2>
+					<h2>{t('bet', {amount: `$${bet.toFixed(2)}`})}</h2>
 					<Button onClick={() => changeBet(bet + betStep)}>+</Button>
 				</div>
 

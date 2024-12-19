@@ -1,25 +1,25 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
+import React, {useContext, useEffect, useState} from 'react';
+import {useSession} from 'next-auth/react';
+import {PlayerContext, PlayerContextType} from '@/providers/ContextProvider';
 import styles from './hilo.module.scss';
 import BetMaker from '../../../components/BetMaker/BetMaker';
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card';
-import { calcHiloChances, calcHiloCoeff, genCardsDeck, getRand } from '@/utils/utils';
+import {calcHiloChances, calcHiloCoeff, genCardsDeck, getRand} from '@/utils/utils';
 import playHiloAction from '@/actions/playHiloAction';
-import { useTranslations } from 'next-intl';
+import {useTranslations} from 'next-intl';
 
 const cardsDeck = genCardsDeck('hilo');
 
 export default function Hilo() {
 	const session = useSession();
 	const playerEmail = session.data?.user?.email as string;
-	const { balance, bet, setBalance } = useContext(PlayerContext) as PlayerContextType;
+	const {balance, bet, setBalance} = useContext(PlayerContext) as PlayerContextType;
 	const [activeCardIndex, setActiveCardIndex] = useState(-1);
 	const [cardsHistory, setCardsHistory] = useState([-1]);
-	const [coeffs, setCoeffs] = useState({ hi: 1, lo: 1, total: 1 });
-	const [chances, setChances] = useState({ hi: '50', lo: '50' });
+	const [coeffs, setCoeffs] = useState({hi: 1, lo: 1, total: 1});
+	const [chances, setChances] = useState({hi: '50', lo: '50'});
 	const [activeBet, setActiveBet] = useState(bet);
 	const [payout, setPayout] = useState('');
 	const [gameState, setGameState] = useState('betting');
@@ -35,8 +35,8 @@ export default function Hilo() {
 		setCardsHistory([52]);
 		setPayout('');
 
-		playHiloAction({ playerEmail, bet, cardIndex: activeCardIndex })
-			.then((res) => {
+		playHiloAction({playerEmail, bet, cardIndex: activeCardIndex})
+			.then(res => {
 				setCoeffs({
 					hi: calcHiloCoeff(activeCardIndex, 'higher'),
 					lo: calcHiloCoeff(activeCardIndex, 'lower'),
@@ -57,8 +57,8 @@ export default function Hilo() {
 
 	const playHandler = (choice: 'higher' | 'lower') => {
 		setPlayDisable(true);
-		playHiloAction({ playerEmail, choice })
-			.then((res) => {
+		playHiloAction({playerEmail, choice})
+			.then(res => {
 				if (res?.totalCoeff) {
 					addCartToHistory(activeCardIndex);
 					setActiveCardIndex(res.newCardIndex);
@@ -84,8 +84,8 @@ export default function Hilo() {
 	};
 
 	const cashOutHandler = () => {
-		playHiloAction({ playerEmail })
-			.then((res) => {
+		playHiloAction({playerEmail})
+			.then(res => {
 				if (res?.newBalance && res.gameResult) {
 					setBalance(res.newBalance);
 					setPayout(res.gameResult);
@@ -122,11 +122,11 @@ export default function Hilo() {
 				<h1>{t('heading')}</h1>
 				<div className={styles.cardsContainer}>
 					<div>
-						<Card cardIndex={1} cardColor='#222222'>
+						<Card cardIndex={1} cardColor="#222222">
 							{t('lowest')}
 						</Card>
 						<Card cardIndex={activeCardIndex} />
-						<Card cardIndex={49} cardColor='#222222'>
+						<Card cardIndex={49} cardColor="#222222">
 							{t('highest')}
 						</Card>
 					</div>

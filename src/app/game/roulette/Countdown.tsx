@@ -1,8 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 // import styles from './roulette.module.scss';
 
-export default function Countdown({ initialCountdown }: { initialCountdown: number }) {
+export default function Countdown({initialCountdown}: {initialCountdown: number}) {
 	const [progress, setProgress] = useState(0);
 
 	useEffect(() => {
@@ -23,8 +23,7 @@ export default function Countdown({ initialCountdown }: { initialCountdown: numb
 				backgroundColor: '#e0e0df',
 				borderRadius: '0.5rem',
 				overflow: 'hidden',
-			}}
-		>
+			}}>
 			<div
 				style={{
 					width: `${progress * 4}%`,

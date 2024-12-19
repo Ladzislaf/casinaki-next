@@ -23,7 +23,7 @@ const ChipColors = {
 	'500': styles.pink,
 };
 
-export default function Chip({ value, onClick, isActive }: ChipProps) {
+export default function Chip({value, onClick, isActive}: ChipProps) {
 	if (value === null) {
 		return <div className={clsx(styles.chip, styles.currencyChip)}></div>;
 	}
@@ -37,7 +37,11 @@ export default function Chip({ value, onClick, isActive }: ChipProps) {
 	}
 
 	return (
-		<div className={clsx(styles.chip, ChipColors[value], { [styles.active]: isActive })} onClick={onClick}>
+		<div
+			className={clsx(styles.chip, ChipColors[value], {
+				[styles.active]: isActive,
+			})}
+			onClick={onClick}>
 			<Image src={chipLogo} alt={'chip icon'} />${value}
 		</div>
 	);

@@ -2,8 +2,8 @@
 
 ## Old stable version [casinaki.com](https://casinaki.onrender.com)
 
--  Typescript
--  Next-Auth
--  Sass
--  Prisma: vercel db
--  Redis: vercel kv
+- Typescript
+- Next-Auth
+- Sass
+- Prisma: vercel db
+- Redis: vercel kv
