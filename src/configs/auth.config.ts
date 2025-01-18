@@ -1,7 +1,8 @@
-import type {AuthOptions} from 'next-auth';
+import type { AuthOptions } from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
-import {createPlayerAction} from '@/actions/dataActions';
+
+import { createPlayerAction } from '@/actions/dataActions';
 
 export const authConfig: AuthOptions = {
 	providers: [
@@ -15,7 +16,7 @@ export const authConfig: AuthOptions = {
 		}),
 	],
 	callbacks: {
-		async signIn({profile}) {
+		async signIn({ profile }) {
 			if (profile?.email) {
 				await createPlayerAction(profile?.email);
 				return true;

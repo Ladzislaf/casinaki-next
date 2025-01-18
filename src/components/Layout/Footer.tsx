@@ -1,17 +1,18 @@
+import githubLogo from '@/assets/footer/github-logo.svg';
+import gmailLogo from '@/assets/footer/gmail-logo.svg';
+import linkedinLogo from '@/assets/footer/linkedin-logo.svg';
+import telegramLogo from '@/assets/footer/telegram-logo.svg';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import githubLogo from '@/assets/footer/github-logo.svg';
-import telegramLogo from '@/assets/footer/telegram-logo.svg';
-import linkedinLogo from '@/assets/footer/linkedin-logo.svg';
-import gmailLogo from '@/assets/footer/gmail-logo.svg';
-import {useTranslations} from 'next-intl';
+import styles from './Layout.module.scss';
 
 export default function Footer() {
 	const t = useTranslations('Footer');
 
 	return (
-		<footer>
+		<footer className={styles.footer}>
 			<h3>{t('devBy')}</h3>
 
 			<nav>

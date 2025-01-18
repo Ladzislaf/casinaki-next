@@ -1,10 +1,7 @@
-import {useTranslations} from 'next-intl';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
-const linkStyles = {
-	width: '8rem',
-	margin: '0 0.5rem',
-};
+import { Page } from '@/components/Layout/Containers';
+import Button from '@/components/ui/Button';
 
 export default function BestPlayersLayout({
 	children,
@@ -14,19 +11,20 @@ export default function BestPlayersLayout({
 	const t = useTranslations('BestPlayersPage');
 
 	return (
-		<div className="page">
-			<div>
-				<Link className="linkBtn" href="/best-players/biggest-bets" style={linkStyles}>
+		<Page>
+			<div style={{ display: 'flex', gap: '0.5rem', width: '100%' }}>
+				<Button linkTo="/best-players/biggest-bets" style={{ flex: '1' }}>
 					{t('betsButton')}
-				</Link>
-				<Link className="linkBtn" href="/best-players/biggest-wins" style={linkStyles}>
+				</Button>
+				<Button linkTo="/best-players/biggest-wins" style={{ flex: '1' }}>
 					{t('winsButton')}
-				</Link>
-				<Link className="linkBtn" href="/best-players/biggest-losses" style={linkStyles}>
+				</Button>
+				<Button linkTo="/best-players/biggest-losses" style={{ flex: '1' }}>
 					{t('lossesButton')}
-				</Link>
+				</Button>
 			</div>
+
 			{children}
-		</div>
+		</Page>
 	);
 }

@@ -1,8 +1,11 @@
 'use server';
+
+import { kv } from '@vercel/kv';
+
+import { addGameLogRecord, updatePlayerBalance } from './dataActions';
+
 import prisma from '@/utils/prisma';
-import {calcCoeff, genMinerBombs} from '@/utils/utils';
-import {kv} from '@vercel/kv';
-import {addGameLogRecord, updatePlayerBalance} from './dataActions';
+import { calcCoeff, genMinerBombs } from '@/utils/utils';
 
 export default async function playMinerAction({
 	playerEmail,
@@ -15,7 +18,7 @@ export default async function playMinerAction({
 	bombsCount?: number;
 	cellIndex?: number;
 }) {
-	const player = await prisma.player.findUnique({where: {email: playerEmail}});
+	const player = await prisma.player.findUnique({ where: { email: playerEmail } });
 	if (!player) {
 		console.error(`[PlayMinerAction] player ${playerEmail} not found`);
 		return;
@@ -32,10 +35,10 @@ export default async function playMinerAction({
 	} | null = await kv.get(`miner:${playerEmail}`);
 	if (bet && bombsCount) {
 		const bombsArray = genMinerBombs(bombsCount);
-		activeGame = {bet, coeff: 1, bombs: bombsArray, picked: []};
+		activeGame = { bet, coeff: 1, bombs: bombsArray, picked: [] };
 		kv.setex(`miner:${playerEmail}`, 1800, activeGame);
 		await updatePlayerBalance(playerEmail, player.balance - bet);
-		return {newBalance: player.balance - bet};
+		return { newBalance: player.balance - bet };
 	} else if (activeGame && cellIndex !== undefined) {
 		if (activeGame.picked.includes(cellIndex)) {
 			console.error(`[PlayMinerAction] player ${playerEmail} has already picked cell ${cellIndex}`);
@@ -55,7 +58,7 @@ export default async function playMinerAction({
 				updatePlayerBalance(playerEmail, newBalance);
 				addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, true);
 				await kv.del(`miner:${playerEmail}`);
-				return {newBalance, gameResult};
+				return { newBalance, gameResult };
 			} else {
 				// * right opened cell
 				kv.setex(`miner:${playerEmail}`, 1800, activeGame);
@@ -71,7 +74,7 @@ export default async function playMinerAction({
 			const gameResult = `- $${activeGame.bet.toFixed(2)}`;
 			addGameLogRecord(playerEmail, 3, activeGame.bet, activeGame.coeff, false);
 			await kv.del(`miner:${playerEmail}`);
-			return {gameResult, picked: activeGame.picked, bombs: activeGame.bombs};
+			return { gameResult, picked: activeGame.picked, bombs: activeGame.bombs };
 		}
 	} else if (activeGame) {
 		// * cash out

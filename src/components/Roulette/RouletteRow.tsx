@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+
 import styles from './Roulette.module.scss';
 
 export default function RouletteRow() {

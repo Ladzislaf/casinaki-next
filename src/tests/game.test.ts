@@ -1,4 +1,4 @@
-import {checkPokerGame} from '@/utils/utils';
+import { checkPokerGame } from '@/utils/utils';
 
 describe('Poker functions', () => {
 	test('checkPokerGame', () => {

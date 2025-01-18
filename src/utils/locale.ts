@@ -1,7 +1,7 @@
 'use server';
 
-import {cookies} from 'next/headers';
-import {Locale, defaultLocale} from '@/configs/app.config';
+import { Locale, defaultLocale } from '@/configs/app.config';
+import { cookies } from 'next/headers';
 
 const COOKIE_NAME = 'NEXT_LOCALE';
 

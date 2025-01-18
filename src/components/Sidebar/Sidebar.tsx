@@ -1,18 +1,17 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import styles from './Sidebar.module.scss';
-import clsx from 'clsx';
-
-import hiLowLogo from '@/assets/sidebar/hilo.svg';
-import diceLogo from '@/assets/sidebar/dice.svg';
-import minerLogo from '@/assets/sidebar/miner.svg';
 import blackjackLogo from '@/assets/sidebar/blackjack.svg';
+import diceLogo from '@/assets/sidebar/dice.svg';
+import hiLowLogo from '@/assets/sidebar/hilo.svg';
+import minerLogo from '@/assets/sidebar/miner.svg';
 import pokerLogo from '@/assets/sidebar/poker.svg';
 import rouletteLogo from '@/assets/sidebar/roulette.svg';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import styles from './Sidebar.module.scss';
 
 export default function Sidebar() {
 	return (
-		<nav className={clsx('sidenav', styles.sidebar)}>
+		<nav className={styles.sidebar}>
 			<Link href="/game/roulette">
 				<Image className="svg" src={rouletteLogo} alt="roulette game logo" />
 			</Link>

@@ -1,3 +1,3 @@
 export async function GET() {
-	return Response.json({data: 'you allowed'});
+	return Response.json({ data: 'you allowed' });
 }

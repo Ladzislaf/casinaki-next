@@ -1,15 +1,19 @@
 'use client';
-import Link from 'next/link';
+
+import { useContext, useEffect, useState } from 'react';
+
+import { useSession, signOut } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import Link from 'next/link';
+
+import { PlayerContext, PlayerContextType } from '@/providers/ContextProvider';
+
 import styles from './Header.module.scss';
-import {useSession, signOut} from 'next-auth/react';
-import {useContext, useEffect, useState} from 'react';
-import {PlayerContext, PlayerContextType} from '@/providers/ContextProvider';
-import {useTranslations} from 'next-intl';
 
 export default function ProfileButton() {
 	const session = useSession();
-	const {balance, fetchBalance} = useContext(PlayerContext) as PlayerContextType;
+	const { balance, fetchBalance } = useContext(PlayerContext) as PlayerContextType;
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const t = useTranslations('Header');
 
@@ -27,27 +31,27 @@ export default function ProfileButton() {
 
 	return (
 		<>
-			{session?.data ? (
-				<>
-					<div className={styles.player}>
+			<div className={styles.player}>
+				{session?.data ? (
+					<>
 						{session?.data?.user?.image && (
 							<Image src={session.data.user.image} alt="user image" width={128} height={128} />
 						)}
-						${balance === -1 ? '**.**' : balance.toFixed(2)}
-						<div className={styles.profile}>
+						<span>${balance === -1 ? '**.**' : balance.toFixed(2)}</span>
+						<div className={styles['profile-links']}>
 							<div>{session.data.user?.email}</div>
 							<Link href="/balance">{t('balanceButton')}</Link>
 							<Link href="/" onClick={logoutHandler}>
 								{t('signOut')}
 							</Link>
 						</div>
-					</div>
-				</>
-			) : (
-				<Link className={styles.player} href="/signin">
-					{t('signIn')}
-				</Link>
-			)}
+					</>
+				) : (
+					<Link className={styles['orange-color']} href="/signin">
+						{t('signIn')}
+					</Link>
+				)}
+			</div>
 		</>
 	);
 }

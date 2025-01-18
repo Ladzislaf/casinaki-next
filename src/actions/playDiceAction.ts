@@ -1,7 +1,9 @@
 'use server';
+
+import { addGameLogRecord, updatePlayerBalance } from './dataActions';
+
 import prisma from '@/utils/prisma';
-import {getRand, overDiceCoeffs, underDiceCoeffs} from '@/utils/utils';
-import {addGameLogRecord, updatePlayerBalance} from './dataActions';
+import { getRand, overDiceCoeffs, underDiceCoeffs } from '@/utils/utils';
 
 const MIN_DICE = 2;
 const MAX_DICE = 12;
@@ -17,7 +19,7 @@ export default async function playDiceAction({
 	activeDice: number;
 	gameMode: 'over' | 'under';
 }) {
-	const player = await prisma.player.findUnique({where: {email: playerEmail}});
+	const player = await prisma.player.findUnique({ where: { email: playerEmail } });
 	if (!player) {
 		console.error(`[PlayDiceAction] player ${playerEmail} not found`);
 		return;
@@ -57,5 +59,5 @@ export default async function playDiceAction({
 		}
 	}
 	await updatePlayerBalance(playerEmail, newBalance);
-	return {newBalance, gameResult, diceResult: newDice};
+	return { newBalance, gameResult, diceResult: newDice };
 }
