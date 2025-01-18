@@ -1,6 +1,8 @@
+import { getTranslations } from 'next-intl/server';
+
 import BetsTable from '@/components/BetsTable/BetsTable';
-import {fetchBiggestLosses} from '@/actions/dataActions';
-import {getTranslations} from 'next-intl/server';
+
+import { fetchBiggestLosses } from '@/actions/dataActions';
 
 export default async function BetHistory() {
 	const biggestLosses = await fetchBiggestLosses();
@@ -8,8 +10,7 @@ export default async function BetHistory() {
 
 	return (
 		<>
-			<h2>{t('lossesHeading')}</h2>
-			<BetsTable betsList={biggestLosses} />
+			<BetsTable betsList={biggestLosses} heading={t('lossesHeading')} />
 		</>
 	);
 }

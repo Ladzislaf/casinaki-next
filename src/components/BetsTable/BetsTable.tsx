@@ -1,7 +1,9 @@
-import styles from './BetsTable.module.scss';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+
 import DateCell from './DateCell';
-import {useTranslations} from 'next-intl';
+
+import styles from './BetsTable.module.scss';
 
 type betRow = {
 	id: number;
@@ -21,24 +23,27 @@ type betRow = {
 	};
 };
 
-export default function BetsTable({betsList}: {betsList: betRow[]}) {
+export default function BetsTable({ betsList, heading }: { betsList: betRow[]; heading?: string }) {
 	const t = useTranslations('BetsTable');
 
 	return (
-		<div className={styles.container}>
+		<>
+			{heading && <h2>{heading}</h2>}
+
 			<table className={styles.tbl}>
 				<thead>
 					<tr>
-						<td>{t('game')}</td>
-						<td>{t('player')}</td>
-						<td>{t('bet')}</td>
-						<td>{t('coefficient')}</td>
-						<td>{t('payout')}</td>
-						<td>{t('time')}</td>
+						<th>{t('game')}</th>
+						<th>{t('player')}</th>
+						<th>{t('bet')}</th>
+						<th>{t('coefficient')}</th>
+						<th>{t('payout')}</th>
+						<th>{t('time')}</th>
 					</tr>
 				</thead>
+
 				<tbody>
-					{betsList.map(el => {
+					{betsList.map((el) => {
 						return (
 							<tr key={el.id}>
 								<td>
@@ -54,6 +59,6 @@ export default function BetsTable({betsList}: {betsList: betRow[]}) {
 					})}
 				</tbody>
 			</table>
-		</div>
+		</>
 	);
 }

@@ -1,6 +1,10 @@
 .playerHand {
 	display: flex;
 	justify-content: safe center;
+	width: 100%;
+	padding-top: 1rem;
+
+	overflow-x: auto;
 
 	> div {
 		cursor: pointer;
@@ -17,50 +21,50 @@
 }
 
 .combinationTable {
+	display: flex;
+	align-items: center;
+	justify-content: safe center;
+
 	background: var(--orangeHover);
 	border: 0.1rem solid var(--orange);
-	min-width: 60%;
-	border-radius: 1rem;
-	padding: 0 3rem;
-	margin: auto;
+	border-radius: 0.5rem;
+	max-width: 100%;
+	padding: 0 1rem;
 
-	> tbody > tr {
-		&.active {
-			color: var(--orange);
-		}
+	overflow-x: auto;
 
-		> td:first-child {
-			text-align: start;
-		}
+	td {
+		white-space: nowrap;
+		text-align: start;
+		padding: 0 0.5rem;
+	}
 
-		> td:last-child {
-			width: 30%;
-			text-align: end;
-		}
+	.active {
+		color: var(--orange);
 	}
 }
 
-@media (max-width: 768px) {
-	.playerHand {
-		max-width: 100%;
+// @media (max-width: 768px) {
+// 	.playerHand {
+// 		max-width: 100%;
 
-		> div {
-			margin-left: -0.9rem;
-			margin-right: -0.9rem;
-		}
-	}
-}
+// 		> div {
+// 			margin-left: -0.9rem;
+// 			margin-right: -0.9rem;
+// 		}
+// 	}
+// }
 
-@media (max-width: 480px) {
-	@media (max-width: 768px) {
-		.playerHand > div {
-			font-size: 1.8rem;
-			margin-left: -1.1rem;
-			margin-right: -1.1rem;
-		}
-	}
+// @media (max-width: 480px) {
+// 	@media (max-width: 768px) {
+// 		.playerHand > div {
+// 			font-size: 1.8rem;
+// 			margin-left: -1.1rem;
+// 			margin-right: -1.1rem;
+// 		}
+// 	}
 
-	.combinationTable {
-		padding: 0 1rem;
-	}
-}
+// 	.combinationTable {
+// 		padding: 0 1rem;
+// 	}
+// }

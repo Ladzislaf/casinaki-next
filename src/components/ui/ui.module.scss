@@ -1,0 +1,78 @@
+.btn {
+	padding: 0.5rem;
+	border: 0.1rem solid var(--orange);
+	border-radius: 0.5rem;
+	cursor: pointer;
+	background: transparent;
+	text-align: center;
+	font-size: inherit;
+	font-family: inherit;
+
+	box-shadow: 0 0.3rem 0.1rem rgba(0, 0, 0, 0.5);
+	transition-duration: 0.1s;
+
+	&:hover {
+		background: #0000002d;
+	}
+
+	&:active {
+		transform: translateY(0.3rem);
+		box-shadow: none;
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+		border: 0.1rem solid #f87d0987;
+		color: #f87d0987;
+		background-color: #0000001d;
+	}
+}
+
+.red {
+	background-color: var(--rouletteRed);
+	&:hover {
+		background-color: var(--rouletteRedDark);
+	}
+}
+
+.black {
+	background-color: var(--rouletteBlack);
+	&:hover {
+		background-color: var(--rouletteBlackDark);
+	}
+}
+
+.green {
+	background-color: var(--rouletteGreen);
+	&:hover {
+		background-color: var(--rouletteGreenDark);
+	}
+}
+
+.inp {
+	font-size: inherit;
+	font-family: inherit;
+	padding: 0.3rem 0.5rem;
+	border-radius: 0.5rem;
+	border: 0.1rem solid var(--orange);
+	background: transparent;
+	margin: 0.5rem;
+
+	&:hover {
+		background: #f87d0950;
+	}
+}
+
+.signal-status {
+	color: white;
+	padding: 0.1rem 0.5rem;
+	border-radius: 0.5rem;
+
+	border: 0.1rem solid rgb(193, 2, 2);
+	background-color: rgb(249, 49, 49);
+
+	&.active {
+		border: 0.1rem solid rgb(55, 233, 55);
+		background-color: rgba(17, 198, 17, 0.911);
+	}
+}

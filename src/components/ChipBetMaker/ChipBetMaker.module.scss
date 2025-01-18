@@ -1,12 +1,85 @@
+$chip-dia: 3rem;
+
 .container {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
+	gap: 0.5rem;
+
+	padding: 0.5rem;
+	width: auto;
 
 	border: 0.1rem solid var(--orange);
-	border-radius: 1rem;
-	margin: 0.5rem;
+	border-radius: 0.5rem;
 
-	> * {
-		margin: 0.2rem;
+	overflow-x: auto;
+
+	h4 {
+		border: 0.1rem solid var(--orange);
+		border-radius: 0.5rem;
+		padding: 0.5rem;
 	}
+}
+
+.chip {
+	min-height: $chip-dia;
+	min-width: $chip-dia;
+	border-radius: 50%;
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	font-size: 0.7rem;
+	color: #fff;
+	position: relative;
+
+	> img {
+		position: absolute;
+		height: $chip-dia;
+		width: $chip-dia;
+		border-radius: 50%;
+	}
+}
+
+.active {
+	box-shadow:
+		0.3rem 0.3rem 0.3rem green,
+		0.3rem -0.3rem 0.3rem green,
+		-0.3rem 0.3rem 0.3rem green,
+		-0.3rem -0.3rem 0.3rem green;
+}
+
+.currencyChip {
+	font-size: 0.6rem;
+	background-color: rgb(30, 140, 0);
+	color: #6f6f6f;
+}
+
+.yellow {
+	background: #df8e1d;
+}
+
+.purple {
+	background: #7287fd;
+}
+
+.orange {
+	background: #e64553;
+}
+
+.red {
+	background: #d20f39;
+}
+
+.blue {
+	background: #04a5e5;
+}
+
+.black {
+	background: #4c4f69;
+}
+
+.pink {
+	background: #ea76cb;
 }

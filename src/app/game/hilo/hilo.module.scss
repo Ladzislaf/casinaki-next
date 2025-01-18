@@ -1,12 +1,8 @@
-.cardsContainer {
+.cards {
 	display: flex;
-	flex-direction: column;
-	align-items: center;
+	flex-direction: row;
+	justify-content: safe center;
+	width: 100%;
 
-	> div {
-		display: flex;
-		flex-direction: row;
-		justify-content: safe center;
-		overflow-x: scroll;
-	}
+	overflow-x: auto;
 }

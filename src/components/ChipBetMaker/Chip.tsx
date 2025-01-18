@@ -1,17 +1,20 @@
 'use client';
-import clsx from 'clsx';
-import styles from './Chip.module.scss';
 
 import chipLogo from '@/assets/chip.svg';
+import clsx from 'clsx';
 import Image from 'next/image';
 
-export type ChipValue = 0.2 | 1 | 2 | 10 | 40 | 200 | 500;
+import styles from './ChipBetMaker.module.scss';
+
+type ChipValue = 0.2 | 1 | 2 | 10 | 40 | 200 | 500;
 
 type ChipProps = {
-	value: null | ChipValue;
+	value: ChipValue | null;
 	isActive?: boolean;
 	onClick?: () => void;
 };
+
+export const CHIP_VALUES: ChipValue[] = [0.2, 1, 2, 10, 40, 200, 500];
 
 const ChipColors = {
 	'0.2': styles.yellow,
@@ -23,7 +26,7 @@ const ChipColors = {
 	'500': styles.pink,
 };
 
-export default function Chip({value, onClick, isActive}: ChipProps) {
+export default function Chip({ value, onClick, isActive }: ChipProps) {
 	if (value === null) {
 		return <div className={clsx(styles.chip, styles.currencyChip)}></div>;
 	}
